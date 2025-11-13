@@ -41,4 +41,4 @@ EAStep()
      fi
 }
 
-EAStep vivado -log CAN_RX_module.vds -m64 -product Vivado -mode batch -messageDb vivado.pb -notrace -source CAN_RX_module.tcl
+EAStep vivado -log deserializer.vds -m64 -product Vivado -mode batch -messageDb vivado.pb -notrace -source deserializer.tcl
