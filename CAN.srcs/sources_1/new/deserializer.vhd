@@ -54,7 +54,7 @@ architecture arch_deserializer of deserializer is
     signal s_data_len   : unsigned(6 downto 0);
     
     signal sv_first_pt  : std_logic_vector(18 downto 0);
-    signal data_field_o : std_logic_vector(63 downto 0);
+    signal sv_data_field : std_logic_vector(63 downto 0);
     signal sv_last_pt   : std_logic_vector(24 downto 0);
 
 begin
@@ -66,7 +66,8 @@ begin
             s_bit_count  <= (others => '0');
             sv_dlc       <= (others => '0');
             s_data_len   <= (others => '0');
-            data_field_o <= (others => '0');
+            data_len_o   <= (others => '0');
+            sv_data_field <= (others => '0');
             ack_slot     <= '1';     -- recessive
             frame_rdy    <= '0';
             frame        <= (others => '0');
@@ -76,7 +77,7 @@ begin
 
         elsif rising_edge(clock) then
             frame_rdy <= '0';
-            ack_slot  <= '1';  -- default recessive
+            ack_slot <= '1';
 
             if bit_valid = '1' then
                 case state is
@@ -85,7 +86,8 @@ begin
                     when IDLE =>
                         if destuff_bit = '0' then
                             state_can   <= "01"; -- RECEIVING
-                            data_field_o <= (others => '0');
+                            ack_slot    <= '1';
+                            sv_data_field <= (others => '0');
                             sv_last_pt  <= (others => '0');
                             sv_first_pt <= sv_first_pt(17 downto 0) & destuff_bit;
                             s_bit_count <= (others => '0');
@@ -130,7 +132,7 @@ begin
                     when DATA_LEN =>
                         data_len_o   <= shift_left(resize(sv_dlc, 7), 3); -- dlc * 8
                         s_data_len   <= shift_left(resize(sv_dlc, 7), 3);
-                        data_field_o <= (others => '0');
+                        sv_data_field <= (others => '0');
                         if sv_dlc = "0000" then
                             state <= CRC;   -- no data
                         else
@@ -140,7 +142,7 @@ begin
 
                     -- DATA - data bits deserialization (0-64 bits)
                     when DATA =>
-                        data_field_o <= data_field_o(62 downto 0) & destuff_bit;
+                        sv_data_field <= sv_data_field(62 downto 0) & destuff_bit;
                         s_bit_count  <= s_bit_count + 1;
 
                         if s_bit_count = (s_data_len - 1) then
@@ -174,6 +176,7 @@ begin
                     -- ACK_DELIM - ACK delimiter
                     when ACK_DELIM =>
                         sv_last_pt  <= sv_last_pt(23 downto 0) & destuff_bit;
+                        ack_slot    <= '1';
                         state       <= EOF;
 
                     -- EOF - end of frame deserialization (7 bit)
@@ -198,7 +201,7 @@ begin
 
                     -- DONE - complete frame
                     when DONE =>
-                        frame     <= sv_first_pt & data_field_o & sv_last_pt;
+                        frame     <= sv_first_pt & sv_data_field & sv_last_pt;
                         frame_rdy <= '1';
                         state_can <= "00"; -- IDLE
                         state     <= IDLE;
