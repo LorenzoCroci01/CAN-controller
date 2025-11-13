@@ -57,7 +57,7 @@ begin
         rx_in <= '0'; wait for 1000 ns;
         rx_in <= '0'; wait for 1000 ns;
         rx_in <= '0'; wait for 1000 ns;
-        rx_in <= '0'; wait for 1000 ns;
+        rx_in <= '1'; wait for 1000 ns;
         rx_in <= '0'; wait for 1000 ns;
         rx_in <= '1'; wait for 1000 ns;
         rx_in <= '1'; wait for 1000 ns;

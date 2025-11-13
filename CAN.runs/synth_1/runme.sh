@@ -25,7 +25,7 @@ else
 fi
 export LD_LIBRARY_PATH
 
-HD_PWD='C:/Xilinx/CAN/CAN.runs/synth_1'
+HD_PWD='C:/Users/croci/CAN/CAN.runs/synth_1'
 cd "$HD_PWD"
 
 HD_LOG=runme.log
@@ -41,4 +41,4 @@ EAStep()
      fi
 }
 
-EAStep vivado -log CAN_RX_Top.vds -m64 -product Vivado -mode batch -messageDb vivado.pb -notrace -source CAN_RX_Top.tcl
+EAStep vivado -log CAN_RX_module.vds -m64 -product Vivado -mode batch -messageDb vivado.pb -notrace -source CAN_RX_module.tcl

@@ -1,7 +1,7 @@
-Running: xsim.dir/tb_CAN_RX_Top_behav/xsimk.exe -simmode gui -wdb tb_CAN_RX_Top_behav.wdb -simrunnum 0 -socket 52100
+Running: xsim.dir/tb_CAN_RX_Top_behav/xsimk.exe -simmode gui -wdb tb_CAN_RX_Top_behav.wdb -simrunnum 0 -socket 65481
 Design successfully loaded
-Design Loading Memory Usage: 10732 KB (Peak: 10732 KB)
+Design Loading Memory Usage: 10700 KB (Peak: 10700 KB)
 Design Loading CPU Usage: 0 ms
 Simulation completed
-Simulation Memory Usage: 11444 KB (Peak: 11444 KB)
-Simulation CPU Usage: 467 ms
+Simulation Memory Usage: 11424 KB (Peak: 11424 KB)
+Simulation CPU Usage: 124 ms

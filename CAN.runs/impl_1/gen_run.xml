@@ -1,107 +1,119 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<GenRun Id="impl_1" LaunchPart="xc7a50tcpg236-1" LaunchTime="1762763381">
-  <File Type="REPORTS-TCL" Name="CAN_RX_Top_reports.tcl"/>
-  <File Type="ROUTE-PWR-SUM" Name="CAN_RX_Top_power_summary_routed.pb"/>
-  <File Type="BITSTR-MMI" Name="CAN_RX_Top.mmi"/>
-  <File Type="OPT-DRC" Name="CAN_RX_Top_drc_opted.rpt"/>
-  <File Type="BG-DRC" Name="CAN_RX_Top.drc"/>
-  <File Type="ROUTE-STATUS-PB" Name="CAN_RX_Top_route_status.pb"/>
-  <File Type="BG-BGN" Name="CAN_RX_Top.bgn"/>
-  <File Type="PLACE-UTIL" Name="CAN_RX_Top_utilization_placed.rpt"/>
-  <File Type="PLACE-UTIL-PB" Name="CAN_RX_Top_utilization_placed.pb"/>
-  <File Type="PLACE-IO" Name="CAN_RX_Top_io_placed.rpt"/>
-  <File Type="BG-BIN" Name="CAN_RX_Top.bin"/>
-  <File Type="PLACE-CTRL" Name="CAN_RX_Top_control_sets_placed.rpt"/>
-  <File Type="ROUTE-PWR-RPX" Name="CAN_RX_Top_power_routed.rpx"/>
-  <File Type="BITSTR-MSK" Name="CAN_RX_Top.msk"/>
-  <File Type="BITSTR-RBT" Name="CAN_RX_Top.rbt"/>
-  <File Type="ROUTE-TIMINGSUMMARY" Name="CAN_RX_Top_timing_summary_routed.rpt"/>
-  <File Type="ROUTE-TIMING-RPX" Name="CAN_RX_Top_timing_summary_routed.rpx"/>
-  <File Type="ROUTE-STATUS" Name="CAN_RX_Top_route_status.rpt"/>
-  <File Type="PA-TCL" Name="CAN_RX_Top.tcl"/>
-  <File Type="ROUTE-PWR" Name="CAN_RX_Top_power_routed.rpt"/>
-  <File Type="ROUTE-DRC" Name="CAN_RX_Top_drc_routed.rpt"/>
-  <File Type="ROUTE-DRC-RPX" Name="CAN_RX_Top_drc_routed.rpx"/>
-  <File Type="ROUTE-DRC-PB" Name="CAN_RX_Top_drc_routed.pb"/>
-  <File Type="BITSTR-SYSDEF" Name="CAN_RX_Top.sysdef"/>
-  <File Type="ROUTE-METHODOLOGY-DRC" Name="CAN_RX_Top_methodology_drc_routed.rpt"/>
-  <File Type="ROUTE-METHODOLOGY-DRC-RPX" Name="CAN_RX_Top_methodology_drc_routed.rpx"/>
+<GenRun Id="impl_1" LaunchPart="xc7a50tcpg236-1" LaunchTime="1762963216">
+  <File Type="PA-TCL" Name="CAN_RX_module.tcl"/>
+  <File Type="REPORTS-TCL" Name="CAN_RX_module_reports.tcl"/>
+  <File Type="INIT-TIMING" Name="CAN_RX_module_timing_summary_init.rpt"/>
+  <File Type="OPT-DCP" Name="CAN_RX_module_opt.dcp"/>
+  <File Type="OPT-DRC" Name="CAN_RX_module_drc_opted.rpt"/>
+  <File Type="OPT-UTIL" Name="CAN_RX_module_utilization_opted.rpt"/>
+  <File Type="OPT-UTIL-PB" Name="CAN_RX_module_utilization_opted.pb"/>
+  <File Type="OPT-METHODOLOGY-DRC" Name="CAN_RX_module_methodology_drc_opted.rpt"/>
+  <File Type="OPT-HWDEF" Name="CAN_RX_module.hwdef"/>
+  <File Type="OPT-TIMING" Name="CAN_RX_module_timing_summary_opted.rpt"/>
+  <File Type="OPT-RQA-PB" Name="CAN_RX_module_rqa_opted.pb"/>
+  <File Type="PWROPT-DCP" Name="CAN_RX_module_pwropt.dcp"/>
+  <File Type="PWROPT-DRC" Name="CAN_RX_module_drc_pwropted.rpt"/>
+  <File Type="PWROPT-TIMING" Name="CAN_RX_module_timing_summary_pwropted.rpt"/>
+  <File Type="PLACE-DCP" Name="CAN_RX_module_placed.dcp"/>
+  <File Type="PLACE-IO" Name="CAN_RX_module_io_placed.rpt"/>
+  <File Type="PLACE-CLK" Name="CAN_RX_module_clock_utilization_placed.rpt"/>
+  <File Type="PLACE-UTIL" Name="CAN_RX_module_utilization_placed.rpt"/>
+  <File Type="PLACE-UTIL-PB" Name="CAN_RX_module_utilization_placed.pb"/>
+  <File Type="PLACE-CTRL" Name="CAN_RX_module_control_sets_placed.rpt"/>
+  <File Type="PLACE-SIMILARITY" Name="CAN_RX_module_incremental_reuse_placed.rpt"/>
+  <File Type="PLACE-PRE-SIMILARITY" Name="CAN_RX_module_incremental_reuse_pre_placed.rpt"/>
+  <File Type="PLACE-TIMING" Name="CAN_RX_module_timing_summary_placed.rpt"/>
+  <File Type="PLACE-RQA-PB" Name="CAN_RX_module_rqa_placed.pb"/>
+  <File Type="POSTPLACE-PWROPT-DCP" Name="CAN_RX_module_postplace_pwropt.dcp"/>
+  <File Type="POSTPLACE-PWROPT-TIMING" Name="CAN_RX_module_timing_summary_postplace_pwropted.rpt"/>
+  <File Type="PHYSOPT-DCP" Name="CAN_RX_module_physopt.dcp"/>
+  <File Type="PHYSOPT-DRC" Name="CAN_RX_module_drc_physopted.rpt"/>
+  <File Type="PHYSOPT-TIMING" Name="CAN_RX_module_timing_summary_physopted.rpt"/>
+  <File Type="ROUTE-ERROR-DCP" Name="CAN_RX_module_routed_error.dcp"/>
+  <File Type="ROUTE-DCP" Name="CAN_RX_module_routed.dcp"/>
+  <File Type="ROUTE-BLACKBOX-DCP" Name="CAN_RX_module_routed_bb.dcp"/>
+  <File Type="ROUTE-UTIL" Name="CAN_RX_module_utilization_routed.rpt"/>
+  <File Type="ROUTE-UTIL-PB" Name="CAN_RX_module_utilization_routed.pb"/>
+  <File Type="ROUTE-DRC" Name="CAN_RX_module_drc_routed.rpt"/>
+  <File Type="ROUTE-DRC-PB" Name="CAN_RX_module_drc_routed.pb"/>
+  <File Type="ROUTE-DRC-RPX" Name="CAN_RX_module_drc_routed.rpx"/>
+  <File Type="ROUTE-METHODOLOGY-DRC" Name="CAN_RX_module_methodology_drc_routed.rpt"/>
+  <File Type="ROUTE-METHODOLOGY-DRC-RPX" Name="CAN_RX_module_methodology_drc_routed.rpx"/>
+  <File Type="ROUTE-METHODOLOGY-DRC-PB" Name="CAN_RX_module_methodology_drc_routed.pb"/>
+  <File Type="ROUTE-PWR" Name="CAN_RX_module_power_routed.rpt"/>
+  <File Type="ROUTE-PWR-SUM" Name="CAN_RX_module_power_summary_routed.pb"/>
+  <File Type="ROUTE-PWR-RPX" Name="CAN_RX_module_power_routed.rpx"/>
+  <File Type="ROUTE-STATUS" Name="CAN_RX_module_route_status.rpt"/>
+  <File Type="ROUTE-STATUS-PB" Name="CAN_RX_module_route_status.pb"/>
+  <File Type="ROUTE-TIMINGSUMMARY" Name="CAN_RX_module_timing_summary_routed.rpt"/>
+  <File Type="ROUTE-TIMING-PB" Name="CAN_RX_module_timing_summary_routed.pb"/>
+  <File Type="ROUTE-TIMING-RPX" Name="CAN_RX_module_timing_summary_routed.rpx"/>
+  <File Type="ROUTE-SIMILARITY" Name="CAN_RX_module_incremental_reuse_routed.rpt"/>
+  <File Type="ROUTE-CLK" Name="CAN_RX_module_clock_utilization_routed.rpt"/>
+  <File Type="ROUTE-BUS-SKEW" Name="CAN_RX_module_bus_skew_routed.rpt"/>
+  <File Type="ROUTE-BUS-SKEW-PB" Name="CAN_RX_module_bus_skew_routed.pb"/>
+  <File Type="ROUTE-BUS-SKEW-RPX" Name="CAN_RX_module_bus_skew_routed.rpx"/>
+  <File Type="ROUTE-RQS-PB" Name="CAN_RX_module_rqs_routed.pb"/>
+  <File Type="POSTROUTE-PHYSOPT-DCP" Name="CAN_RX_module_postroute_physopt.dcp"/>
+  <File Type="POSTROUTE-PHYSOPT-BLACKBOX-DCP" Name="CAN_RX_module_postroute_physopt_bb.dcp"/>
+  <File Type="POSTROUTE-PHYSOPT-TIMING" Name="BTU_timing_summary_postroute_physopted.rpt"/>
+  <File Type="POSTROUTE-PHYSOPT-TIMING-PB" Name="BTU_timing_summary_postroute_physopted.pb"/>
+  <File Type="POSTROUTE-PHYSOPT-TIMING-RPX" Name="BTU_timing_summary_postroute_physopted.rpx"/>
+  <File Type="POSTROUTE-PHYSOPT-BUS-SKEW" Name="BTU_bus_skew_postroute_physopted.rpt"/>
+  <File Type="POSTROUTE-PHYSOPT-BUS-SKEW-PB" Name="BTU_bus_skew_postroute_physopted.pb"/>
+  <File Type="POSTROUTE-PHYSOPT-BUS-SKEW-RPX" Name="BTU_bus_skew_postroute_physopted.rpx"/>
+  <File Type="BG-BIT" Name="CAN_RX_module.bit"/>
+  <File Type="BG-BIN" Name="CAN_RX_module.bin"/>
+  <File Type="BITSTR-MSK" Name="CAN_RX_module.msk"/>
+  <File Type="BITSTR-RBT" Name="CAN_RX_module.rbt"/>
+  <File Type="BITSTR-NKY" Name="CAN_RX_module.nky"/>
+  <File Type="BITSTR-BMM" Name="CAN_RX_module_bd.bmm"/>
+  <File Type="BITSTR-MMI" Name="CAN_RX_module.mmi"/>
+  <File Type="PDI-FILE" Name="CAN_RX_module.pdi"/>
+  <File Type="BOOT-PDI-FILE" Name="CAN_RX_module_boot.pdi"/>
+  <File Type="PL-PDI-FILE" Name="CAN_RX_module_pld.pdi"/>
+  <File Type="RCFI_FILE" Name="CAN_RX_module.rcfi"/>
+  <File Type="CFI_FILE" Name="CAN_RX_module.cfi"/>
+  <File Type="RNPI_FILE" Name="CAN_RX_module.rnpi"/>
+  <File Type="RCDO-FILE" Name="CAN_RX_module.rcdo"/>
+  <File Type="MARKER-RNPI-FILE" Name="CAN_RX_module_markers.rnpi"/>
+  <File Type="MARKER-RCDO-FILE" Name="CAN_RX_module_markers.rcdo"/>
+  <File Type="BOOT_RNPI_FILE" Name="CAN_RX_module_boot.rnpi"/>
+  <File Type="BOOT_MARKER_RNPI_FILE" Name="CAN_RX_module_boot_markers.rnpi"/>
+  <File Type="PL_RNPI_FILE" Name="CAN_RX_module_pld.rnpi"/>
+  <File Type="PL_MARKER_RNPI_FILE" Name="CAN_RX_module_pld_markers.rnpi"/>
+  <File Type="PL_MASK_RNPI_FILE" Name="CAN_RX_module_pld_mask.rnpi"/>
+  <File Type="PL_SHUTDOWN_RNPI_FILE" Name="CAN_RX_module_pld_shutdown.rnpi"/>
+  <File Type="PL_UNMASK_RNPI_FILE" Name="CAN_RX_module_pld_unmask.rnpi"/>
+  <File Type="PL-RCDO-FILE" Name="CAN_RX_module_pld.rcdo"/>
+  <File Type="PL-CLEAR-RCDO-FILE" Name="CAN_RX_module_pld_clear.rcdo"/>
+  <File Type="PL_MARKER_RCDO_FILE" Name="CAN_RX_module_pld_markers.rcdo"/>
+  <File Type="PL_MASK_RCDO_FILE" Name="CAN_RX_module_pld_mask.rcdo"/>
+  <File Type="PL_UNMASK_MARKER_RCDO_FILE" Name="CAN_RX_module_pld_unmask_markers.rcdo"/>
+  <File Type="PL_UNMASK_RCDO_FILE" Name="CAN_RX_module_pld_unmask.rcdo"/>
+  <File Type="NPI_FILE" Name="CAN_RX_module.npi"/>
+  <File Type="RBD_FILE" Name="CAN_RX_module.rbd"/>
+  <File Type="MMI-FILE" Name="CAN_RX_module.mmi"/>
+  <File Type="BIF-FILE" Name="CAN_RX_module.bif"/>
+  <File Type="BOOT-BIF-FILE" Name="CAN_RX_module_boot.bif"/>
+  <File Type="PL-BIF-FILE" Name="CAN_RX_module_pld.bif"/>
+  <File Type="LTX-FILE" Name="CAN_RX_module.ltx"/>
+  <File Type="BOOT-LTX-FILE" Name="CAN_RX_module_boot.ltx"/>
+  <File Type="PL-LTX-FILE" Name="CAN_RX_module_pld.ltx"/>
   <File Type="BITSTR-LTX" Name="debug_nets.ltx"/>
-  <File Type="BITSTR-LTX" Name="CAN_RX_Top.ltx"/>
-  <File Type="ROUTE-METHODOLOGY-DRC-PB" Name="CAN_RX_Top_methodology_drc_routed.pb"/>
-  <File Type="ROUTE-SIMILARITY" Name="CAN_RX_Top_incremental_reuse_routed.rpt"/>
-  <File Type="RDI-RDI" Name="CAN_RX_Top.vdi"/>
-  <File Type="ROUTE-CLK" Name="CAN_RX_Top_clock_utilization_routed.rpt"/>
-  <File Type="ROUTE-BUS-SKEW" Name="CAN_RX_Top_bus_skew_routed.rpt"/>
-  <File Type="ROUTE-BUS-SKEW-RPX" Name="CAN_RX_Top_bus_skew_routed.rpx"/>
-  <File Type="ROUTE-BUS-SKEW-PB" Name="CAN_RX_Top_bus_skew_routed.pb"/>
-  <File Type="POSTROUTE-PHYSOPT-TIMING" Name="CAN_RX_Top_timing_summary_postroute_physopted.rpt"/>
-  <File Type="POSTROUTE-PHYSOPT-TIMING-RPX" Name="CAN_RX_Top_timing_summary_postroute_physopted.rpx"/>
-  <File Type="POSTROUTE-PHYSOPT-TIMING-PB" Name="CAN_RX_Top_timing_summary_postroute_physopted.pb"/>
-  <File Type="POSTROUTE-PHYSOPT-BUS-SKEW" Name="CAN_RX_Top_bus_skew_postroute_physopted.rpt"/>
-  <File Type="POSTROUTE-PHYSOPT-BUS-SKEW-RPX" Name="CAN_RX_Top_bus_skew_postroute_physopted.rpx"/>
-  <File Type="BG-BIT" Name="CAN_RX_Top.bit"/>
-  <File Type="POSTROUTE-PHYSOPT-BUS-SKEW-PB" Name="CAN_RX_Top_bus_skew_postroute_physopted.pb"/>
-  <File Type="BITSTR-NKY" Name="CAN_RX_Top.nky"/>
-  <File Type="BITSTR-BMM" Name="CAN_RX_Top_bd.bmm"/>
+  <File Type="BITSTR-LTX" Name="CAN_RX_module.ltx"/>
+  <File Type="BITSTR-SYSDEF" Name="CAN_RX_module.sysdef"/>
+  <File Type="BG-BGN" Name="CAN_RX_module.bgn"/>
+  <File Type="BG-DRC" Name="CAN_RX_module.drc"/>
+  <File Type="RDI-RDI" Name="CAN_RX_module.vdi"/>
   <File Type="WBT-USG" Name="usage_statistics_webtalk.html"/>
-  <File Type="OPT-HWDEF" Name="CAN_RX_Top.hwdef"/>
-  <File Type="PLACE-PRE-SIMILARITY" Name="CAN_RX_Top_incremental_reuse_pre_placed.rpt"/>
-  <File Type="ROUTE-DCP" Name="CAN_RX_Top_routed.dcp"/>
-  <File Type="ROUTE-ERROR-DCP" Name="CAN_RX_Top_routed_error.dcp"/>
-  <File Type="ROUTE-BLACKBOX-DCP" Name="CAN_RX_Top_routed_bb.dcp"/>
-  <File Type="ROUTE-TIMING-PB" Name="CAN_RX_Top_timing_summary_routed.pb"/>
-  <File Type="OPT-DCP" Name="CAN_RX_Top_opt.dcp"/>
-  <File Type="PLACE-DCP" Name="CAN_RX_Top_placed.dcp"/>
-  <File Type="PWROPT-DCP" Name="CAN_RX_Top_pwropt.dcp"/>
-  <File Type="POSTPLACE-PWROPT-DCP" Name="CAN_RX_Top_postplace_pwropt.dcp"/>
-  <File Type="PHYSOPT-DCP" Name="CAN_RX_Top_physopt.dcp"/>
-  <File Type="POSTROUTE-PHYSOPT-DCP" Name="CAN_RX_Top_postroute_physopt.dcp"/>
-  <File Type="POSTROUTE-PHYSOPT-BLACKBOX-DCP" Name="CAN_RX_Top_postroute_physopt_bb.dcp"/>
-  <File Type="PDI-FILE" Name="CAN_RX_Top.pdi"/>
-  <File Type="BOOT-PDI-FILE" Name="CAN_RX_Top_boot.pdi"/>
-  <File Type="PL-PDI-FILE" Name="CAN_RX_Top_pld.pdi"/>
-  <File Type="RCFI_FILE" Name="CAN_RX_Top.rcfi"/>
-  <File Type="CFI_FILE" Name="CAN_RX_Top.cfi"/>
-  <File Type="RNPI_FILE" Name="CAN_RX_Top.rnpi"/>
-  <File Type="NPI_FILE" Name="CAN_RX_Top.npi"/>
-  <File Type="RBD_FILE" Name="CAN_RX_Top.rbd"/>
-  <File Type="ROUTE-RQS" Name="CAN_RX_Top_routed.rqs"/>
-  <File Type="POSTROUTE-PHYSOPT-RQS" Name="CAN_RX_Top_postroute_physopted.rqs"/>
+  <File Type="ROUTE-RQS" Name="CAN_RX_module_routed.rqs"/>
+  <File Type="POSTROUTE-PHYSOPT-RQS" Name="CAN_RX_module_postroute_physopted.rqs"/>
   <File Type="ROUTE-RQS-RPT" Name="route_report_qor_suggestions_0.rpt"/>
   <File Type="POSTROUTE-PHYSOPT-RQS-RPT" Name="postroute_physopt_report_qor_suggestions_0.rpt"/>
-  <File Type="MMI-FILE" Name="CAN_RX_Top.mmi"/>
-  <File Type="BIF-FILE" Name="CAN_RX_Top.bif"/>
-  <File Type="BOOT-BIF-FILE" Name="CAN_RX_Top_boot.bif"/>
-  <File Type="PL-BIF-FILE" Name="CAN_RX_Top_pld.bif"/>
-  <File Type="LTX-FILE" Name="CAN_RX_Top.ltx"/>
-  <File Type="BOOT-LTX-FILE" Name="CAN_RX_Top_boot.ltx"/>
-  <File Type="PL-LTX-FILE" Name="CAN_RX_Top_pld.ltx"/>
-  <File Type="RCDO-FILE" Name="CAN_RX_Top.rcdo"/>
-  <File Type="MARKER-RCDO-FILE" Name="CAN_RX_Top_markers.rcdo"/>
-  <File Type="PL-RCDO-FILE" Name="CAN_RX_Top_pld.rcdo"/>
-  <File Type="MARKER-RNPI-FILE" Name="CAN_RX_Top_markers.rnpi"/>
-  <File Type="BOOT_RNPI_FILE" Name="CAN_RX_Top_boot.rnpi"/>
-  <File Type="PL_RNPI_FILE" Name="CAN_RX_Top_pld.rnpi"/>
-  <File Type="BOOT_MARKER_RNPI_FILE" Name="CAN_RX_Top_boot_markers.rnpi"/>
-  <File Type="PL_MARKER_RNPI_FILE" Name="CAN_RX_Top_pld_markers.rnpi"/>
-  <File Type="PL_MASK_RNPI_FILE" Name="CAN_RX_Top_pld_mask.rnpi"/>
-  <File Type="PL_SHUTDOWN_RNPI_FILE" Name="CAN_RX_Top_pld_shutdown.rnpi"/>
-  <File Type="PL_UNMASK_RNPI_FILE" Name="CAN_RX_Top_pld_unmask.rnpi"/>
-  <File Type="PL-CLEAR-RCDO-FILE" Name="CAN_RX_Top_pld_clear.rcdo"/>
-  <File Type="PL_MARKER_RCDO_FILE" Name="CAN_RX_Top_pld_markers.rcdo"/>
-  <File Type="PL_MASK_RCDO_FILE" Name="CAN_RX_Top_pld_mask.rcdo"/>
-  <File Type="PL_UNMASK_MARKER_RCDO_FILE" Name="CAN_RX_Top_pld_unmask_markers.rcdo"/>
-  <File Type="PL_UNMASK_RCDO_FILE" Name="CAN_RX_Top_pld_unmask.rcdo"/>
   <FileSet Name="sources" Type="DesignSrcs" RelSrcDir="$PSRCDIR/sources_1" RelGenDir="$PGENDIR/sources_1">
     <Filter Type="Srcs"/>
     <File Path="$PSRCDIR/sources_1/new/BTU.vhd">
-      <FileInfo>
-        <Attr Name="UsedIn" Val="synthesis"/>
-        <Attr Name="UsedIn" Val="simulation"/>
-      </FileInfo>
-    </File>
-    <File Path="$PSRCDIR/sources_1/new/Destuffing.vhd">
       <FileInfo>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="simulation"/>
@@ -113,7 +125,19 @@
         <Attr Name="UsedIn" Val="simulation"/>
       </FileInfo>
     </File>
-    <File Path="$PSRCDIR/sources_1/new/top_level.vhd">
+    <File Path="$PSRCDIR/sources_1/new/Destuffing.vhd">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/new/deserializer.vhd">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/new/CAN_RX_module.vhd">
       <FileInfo>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="simulation"/>
@@ -121,7 +145,7 @@
     </File>
     <Config>
       <Option Name="DesignMode" Val="RTL"/>
-      <Option Name="TopModule" Val="CAN_RX_Top"/>
+      <Option Name="TopModule" Val="CAN_RX_module"/>
       <Option Name="TopAutoSet" Val="TRUE"/>
     </Config>
   </FileSet>
@@ -156,6 +180,5 @@
     <Step Id="route_design"/>
     <Step Id="post_route_phys_opt_design"/>
     <Step Id="write_bitstream"/>
-    <Step Id="write_device_image"/>
   </Strategy>
 </GenRun>

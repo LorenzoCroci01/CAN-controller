@@ -1,0 +1,103 @@
+----------------------------------------------------------------------------------
+-- Company: 
+-- Engineer: 
+-- 
+-- Create Date: 12.11.2025 16:43:16
+-- Design Name: 
+-- Module Name: CAN_RX_module - CAN_RX_module
+-- Project Name: 
+-- Target Devices: 
+-- Tool Versions: 
+-- Description: 
+-- 
+-- Dependencies: 
+-- 
+-- Revision:
+-- Revision 0.01 - File Created
+-- Additional Comments:
+-- 
+----------------------------------------------------------------------------------
+
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
+
+entity CAN_RX_module is
+    Port (
+        clock        : in  std_logic;   -- main clock signal
+        reset        : in  std_logic;   -- asynchronous reset
+        rx_in        : in  std_logic;   -- bus serial signal
+        
+        -- configuration parameters BTU (baud rate)
+        prop_seg     : in unsigned(7 downto 0);
+        phase_seg1   : in unsigned(7 downto 0);
+        phase_seg2   : in unsigned(7 downto 0);
+       
+        frame        : out std_logic_vector(107 downto 0);  -- complete frame
+        ack_slot     : out std_logic;   -- ack slot '0' dominant
+        frame_rdy    : out std_logic;   -- frame ready signal
+        state_can    : out std_logic_vector(1 downto 0);    -- CAN controller state (IDLE "00", RECEIVING "01", TRANSMITTING "10", ERROR "11")
+        err_frame    : out std_logic    -- error frame signal
+    );
+end CAN_RX_module;
+
+architecture arch_CAN_RX_module of CAN_RX_module is
+
+    signal rx_in_sync_s  : std_logic;
+    signal sample_tick_s : std_logic;
+    signal bit_tick_s    : std_logic;
+
+    signal bit_out_s     : std_logic;
+    signal bit_valid_s   : std_logic;
+
+begin
+
+    -- FF di sincronizzazione
+    u_ff : entity work.FF
+        port map (
+            clock      => clock,
+            reset      => reset,
+            rx_in      => rx_in,
+            rx_in_sync => rx_in_sync_s
+        );
+
+    -- Bit Timing Unit
+    u_btu : entity work.BTU
+        port map (
+            clock        => clock,
+            reset        => reset,
+            prop_seg     => prop_seg,
+            phase_seg1   => phase_seg1,
+            phase_seg2   => phase_seg2,
+            bit_tick     => bit_tick_s,
+            sample_tick  => sample_tick_s
+        );
+
+    -- Destuffing
+    u_destuff : entity work.Destuffing
+        port map (
+            clock        => clock,
+            reset        => reset,
+            rx_in_sync   => rx_in_sync_s,
+            sample_tick  => sample_tick_s,
+            bit_out      => bit_out_s,
+            bit_valid    => bit_valid_s,
+            err_frame    => err_frame
+        );
+
+    -- Deserializer
+    u_deserial : entity work.deserializer
+        port map (
+            clock       => clock,
+            reset       => reset,
+            destuff_bit => bit_out_s,
+            bit_valid   => bit_valid_s,
+            frame       => frame,
+            ack_slot    => ack_slot,
+            frame_rdy   => frame_rdy,
+            state_can   => state_can
+        );
+
+end architecture;
+
