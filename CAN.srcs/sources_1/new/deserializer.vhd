@@ -85,7 +85,6 @@ begin
                     when IDLE =>
                         if destuff_bit = '0' then
                             state_can   <= "01"; -- RECEIVING
-                            sv_first_pt <= (others => '0');
                             data_field_o <= (others => '0');
                             sv_last_pt  <= (others => '0');
                             sv_first_pt <= sv_first_pt(17 downto 0) & destuff_bit;
@@ -99,6 +98,7 @@ begin
                         s_bit_count  <= s_bit_count + 1;
 
                         if s_bit_count = to_unsigned(10,7) then
+                            -- if s_bit_count = 10 then reset counter and state = CTRL
                             s_bit_count <= (others => '0');
                             state <= CTRL;
                         end if;
@@ -107,8 +107,9 @@ begin
                     when CTRL =>
                         sv_first_pt  <= sv_first_pt(17 downto 0) & destuff_bit;
                         s_bit_count  <= s_bit_count + 1;
-
+                        
                         if s_bit_count = to_unsigned(2,7) then
+                            -- if s_bit_count = 2 then reset counter and state = DLC
                             s_bit_count <= (others => '0');
                             state <= DLC;
                         end if;
@@ -120,14 +121,15 @@ begin
                         s_bit_count  <= s_bit_count + 1;
 
                         if s_bit_count = to_unsigned(3,7) then
+                            -- if s_bit_count = 3 then reset counter and state = DATA_LEN
                             s_bit_count <= (others => '0');
                             state <= DATA_LEN;
                         end if;
 
                     -- DATA_LEN - compute data field length
                     when DATA_LEN =>
-                        s_data_len   <= shift_left(resize(sv_dlc, 7), 3); -- dlc * 8
-                        data_len_o   <= shift_left(resize(sv_dlc, 7), 3);
+                        data_len_o   <= shift_left(resize(sv_dlc, 7), 3); -- dlc * 8
+                        s_data_len   <= shift_left(resize(sv_dlc, 7), 3);
                         data_field_o <= (others => '0');
                         if sv_dlc = "0000" then
                             state <= CRC;   -- no data
@@ -142,6 +144,7 @@ begin
                         s_bit_count  <= s_bit_count + 1;
 
                         if s_bit_count = (s_data_len - 1) then
+                            -- if s_bit_count = s_data_len - 1 then reset counter and state = CRC
                             s_bit_count <= (others => '0');
                             state <= CRC;
                         end if;
@@ -152,6 +155,7 @@ begin
                         s_bit_count <= s_bit_count + 1;
 
                         if s_bit_count = to_unsigned(14,7) then
+                            -- if s_bit_count = 14 then reset counter and state = CRC_DELIM
                             s_bit_count <= (others => '0');
                             state       <= CRC_DELIM;
                         end if;
@@ -163,7 +167,7 @@ begin
 
                     -- ACK - ACK slot
                     when ACK =>
-                        ack_slot    <= '0'; -- dominant
+                        ack_slot    <= '0'; -- reset ack slot to dominant
                         sv_last_pt  <= sv_last_pt(23 downto 0) & '0';
                         state       <= ACK_DELIM;
 
@@ -178,6 +182,7 @@ begin
                         s_bit_count <= s_bit_count + 1;
 
                         if s_bit_count = to_unsigned(6,7) then
+                            -- if s_bit_count = 6 then reset counter and state = DELIM 
                             s_bit_count <= (others => '0');
                             state       <= DELIM;
                         end if;
@@ -186,6 +191,7 @@ begin
                     when DELIM =>
                         s_bit_count <= s_bit_count + 1;
                         if s_bit_count = to_unsigned(4,7) then
+                            -- if s_bit_count = 4 then reset counter and state = DONE
                             s_bit_count <= (others => '0');
                             state       <= DONE;
                         end if;
