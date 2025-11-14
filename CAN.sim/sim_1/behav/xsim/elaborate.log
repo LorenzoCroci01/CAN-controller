@@ -1,7 +1,7 @@
 Vivado Simulator v2025.1.0
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
 Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
-Running: C:/Xilinx/2025.1/Vivado/bin/unwrapped/win64.o/xelab.exe --incr --debug typical --relax --mt 2 -L xil_defaultlib -L secureip --snapshot tb_deserializer_behav xil_defaultlib.tb_deserializer -log elaborate.log 
+Running: C:/Xilinx/2025.1/Vivado/bin/unwrapped/win64.o/xelab.exe --incr --debug typical --relax --mt 2 -L xil_defaultlib -L secureip --snapshot tb_CAN_RX_module_behav xil_defaultlib.tb_CAN_RX_module -log elaborate.log 
 Using 2 slave threads.
 Starting static elaboration
 Completed static elaboration
@@ -12,6 +12,10 @@ Compiling package std.standard
 Compiling package std.textio
 Compiling package ieee.std_logic_1164
 Compiling package ieee.numeric_std
+Compiling architecture arch_ff of entity xil_defaultlib.FF [ff_default]
+Compiling architecture arch_btu of entity xil_defaultlib.BTU [btu_default]
+Compiling architecture arch_destuffing of entity xil_defaultlib.Destuffing [destuffing_default]
 Compiling architecture arch_deserializer of entity xil_defaultlib.deserializer [deserializer_default]
-Compiling architecture tb of entity xil_defaultlib.tb_deserializer
-Built simulation snapshot tb_deserializer_behav
+Compiling architecture arch_can_rx_module of entity xil_defaultlib.CAN_RX_module [can_rx_module_default]
+Compiling architecture tb of entity xil_defaultlib.tb_can_rx_module
+Built simulation snapshot tb_CAN_RX_module_behav

@@ -44,12 +44,14 @@ end CAN_RX_module;
 
 architecture arch_CAN_RX_module of CAN_RX_module is
 
-    signal rx_in_sync_s  : std_logic;
-    signal sample_tick_s : std_logic;
-    signal bit_tick_s    : std_logic;
+    signal sl_rx_in_sync    : std_logic;
+    signal sl_sample_tick   : std_logic;
+    signal sl_bit_tick      : std_logic;
 
-    signal bit_out_s     : std_logic;
-    signal bit_valid_s   : std_logic;
+    signal sl_bit_out       : std_logic;
+    signal sl_bit_valid     : std_logic;
+    
+    signal sl_sof_bit       : std_logic;
 
 begin
 
@@ -59,7 +61,7 @@ begin
             clock      => clock,
             reset      => reset,
             rx_in      => rx_in,
-            rx_in_sync => rx_in_sync_s
+            rx_in_sync => sl_rx_in_sync
         );
 
     -- Bit Timing Unit
@@ -67,11 +69,12 @@ begin
         port map (
             clock        => clock,
             reset        => reset,
+            sof_bit      => sl_sof_bit,
             prop_seg     => prop_seg,
             phase_seg1   => phase_seg1,
             phase_seg2   => phase_seg2,
-            bit_tick     => bit_tick_s,
-            sample_tick  => sample_tick_s
+            bit_tick     => sl_bit_tick,
+            sample_tick  => sl_sample_tick
         );
 
     -- Destuffing
@@ -79,10 +82,10 @@ begin
         port map (
             clock        => clock,
             reset        => reset,
-            rx_in_sync   => rx_in_sync_s,
-            sample_tick  => sample_tick_s,
-            bit_out      => bit_out_s,
-            bit_valid    => bit_valid_s,
+            rx_in_sync   => sl_rx_in_sync,
+            sample_tick  => sl_sample_tick,
+            bit_out      => sl_bit_out,
+            bit_valid    => sl_bit_valid,
             err_frame    => err_frame
         );
 
@@ -91,12 +94,13 @@ begin
         port map (
             clock       => clock,
             reset       => reset,
-            destuff_bit => bit_out_s,
-            bit_valid   => bit_valid_s,
+            destuff_bit => sl_bit_out,
+            bit_valid   => sl_bit_valid,
             frame       => frame,
             ack_slot    => ack_slot,
             frame_rdy   => frame_rdy,
-            state_can   => state_can
+            state_can   => state_can,
+            sof_bit     => sl_sof_bit
         );
 
 end architecture;

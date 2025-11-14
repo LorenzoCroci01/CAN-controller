@@ -29,9 +29,9 @@ architecture tb of tb_deserializer is
 
     -- DUT inputs
     signal clock       : std_logic := '0';
-    signal reset       : std_logic := '1';
-    signal destuff_bit : std_logic := '1';
-    signal bit_valid   : std_logic := '0';
+    signal reset       : std_logic;
+    signal destuff_bit : std_logic;
+    signal bit_valid   : std_logic;
 
     -- DUT outputs
     signal frame       : std_logic_vector(107 downto 0);
@@ -40,9 +40,7 @@ architecture tb of tb_deserializer is
     signal frame_rdy   : std_logic;
     signal state_can   : std_logic_vector(1 downto 0);
 
-    --------------------------------------------------------------------
-    -- 65-BIT TEST FRAME (DLC = 2 → 16 bit data)
-    --------------------------------------------------------------------
+    -- TEST FRAME (data field 16 bits)
     constant TEST_FRAME : std_logic_vector(64 downto 0) :=
         -- SOF (1)
         "0" &
@@ -69,14 +67,9 @@ architecture tb of tb_deserializer is
 
 begin
 
-    --------------------------------------------------------------------
-    -- CLOCK 10 ns → 100 MHz
-    --------------------------------------------------------------------
+    -- clock
     clock <= not clock after 5 ns;
-
-    --------------------------------------------------------------------
-    -- DUT INSTANCE
-    --------------------------------------------------------------------
+    
     UUT : entity work.deserializer
         port map (
             clock       => clock,
@@ -90,14 +83,9 @@ begin
             state_can   => state_can
         );
 
-    --------------------------------------------------------------------
-    -- TEST PROCESS
-    --------------------------------------------------------------------
     stim_proc : process
     begin
-    --------------------------------------------------------------
-    -- RESET
-    --------------------------------------------------------------
+
     reset <= '1';
     wait for 40 ns;
     reset <= '0';
@@ -105,9 +93,6 @@ begin
     
     bit_valid   <= '1';
 
-    --------------------------------------------------------------
-    -- SEND FRAME MSB → LSB
-    --------------------------------------------------------------
     for i in 64 downto 0 loop
         destuff_bit <= TEST_FRAME(i);
         bit_valid   <= '1';

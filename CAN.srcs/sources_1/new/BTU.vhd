@@ -34,59 +34,76 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity BTU is
     port (
-        clock        : in  std_logic;       -- main clock signal
-        reset        : in  std_logic;       -- asynchronous reset
-
-        -- configurable segments for baud rate generation
-        prop_seg     : in unsigned(7 downto 0);   -- propagation delay segment
-        phase_seg1   : in unsigned(7 downto 0);   -- synchronization phase 1
-        phase_seg2   : in unsigned(7 downto 0);   -- synchronization phase 2
-
-        -- output pulses
-        bit_tick     : out std_logic;       -- pulse at the end of each bit time
-        sample_tick  : out std_logic        -- pulse at the sample point
+        -- input
+        clock        : in  std_logic;
+        reset        : in  std_logic;
+        sof_bit      : in  std_logic;
+        
+        -- configuration parameters BTU (baud rate)
+        prop_seg     : in unsigned(7 downto 0);
+        phase_seg1   : in unsigned(7 downto 0);
+        phase_seg2   : in unsigned(7 downto 0);
+        
+        -- output
+        bit_tick     : out std_logic;
+        sample_tick  : out std_logic
     );
 end entity;
 
 architecture arch_BTU of BTU is
-    -- fixed synchronization segmente = 1 time quantum
+    
+    -- sync segment = 1 time quantum
     constant C_sync_seg : unsigned(7 downto 0) := "00000001";
 
-    -- time quanta counter and total number of quanta per bit
-    signal s_tq_count  : unsigned(7 downto 0) := (others => '0');
-    signal s_tq_total  : unsigned(7 downto 0) := (others => '0');
+    signal s_tq_cnt       : unsigned(7 downto 0);   -- time quanta counter
+    signal s_tq_total     : unsigned(7 downto 0);   -- total time quanta
+    signal s_sample_point : unsigned(7 downto 0);   -- sample point
+
 begin
 
-    -- total number of time quanta for one bit time
-    s_tq_total <= C_sync_seg + prop_seg + phase_seg1 + phase_seg2;
+    s_tq_total     <= C_sync_seg + prop_seg + phase_seg1 + phase_seg2;
+    s_sample_point <= C_sync_seg + prop_seg + phase_seg1;
 
     process(clock, reset)
     begin
         if reset = '1' then
-            s_tq_count <= (others => '0');
-            bit_tick <= '0';
-            sample_tick <= '0';
+            s_tq_cnt     <= (others => '0');
+            bit_tick     <= '0';
+            sample_tick  <= '0';
 
         elsif rising_edge(clock) then
-            -- default
+
             bit_tick <= '0';
-            sample_tick <= '0';
 
-            -- time quanta counter
-            if s_tq_count = s_tq_total - 1 then
-                s_tq_count  <= (others => '0');
-                bit_tick  <= '1';   -- end of the bit
+            if sof_bit = '1' then
+                -- restart bit timing at SOF
+                s_tq_cnt     <= (others => '0');
             else
-                s_tq_count  <= s_tq_count + 1;
+
+                if s_tq_cnt = s_tq_total - 1 then
+                    -- end of bit
+                    s_tq_cnt     <= (others => '0');
+                    bit_tick     <= '1';
+                    sample_tick  <= '0';
+                else
+                    bit_tick     <= '0';
+                    s_tq_cnt <= s_tq_cnt + 1;   -- increment time quanta counter
+
+                    -- generate sample point
+                    if s_tq_cnt = s_sample_point - 1 then
+                        sample_tick <= '1';
+                    else
+                        sample_tick <= '0';
+                    end if;
+
+                end if;
+
             end if;
 
-            -- sample point at the end of phase_seg1
-            if s_tq_count = (C_sync_seg + prop_seg + phase_seg1) - 1 then
-                sample_tick <= '1';
-            end if;
         end if;
     end process;
 
 end architecture;
+
 
 

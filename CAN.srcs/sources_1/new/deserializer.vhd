@@ -35,7 +35,8 @@ entity deserializer is
         data_len_o  : out unsigned(6 downto 0);             -- data field length 
         ack_slot    : out std_logic;                        -- ACK slot: '0' dominant
         frame_rdy   : out std_logic;                        -- frame ready signal
-        state_can   : out std_logic_vector(1 downto 0)      -- CAN controller state
+        state_can   : out std_logic_vector(1 downto 0);     -- CAN controller state
+        sof_bit     : out std_logic                        -- sof bit for btu synchronization
     );
 end entity;
 
@@ -49,13 +50,13 @@ architecture arch_deserializer of deserializer is
     );
     
     signal state        : state_type;
-    signal s_bit_count  : unsigned(6 downto 0);
-    signal sv_dlc       : unsigned(3 downto 0);
-    signal s_data_len   : unsigned(6 downto 0);
+    signal s_bit_count  : unsigned(6 downto 0);     -- bit counter
+    signal sv_dlc       : unsigned(3 downto 0);     -- dlc field bits
+    signal s_data_len   : unsigned(6 downto 0);     -- data field length
     
-    signal sv_first_pt  : std_logic_vector(18 downto 0);
-    signal sv_data_field : std_logic_vector(63 downto 0);
-    signal sv_last_pt   : std_logic_vector(24 downto 0);
+    signal sv_first_pt  : std_logic_vector(18 downto 0);    -- first part of the frame (SOF + ID + CTRL + DLC)
+    signal sv_data_field : std_logic_vector(63 downto 0);   -- data field bits (64 bits)
+    signal sv_last_pt   : std_logic_vector(24 downto 0);    -- last part of the frame (CRC + CRC_Del + ACK + ACK_Del + EOF)
 
 begin
 
@@ -73,11 +74,13 @@ begin
             frame        <= (others => '0');
             sv_first_pt  <= (others => '0');
             sv_last_pt   <= (others => '0');
+            sof_bit      <= '0';
             state_can    <= "00";
 
         elsif rising_edge(clock) then
-            frame_rdy <= '0';
-            ack_slot <= '1';
+            frame_rdy   <= '0';
+            ack_slot    <= '1';
+            sof_bit     <= '0';
 
             if bit_valid = '1' then
                 case state is
@@ -85,13 +88,14 @@ begin
                     -- IDLE / SOF
                     when IDLE =>
                         if destuff_bit = '0' then
-                            state_can   <= "01"; -- RECEIVING
-                            ack_slot    <= '1';
-                            sv_data_field <= (others => '0');
-                            sv_last_pt  <= (others => '0');
-                            sv_first_pt <= sv_first_pt(17 downto 0) & destuff_bit;
-                            s_bit_count <= (others => '0');
-                            state       <= ID;
+                            state_can       <= "01"; -- RECEIVING
+                            ack_slot        <= '1';
+                            sv_data_field   <= (others => '0');
+                            sv_last_pt      <= (others => '0');
+                            sv_first_pt     <= sv_first_pt(17 downto 0) & destuff_bit;
+                            s_bit_count     <= (others => '0');
+                            sof_bit         <= '1';
+                            state           <= ID;
                         end if;
                     
                     -- ID - identifier field deserialization (11 bits)

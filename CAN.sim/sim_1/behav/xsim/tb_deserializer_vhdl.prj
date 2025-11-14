@@ -1,7 +1,0 @@
-# compile vhdl design source files
-vhdl xil_defaultlib  \
-"../../../../CAN.srcs/sources_1/new/deserializer.vhd" \
-"../../../../CAN.srcs/sim_1/new/tb_deserializer.vhd" \
-
-# Do not sort compile order
-nosort
