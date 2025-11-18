@@ -27,88 +27,74 @@ end tb_deserializer;
 
 architecture tb of tb_deserializer is
 
-    -- DUT inputs
-    signal clock       : std_logic := '0';
-    signal reset       : std_logic;
-    signal destuff_bit : std_logic;
-    signal bit_valid   : std_logic;
+    signal clock          : std_logic := '0';
+    signal reset          : std_logic := '1';
+    signal sl_destuff_bit : std_logic := '1';
+    signal sl_bit_valid   : std_logic := '0';
 
-    -- DUT outputs
-    signal frame       : std_logic_vector(107 downto 0);
-    signal data_len_o  : unsigned(6 downto 0);
-    signal ack_slot    : std_logic;
-    signal frame_rdy   : std_logic;
-    signal state_can   : std_logic_vector(1 downto 0);
+    signal sv_frame       : std_logic_vector(107 downto 0);
+    signal sl_data_len_o  : unsigned(6 downto 0);
+    signal sl_ack_slot    : std_logic;
+    signal sl_frame_rdy   : std_logic;
+    signal sv_state_can   : std_logic_vector(1 downto 0);
 
-    -- TEST FRAME (data field 16 bits)
     constant TEST_FRAME : std_logic_vector(64 downto 0) :=
-        -- SOF (1)
         "0" &
-        -- ID (11)
         "00010010011" &
-        -- CTRL (3)
         "000" &
-        -- DLC = 2 → 16 bit data
         "0010" &
-        -- DATA (16 bit)
         "1010010100111100" &
-        -- CRC (15)
         "101010101010101" &
-        -- CRC_DELIM (1)
         "1" &
-        -- ACK SLOT (1)
         "1" &
-        -- ACK DELIM (1)
         "1" &
-        -- EOF (7)
         "1111111" &
-        -- DELIM (5)
         "11111";
 
 begin
 
-    -- clock
     clock <= not clock after 5 ns;
     
+
     UUT : entity work.deserializer
         port map (
             clock       => clock,
             reset       => reset,
-            destuff_bit => destuff_bit,
-            bit_valid   => bit_valid,
-            frame       => frame,
-            data_len_o  => data_len_o,
-            ack_slot    => ack_slot,
-            frame_rdy   => frame_rdy,
-            state_can   => state_can
+            destuff_bit => sl_destuff_bit,
+            bit_valid   => sl_bit_valid,
+            frame       => sv_frame,
+            data_len_o  => sl_data_len_o,
+            ack_slot    => sl_ack_slot,
+            frame_rdy   => sl_frame_rdy,
+            state_can   => sv_state_can
         );
 
     stim_proc : process
     begin
 
-    reset <= '1';
-    wait for 40 ns;
-    reset <= '0';
-    wait for 40 ns;
-    
-    bit_valid   <= '1';
+        -- inizializza
+        sl_destuff_bit <= '1';
+        sl_bit_valid   <= '0';
+        reset <= '1';
+        wait for 40 ns;
 
-    for i in 64 downto 0 loop
-        destuff_bit <= TEST_FRAME(i);
-        bit_valid   <= '1';
-        wait for 10 ns;
-    end loop;
+        reset <= '0';
+        wait for 40 ns;
 
-    
-    destuff_bit <= '1';
+        -- manda i bit
+        for i in TEST_FRAME'range loop
+            sl_destuff_bit <= TEST_FRAME(i);
+            sl_bit_valid   <= '1';
+            wait for 10 ns;
+        end loop;
 
-    wait for 200 ns;
+        sl_bit_valid   <= '1';
+        sl_destuff_bit <= '1';
 
-    assert false report "END OF SIMULATION" severity failure;
+        wait for 200 ns;
 
-end process;
+        assert false report "END OF SIMULATION" severity failure;
 
+    end process;
 
 end tb;
-
-

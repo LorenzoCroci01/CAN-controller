@@ -35,9 +35,9 @@ use IEEE.NUMERIC_STD.ALL;
 entity BTU is
     port (
         -- input
-        clock        : in  std_logic;
-        reset        : in  std_logic;
-        sof_bit      : in  std_logic;
+        clock           : in  std_logic;
+        reset           : in  std_logic;
+        toggle_bit      : in  std_logic;
         
         -- configuration parameters BTU (baud rate)
         prop_seg     : in unsigned(7 downto 0);
@@ -53,16 +53,20 @@ end entity;
 architecture arch_BTU of BTU is
     
     -- sync segment = 1 time quantum
-    constant C_sync_seg : unsigned(7 downto 0) := "00000001";
+    constant C_sync_seg     : unsigned(7 downto 0) := "00000001";
 
-    signal s_tq_cnt       : unsigned(7 downto 0);   -- time quanta counter
-    signal s_tq_total     : unsigned(7 downto 0);   -- total time quanta
-    signal s_sample_point : unsigned(7 downto 0);   -- sample point
+    signal s_tq_cnt         : unsigned(7 downto 0);   -- time quanta counter
+    signal s_tq_total       : unsigned(7 downto 0);   -- total time quanta
+    signal s_sample_point   : unsigned(7 downto 0);   -- sample point
+    signal seg_a, seg_b     : unsigned(7 downto 0);
 
 begin
 
-    s_tq_total     <= C_sync_seg + prop_seg + phase_seg1 + phase_seg2;
-    s_sample_point <= C_sync_seg + prop_seg + phase_seg1;
+    seg_a <= C_sync_seg + prop_seg;
+    seg_b <= phase_seg1 + phase_seg2;
+
+    s_tq_total     <= seg_a + seg_b;
+    s_sample_point <= seg_a + phase_seg1;
 
     process(clock, reset)
     begin
@@ -75,8 +79,8 @@ begin
 
             bit_tick <= '0';
 
-            if sof_bit = '1' then
-                -- restart bit timing at SOF
+            if toggle_bit = '1' then
+                -- restart bit timing at toggle
                 s_tq_cnt     <= (others => '0');
             else
 

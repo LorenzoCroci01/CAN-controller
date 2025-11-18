@@ -1,14 +1,14 @@
 ----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
+-- Company:             Università Politecnica delle Marche 
+-- Engineer:            Lorenzo Croci
 -- 
--- Create Date: 12.11.2025 16:43:16
+-- Create Date:         12.11.2025 16:43:16
 -- Design Name: 
--- Module Name: CAN_RX_module - CAN_RX_module
--- Project Name: 
+-- Module Name:         CAN_RX_module - CAN_RX_module
+-- Project Name:        CAN
 -- Target Devices: 
 -- Tool Versions: 
--- Description: 
+-- Description:         CAN RX module (FF sync + destuffer + BTU + deserializer)
 -- 
 -- Dependencies: 
 -- 
@@ -33,12 +33,16 @@ entity CAN_RX_module is
         prop_seg     : in unsigned(7 downto 0);
         phase_seg1   : in unsigned(7 downto 0);
         phase_seg2   : in unsigned(7 downto 0);
-       
-        frame        : out std_logic_vector(107 downto 0);  -- complete frame
-        ack_slot     : out std_logic;   -- ack slot '0' dominant
-        frame_rdy    : out std_logic;   -- frame ready signal
-        state_can    : out std_logic_vector(1 downto 0);    -- CAN controller state (IDLE "00", RECEIVING "01", TRANSMITTING "10", ERROR "11")
-        err_frame    : out std_logic    -- error frame signal
+
+        -- outputs
+        frame        : out std_logic_vector(107 downto 0);
+        ack_slot     : out std_logic;
+        frame_rdy    : out std_logic;
+        state_can    : out std_logic_vector(1 downto 0);
+        err_frame    : out std_logic;
+
+        -- debug output
+        sample_tick_o : out std_logic
     );
 end CAN_RX_module;
 
@@ -51,11 +55,12 @@ architecture arch_CAN_RX_module of CAN_RX_module is
     signal sl_bit_out       : std_logic;
     signal sl_bit_valid     : std_logic;
     
-    signal sl_sof_bit       : std_logic;
+    signal sl_toggle_bit       : std_logic;
 
 begin
 
-    -- FF di sincronizzazione
+    --------------------------------------------------------------------
+    -- Sync FF
     u_ff : entity work.FF
         port map (
             clock      => clock,
@@ -64,12 +69,13 @@ begin
             rx_in_sync => sl_rx_in_sync
         );
 
-    -- Bit Timing Unit
+    --------------------------------------------------------------------
+    -- BTU
     u_btu : entity work.BTU
         port map (
             clock        => clock,
             reset        => reset,
-            sof_bit      => sl_sof_bit,
+            toggle_bit   => sl_toggle_bit,
             prop_seg     => prop_seg,
             phase_seg1   => phase_seg1,
             phase_seg2   => phase_seg2,
@@ -77,6 +83,7 @@ begin
             sample_tick  => sl_sample_tick
         );
 
+    --------------------------------------------------------------------
     -- Destuffing
     u_destuff : entity work.Destuffing
         port map (
@@ -86,9 +93,11 @@ begin
             sample_tick  => sl_sample_tick,
             bit_out      => sl_bit_out,
             bit_valid    => sl_bit_valid,
-            err_frame    => err_frame
+            err_frame    => err_frame,
+            toggle_bit   => sl_toggle_bit
         );
 
+    --------------------------------------------------------------------
     -- Deserializer
     u_deserial : entity work.deserializer
         port map (
@@ -96,12 +105,18 @@ begin
             reset       => reset,
             destuff_bit => sl_bit_out,
             bit_valid   => sl_bit_valid,
+            sample_tick => sl_sample_tick,
             frame       => frame,
             ack_slot    => ack_slot,
             frame_rdy   => frame_rdy,
-            state_can   => state_can,
-            sof_bit     => sl_sof_bit
+            state_can   => state_can
         );
 
+    --------------------------------------------------------------------
+    -- Debug output
+    --------------------------------------------------------------------
+    sample_tick_o <= sl_sample_tick;
+
 end architecture;
+
 

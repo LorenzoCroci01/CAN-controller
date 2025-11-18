@@ -24,25 +24,26 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity Destuffing is
     Port (
-        clock        : in  std_logic;
-        reset        : in  std_logic;
-        rx_in_sync   : in  std_logic;
-        sample_tick  : in  std_logic;
+        clock       : in std_logic;     -- main clock
+        reset       : in std_logic;     -- async reset
+        rx_in_sync  : in std_logic;     -- sync input bit
+        sample_tick : in std_logic;     -- sample tick signal
 
-        bit_out      : out std_logic;
-        bit_valid    : out std_logic;
-        err_frame    : out std_logic
+        bit_out     : out std_logic;    -- output bit
+        bit_valid   : out std_logic;    -- bit valid flag
+        err_frame   : out std_logic;    -- error frame flag
+        toggle_bit  : out std_logic     -- sync toggle flag
     );
 end Destuffing;
 
 architecture arch_Destuffing of Destuffing is
 
-    signal last_bit     : std_logic;                -- last logical bit
+    signal last_bit     : std_logic;                -- previous input bit
     signal same_count   : unsigned(2 downto 0);     -- equal bits counter
-    signal skip_next    : std_logic;                -- next bit must be skipped
+    signal skip_next    : std_logic;                -- skip flag
 
-    signal bit_out_o    : std_logic;
-    signal bit_valid_o  : std_logic;
+    signal bit_out_o    : std_logic;                -- output bit
+    signal bit_valid_o  : std_logic;                -- bit valid flag
 
 begin
 
@@ -58,56 +59,64 @@ begin
             bit_out_o    <= '1';
             bit_valid_o  <= '0';
             err_frame    <= '0';
+            toggle_bit      <= '0';
 
         elsif rising_edge(clock) then
 
-            bit_valid_o <= '0';   -- default
+            toggle_bit     <= '0';
             err_frame   <= '0';
 
             if sample_tick = '1' then
 
-                -- 5 equal bits
+                -- ?hard sync: sof detect
+                if last_bit /= rx_in_sync then
+                    toggle_bit <= '1';
+                else
+                    toggle_bit <= '0';
+                end if;
+
+                -- stuffed bit
                 if skip_next = '1' then
                     skip_next <= '0';
-
-                    -- protocol violation: error
-                    if rx_in_sync = last_bit then
-                        err_frame <= '1';
-                    end if;
-
-                    last_bit   <= rx_in_sync;
-                    same_count <= (others => '0');
-
-                    -- stuffed bit is NEVER valid
-                    bit_valid_o <= '0';
+                    bit_valid_o <= '1';
 
                 else
-                    -- update run length counter
+
+                    -- normal bit
+                    bit_valid_o     <= '1';
+                    bit_out_o       <= rx_in_sync;
+
+                    -- update run length
                     if rx_in_sync = last_bit then
                         same_count <= same_count + 1;
                     else
-                        same_count <= "001";   -- new run
+                        same_count <= "001";
                     end if;
 
-                    -- after 5 equal bits: next one is stuffed
-                    if same_count = 4 then
+                    -- after 5 equal bits, next one is stuffed
+                    if same_count = 5 then
                         skip_next <= '1';
-                    end if;
-
-                    -- output valid bit
-                    bit_out_o   <= rx_in_sync;
-                    bit_valid_o <= '1';
-
-                    -- update last_bit
-                    last_bit <= rx_in_sync;
-
+                        bit_valid_o <= '0';  
+                        
+                        -- don't output bit
+                        same_count <= "001";
+                        
+                        -- stuffed bit must be opposite to the 5-bit run
+                        if rx_in_sync = last_bit then
+                            err_frame <= '1';
+                        else
+                            err_frame <= '0';
+                        end if;
+                      
+                    end if; 
+                    
+                    last_bit <= rx_in_sync; 
                 end if;
+                
             end if;
         end if;
     end process;
 
 end architecture;
-
-
 
 
