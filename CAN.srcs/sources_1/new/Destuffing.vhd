@@ -59,12 +59,12 @@ begin
             bit_out_o    <= '1';
             bit_valid_o  <= '0';
             err_frame    <= '0';
-            toggle_bit      <= '0';
+            toggle_bit   <= '0';
 
         elsif rising_edge(clock) then
 
-            toggle_bit     <= '0';
-            err_frame   <= '0';
+            toggle_bit      <= '0';
+            err_frame       <= '0';
 
             if sample_tick = '1' then
 
@@ -77,15 +77,16 @@ begin
 
                 -- stuffed bit
                 if skip_next = '1' then
-                    skip_next <= '0';
-                    bit_valid_o <= '1';
-
+                    skip_next   <= '0';
+                    bit_valid_o <= '1';  
+                    same_count  <= "001";
+                    
                 else
 
                     -- normal bit
                     bit_valid_o     <= '1';
                     bit_out_o       <= rx_in_sync;
-
+                    
                     -- update run length
                     if rx_in_sync = last_bit then
                         same_count <= same_count + 1;
@@ -96,18 +97,12 @@ begin
                     -- after 5 equal bits, next one is stuffed
                     if same_count = 5 then
                         skip_next <= '1';
-                        bit_valid_o <= '0';  
+                        bit_valid_o <= '0';
                         
-                        -- don't output bit
-                        same_count <= "001";
-                        
-                        -- stuffed bit must be opposite to the 5-bit run
                         if rx_in_sync = last_bit then
-                            err_frame <= '1';
-                        else
-                            err_frame <= '0';
+                            err_frame <= '1';   
                         end if;
-                      
+                        
                     end if; 
                     
                     last_bit <= rx_in_sync; 
