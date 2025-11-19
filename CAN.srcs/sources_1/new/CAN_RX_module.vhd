@@ -55,7 +55,7 @@ architecture arch_CAN_RX_module of CAN_RX_module is
     signal sl_bit_out       : std_logic;
     signal sl_bit_valid     : std_logic;
     
-    signal sl_toggle_bit       : std_logic;
+    signal sl_edge_det       : std_logic;
 
 begin
 
@@ -75,7 +75,7 @@ begin
         port map (
             clock        => clock,
             reset        => reset,
-            toggle_bit   => sl_toggle_bit,
+            edge_det   => sl_edge_det,
             prop_seg     => prop_seg,
             phase_seg1   => phase_seg1,
             phase_seg2   => phase_seg2,
@@ -94,7 +94,7 @@ begin
             bit_out      => sl_bit_out,
             bit_valid    => sl_bit_valid,
             err_frame    => err_frame,
-            toggle_bit   => sl_toggle_bit
+            edge_det   => sl_edge_det
         );
 
     --------------------------------------------------------------------

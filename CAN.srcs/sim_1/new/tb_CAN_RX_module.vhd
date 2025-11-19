@@ -50,7 +50,6 @@ architecture tb of tb_CAN_RX_module is
     -- CAN frame
     constant CAN_FRAME_STUFFED : std_logic_vector(62 downto 0) :=
         "000010010011000001101010010100111100101010101010101111101111101";
-      -- 00001001001100000
 
 begin
     

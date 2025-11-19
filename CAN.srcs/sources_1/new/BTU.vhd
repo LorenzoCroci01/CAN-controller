@@ -37,7 +37,7 @@ entity BTU is
         -- input
         clock           : in  std_logic;
         reset           : in  std_logic;
-        toggle_bit      : in  std_logic;
+        edge_det        : in  std_logic;
         
         -- configuration parameters BTU (baud rate)
         prop_seg     : in unsigned(7 downto 0);
@@ -79,7 +79,7 @@ begin
 
             bit_tick <= '0';
 
-            if toggle_bit = '1' then
+            if edge_det = '1' then
                 -- restart bit timing at toggle
                 s_tq_cnt     <= (others => '0');
             else

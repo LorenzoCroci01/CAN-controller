@@ -80,7 +80,7 @@ begin
             frame_rdy <= '0';
             ack_slot  <= '1';
 
-            if bit_valid = '1' and sample_tick = '1' then
+            if bit_valid = '1' then
 
                 case state is
 
