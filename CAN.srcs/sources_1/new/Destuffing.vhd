@@ -73,28 +73,32 @@ begin
 
             if sample_tick = '1' then
 
-                -- rileva fronte per sync
+                -- edge detection for hard sync
                 if rx_in_sync /= last_bit then
                     edge_det_o <= '1';
                 end if;
 
-                -- se questo bit è da skippare
+                -- skip stuffed
                 if skip_next = '1' then
                     skip_next   <= '0';
                     bit_valid_o <= '0';
                     same_count  <= "000";
+                    
+                    if rx_in_sync = last_bit then
+                        err_frame_o <= '1';
+                    end if;
 
                 else
-                    -- bit valido
+                    -- valid bit
                     bit_out_o   <= rx_in_sync;
                     bit_valid_o <= '1';
 
-                    -- aggiorna contatore
+                    -- update counter
                     if rx_in_sync = last_bit then
                         same_count <= same_count + 1;
 
-                        -- se ho già 4 uguali, QUESTO è il 5° → prossimo da skippare
-                        if same_count = "100" then   -- 4
+                        -- 4 bit seen, the next one is the 5th
+                        if same_count = "100" then
                             skip_next <= '1';
                         end if;
 
