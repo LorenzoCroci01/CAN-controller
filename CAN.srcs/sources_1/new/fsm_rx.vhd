@@ -25,102 +25,118 @@ use IEEE.NUMERIC_STD.ALL;
 entity fsm_rx is
     Port ( 
         -- input
-        clock       : in std_logic;     -- main clock signal
-        reset       : in std_logic;     -- asynchronous reset
-        filter_id   : in std_logic_vector(10 downto 0);     -- id filter
-        frame_in    : in std_logic_vector(107 downto 0);    -- complete CAN frame
-        frame_rdy   : in std_logic;     -- frame ready signal
-
+        clock       : in std_logic;                           -- main clock signal
+        reset       : in std_logic;                           -- asynchronous reset
+        frame_in    : in std_logic_vector(107 downto 0);      -- complete CAN frame
+        frame_rdy   : in std_logic;                           -- frame ready signal
+        ram_doutID  : in std_logic_vector(7 downto 0);        -- data from RAM filter ID (8 bit)
+        
         -- output
-        err_crc     : out std_logic;    -- CRC error flag
-        frame_out   : out std_logic_vector(107 downto 0)    -- output frame
+        err_crc     : out std_logic;                          -- CRC error flag
+        valid_frame : out std_logic;                          -- valid frame flag
+        frame_out   : out std_logic_vector(107 downto 0);     -- output frame
+        ram_addrID  : out unsigned(7 downto 0)                -- RAM address (ID received)
     );
 end fsm_rx;
 
 architecture arch_fsm_rx of fsm_rx is
 
-    -- FSM state encoding
-    type state_type is (IDLE, ID, CRC, DONE);
+    type state_type is (IDLE, CRC_CHECK, ID_FILTER, DONE);
     signal state        : state_type := IDLE;
 
-    -- extracted fields
-    signal id_field     : std_logic_vector(10 downto 0);
     signal crc_field    : std_logic_vector(14 downto 0);
-
-    -- CRC-15 CAN polynomial
-    constant POLY : std_logic_vector(14 downto 0) := "110001011001100";
+    signal crc_calc     : std_logic_vector(14 downto 0);
+    
+    signal prova        : std_logic := '0';
+    
+    signal id_addr      : unsigned(7 downto 0);  -- first 8 bit ID
+    signal id_bit       : unsigned(2 downto 0);  -- last 3 bit ID
+    
+    -- CRC-15 CAN polynomial (x^15 + x^14 + x^10 + x^8 + x^7 + x^4 + x^3 + 1)
+    constant POLY : std_logic_vector(15 downto 0) := "1100010110011001";
 
 begin
 
-    process(clock, reset)
-        variable crc_reg     : std_logic_vector(14 downto 0);
-        variable data_stream : std_logic_vector(82 downto 0); -- SOF - DATA (83 bit)
+    proc_fsm_rx : process(clock, reset)   
+        -- Data: SOF + ID + CTRL + DLC + DATA (83 bit) + 15 zero padding
+        variable crc_reg  : std_logic_vector(14 downto 0);
+        variable dividend : std_logic_vector(97 downto 0);
     begin
-
         if reset = '1' then
-            frame_out <= (others => '0');
-            err_crc   <= '0';
-            state     <= IDLE;
+            frame_out   <= (others => '0');
+            crc_field   <= (others => '0');
+            err_crc     <= '0';
+            valid_frame <= '0';
+            ram_addrID  <= (others => '0');
+            id_addr     <= (others => '0');
+            id_bit      <= (others => '0');
+            state       <= IDLE;
 
         elsif rising_edge(clock) then
+            
+            crc_field <= frame_in(24 downto 10);
 
             case state is
 
-                -- IDLE - wait complete input frame
                 when IDLE =>
-                    err_crc <= '0';
+                    err_crc     <= '0';
+                    valid_frame <= '0';
+
                     if frame_rdy = '1' then
-                        id_field <= frame_in(106 downto 96);
-                        crc_field <= frame_in(24 downto 10);
-                        state <= ID;
+                        frame_out <= (others => '0');
+
+                        -- dividend = (SOF + ID + CTRL + DLC + DATA) & 15 zero padding
+                        dividend := frame_in(107 downto 25) & "000000000000000";
+
+                        -- split ID (11 bit) in addr + bit
+                        id_addr <= unsigned(frame_in(106 downto 99));  -- ID[10:3]
+                        id_bit  <= unsigned(frame_in(98 downto 96));   -- ID[2:0]
+                        
+                        -- block ram id address
+                        ram_addrID <= unsigned(frame_in(106 downto 99));
+
+                        state   <= CRC_CHECK;
                     end if;
-
-                -- ID - filter match
-                when ID =>
-                    if id_field = filter_id then
-                        state <= CRC;
-                    else
-                        state <= IDLE;
-                    end if;
-
-                -- CRC - CRC-15 CAN compute
-                when CRC =>
-                    -- SOF + ID + CTRL + DLC + DATA (83 bit)
-                    data_stream := frame_in(107 downto 25);
-
-                    -- reset CRC register
+                    
+                when CRC_CHECK =>      
+                    -- compute CRC bit by bit 
                     crc_reg := (others => '0');
-
-                    -- compute CRC 
-                    for i in data_stream'range loop
-                        if (crc_reg(14) xor data_stream(i)) = '1' then
-                            crc_reg := (crc_reg(13 downto 0) & '0') xor POLY;
-                        else
-                            crc_reg := (crc_reg(13 downto 0) & '0');
+                    
+                    for i in 97 downto 15 loop
+                        if dividend(i) = '1' then
+                            dividend(i downto i-15) := dividend(i downto i-15) xor POLY;
                         end if;
                     end loop;
-
+                    
+                    crc_reg  := dividend(14 downto 0);
+                    
+                    -- compare received crc and calculated crc
                     if crc_reg = crc_field then
                         err_crc <= '0';
-                        state   <= DONE;
+                        state   <= ID_FILTER;
                     else
                         err_crc <= '1';
                         state   <= IDLE;
                     end if;
-
-                -- DONE - valid output frame
-                when DONE =>
-                    frame_out <= frame_in;
-                    state <= IDLE;
                     
-                -- Security fallback
+                when ID_FILTER =>
+                    -- check bit corresponding to ID in word RAM
+                    if ram_doutID(to_integer(id_bit)) = '1' then
+                        state <= DONE;
+                    else
+                        state <= IDLE;
+                    end if;
+
+                when DONE =>
+                    frame_out   <= frame_in;
+                    valid_frame <= '1';
+                    state       <= IDLE;
+
                 when others =>
                     state <= IDLE;
-
             end case;
-
         end if;
     end process;
+end architecture;
 
-end arch_fsm_rx;
 

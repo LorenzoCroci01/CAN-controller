@@ -3,72 +3,72 @@
    <wave_state>
    </wave_state>
    <db_ref_list>
-      <db_ref path="tb_CAN_RX_module_behav.wdb" id="1">
+      <db_ref path="tb_top_level_RX_behav.wdb" id="1">
          <top_modules>
-            <top_module name="tb_CAN_RX_module" />
+            <top_module name="tb_top_level_RX" />
          </top_modules>
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="4,299.166 ns"></ZoomStartTime>
-      <ZoomEndTime time="4,684.167 ns"></ZoomEndTime>
-      <Cursor1Time time="4,620.000 ns"></Cursor1Time>
+      <ZoomStartTime time="4,699.985 ns"></ZoomStartTime>
+      <ZoomEndTime time="5,108.003 ns"></ZoomEndTime>
+      <Cursor1Time time="4,925.000 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="204"></NameColumnWidth>
-      <ValueColumnWidth column_width="239"></ValueColumnWidth>
+      <ValueColumnWidth column_width="234"></ValueColumnWidth>
    </column_width_setting>
    <WVObjectSize size="13" />
-   <wvobject fp_name="/tb_CAN_RX_module/clock" type="logic">
+   <wvobject fp_name="/tb_top_level_RX/clock" type="logic">
       <obj_property name="ElementShortName">clock</obj_property>
       <obj_property name="ObjectShortName">clock</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_CAN_RX_module/reset" type="logic">
+   <wvobject fp_name="/tb_top_level_RX/reset" type="logic">
       <obj_property name="ElementShortName">reset</obj_property>
       <obj_property name="ObjectShortName">reset</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_CAN_RX_module/frame" type="array">
-      <obj_property name="ElementShortName">frame[107:0]</obj_property>
-      <obj_property name="ObjectShortName">frame[107:0]</obj_property>
+   <wvobject fp_name="/tb_top_level_RX/rx_in" type="logic">
+      <obj_property name="ElementShortName">rx_in</obj_property>
+      <obj_property name="ObjectShortName">rx_in</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_CAN_RX_module/frame_rdy" type="logic">
-      <obj_property name="ElementShortName">frame_rdy</obj_property>
-      <obj_property name="ObjectShortName">frame_rdy</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_CAN_RX_module/state_can" type="array">
-      <obj_property name="ElementShortName">state_can[1:0]</obj_property>
-      <obj_property name="ObjectShortName">state_can[1:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_CAN_RX_module/UUT/u_destuff/rx_in_sync" type="logic">
-      <obj_property name="ElementShortName">rx_in_sync</obj_property>
-      <obj_property name="ObjectShortName">rx_in_sync</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_CAN_RX_module/UUT/u_destuff/last_bit" type="logic">
-      <obj_property name="ElementShortName">last_bit</obj_property>
-      <obj_property name="ObjectShortName">last_bit</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_CAN_RX_module/sample_tick" type="logic">
+   <wvobject fp_name="/tb_top_level_RX/UUT/u_can_rx_module/u_btu/sample_tick" type="logic">
       <obj_property name="ElementShortName">sample_tick</obj_property>
       <obj_property name="ObjectShortName">sample_tick</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_CAN_RX_module/UUT/u_destuff/bit_out" type="logic">
-      <obj_property name="ElementShortName">bit_out</obj_property>
-      <obj_property name="ObjectShortName">bit_out</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_CAN_RX_module/UUT/u_destuff/bit_valid" type="logic">
-      <obj_property name="ElementShortName">bit_valid</obj_property>
-      <obj_property name="ObjectShortName">bit_valid</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_CAN_RX_module/err_frame" type="logic">
-      <obj_property name="ElementShortName">err_frame</obj_property>
-      <obj_property name="ObjectShortName">err_frame</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_CAN_RX_module/UUT/u_deserial/state" type="other">
+   <wvobject fp_name="/tb_top_level_RX/UUT/u_can_rx_module/u_deserial/state" type="other">
       <obj_property name="ElementShortName">state</obj_property>
       <obj_property name="ObjectShortName">state</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_CAN_RX_module/UUT/u_destuff/same_count" type="array">
-      <obj_property name="ElementShortName">same_count[2:0]</obj_property>
-      <obj_property name="ObjectShortName">same_count[2:0]</obj_property>
+   <wvobject fp_name="/tb_top_level_RX/filter_id" type="array">
+      <obj_property name="ElementShortName">filter_id[10:0]</obj_property>
+      <obj_property name="ObjectShortName">filter_id[10:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_level_RX/err_crc" type="logic">
+      <obj_property name="ElementShortName">err_crc</obj_property>
+      <obj_property name="ObjectShortName">err_crc</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_level_RX/UUT/u_can_rx_module/err_frame" type="logic">
+      <obj_property name="ElementShortName">err_frame</obj_property>
+      <obj_property name="ObjectShortName">err_frame</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_level_RX/UUT/u_can_rx_module/ack_slot" type="logic">
+      <obj_property name="ElementShortName">ack_slot</obj_property>
+      <obj_property name="ObjectShortName">ack_slot</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_level_RX/UUT/u_can_rx_module/frame_rdy" type="logic">
+      <obj_property name="ElementShortName">frame_rdy</obj_property>
+      <obj_property name="ObjectShortName">frame_rdy</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_level_RX/UUT/u_can_rx_module/frame" type="array">
+      <obj_property name="ElementShortName">frame[107:0]</obj_property>
+      <obj_property name="ObjectShortName">frame[107:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_level_RX/UUT/u_fsm_rx/frame_out" type="array">
+      <obj_property name="ElementShortName">frame_out[107:0]</obj_property>
+      <obj_property name="ObjectShortName">frame_out[107:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_level_RX/UUT/u_fsm_rx/state" type="other">
+      <obj_property name="ElementShortName">state</obj_property>
+      <obj_property name="ObjectShortName">state</obj_property>
    </wvobject>
 </wave_config>

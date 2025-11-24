@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenRun Id="synth_1" LaunchPart="xc7a50tcpg236-1" LaunchTime="1763030157" LaunchIncrCheckpoint="$PSRCDIR/utils_1/imports/synth_1/Destuffing.dcp">
   <File Type="REPORTS-TCL" Name="deserializer_reports.tcl"/>
-  <File Type="RDS-UTIL" Name="CAN_RX_module_utilization_synth.rpt"/>
-  <File Type="RDS-UTIL-PB" Name="CAN_RX_module_utilization_synth.pb"/>
+  <File Type="RDS-UTIL" Name="top_level_RX_utilization_synth.rpt"/>
+  <File Type="RDS-UTIL-PB" Name="top_level_RX_utilization_synth.pb"/>
   <File Type="PA-TCL" Name="deserializer.tcl"/>
   <File Type="RDS-RDS" Name="deserializer.vds"/>
   <File Type="RDS-DCP" Name="deserializer.dcp"/>

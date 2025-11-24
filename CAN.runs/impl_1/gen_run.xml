@@ -1,47 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenRun Id="impl_1" LaunchPart="xc7a50tcpg236-1" LaunchTime="1763030507">
   <File Type="REPORTS-TCL" Name="deserializer_reports.tcl"/>
-  <File Type="ROUTE-PWR-SUM" Name="CAN_RX_module_power_summary_routed.pb"/>
+  <File Type="ROUTE-PWR-SUM" Name="top_level_RX_power_summary_routed.pb"/>
   <File Type="BITSTR-MMI" Name="deserializer.mmi"/>
-  <File Type="OPT-DRC" Name="CAN_RX_module_drc_opted.rpt"/>
+  <File Type="OPT-DRC" Name="top_level_RX_drc_opted.rpt"/>
   <File Type="BG-DRC" Name="deserializer.drc"/>
-  <File Type="ROUTE-STATUS-PB" Name="CAN_RX_module_route_status.pb"/>
+  <File Type="ROUTE-STATUS-PB" Name="top_level_RX_route_status.pb"/>
   <File Type="BG-BGN" Name="deserializer.bgn"/>
-  <File Type="PLACE-UTIL" Name="CAN_RX_module_utilization_placed.rpt"/>
-  <File Type="PLACE-UTIL-PB" Name="CAN_RX_module_utilization_placed.pb"/>
-  <File Type="PLACE-IO" Name="CAN_RX_module_io_placed.rpt"/>
+  <File Type="PLACE-UTIL" Name="top_level_RX_utilization_placed.rpt"/>
+  <File Type="PLACE-UTIL-PB" Name="top_level_RX_utilization_placed.pb"/>
+  <File Type="PLACE-IO" Name="top_level_RX_io_placed.rpt"/>
   <File Type="BG-BIN" Name="deserializer.bin"/>
-  <File Type="PLACE-CTRL" Name="CAN_RX_module_control_sets_placed.rpt"/>
-  <File Type="ROUTE-PWR-RPX" Name="CAN_RX_module_power_routed.rpx"/>
+  <File Type="PLACE-CTRL" Name="top_level_RX_control_sets_placed.rpt"/>
+  <File Type="ROUTE-PWR-RPX" Name="top_level_RX_power_routed.rpx"/>
   <File Type="BITSTR-MSK" Name="deserializer.msk"/>
   <File Type="BITSTR-RBT" Name="deserializer.rbt"/>
-  <File Type="ROUTE-TIMINGSUMMARY" Name="CAN_RX_module_timing_summary_routed.rpt"/>
-  <File Type="ROUTE-TIMING-RPX" Name="CAN_RX_module_timing_summary_routed.rpx"/>
-  <File Type="ROUTE-STATUS" Name="CAN_RX_module_route_status.rpt"/>
+  <File Type="ROUTE-TIMINGSUMMARY" Name="top_level_RX_timing_summary_routed.rpt"/>
+  <File Type="ROUTE-TIMING-RPX" Name="top_level_RX_timing_summary_routed.rpx"/>
+  <File Type="ROUTE-STATUS" Name="top_level_RX_route_status.rpt"/>
   <File Type="PA-TCL" Name="deserializer.tcl"/>
-  <File Type="ROUTE-PWR" Name="CAN_RX_module_power_routed.rpt"/>
-  <File Type="ROUTE-DRC" Name="CAN_RX_module_drc_routed.rpt"/>
-  <File Type="ROUTE-DRC-RPX" Name="CAN_RX_module_drc_routed.rpx"/>
-  <File Type="ROUTE-DRC-PB" Name="CAN_RX_module_drc_routed.pb"/>
+  <File Type="ROUTE-PWR" Name="top_level_RX_power_routed.rpt"/>
+  <File Type="ROUTE-DRC" Name="top_level_RX_drc_routed.rpt"/>
+  <File Type="ROUTE-DRC-RPX" Name="top_level_RX_drc_routed.rpx"/>
+  <File Type="ROUTE-DRC-PB" Name="top_level_RX_drc_routed.pb"/>
   <File Type="BITSTR-SYSDEF" Name="deserializer.sysdef"/>
-  <File Type="ROUTE-METHODOLOGY-DRC" Name="CAN_RX_module_methodology_drc_routed.rpt"/>
-  <File Type="ROUTE-METHODOLOGY-DRC-RPX" Name="CAN_RX_module_methodology_drc_routed.rpx"/>
+  <File Type="ROUTE-METHODOLOGY-DRC" Name="top_level_RX_methodology_drc_routed.rpt"/>
+  <File Type="ROUTE-METHODOLOGY-DRC-RPX" Name="top_level_RX_methodology_drc_routed.rpx"/>
   <File Type="BITSTR-LTX" Name="debug_nets.ltx"/>
   <File Type="BITSTR-LTX" Name="deserializer.ltx"/>
-  <File Type="ROUTE-METHODOLOGY-DRC-PB" Name="CAN_RX_module_methodology_drc_routed.pb"/>
-  <File Type="ROUTE-SIMILARITY" Name="CAN_RX_module_incremental_reuse_routed.rpt"/>
+  <File Type="ROUTE-METHODOLOGY-DRC-PB" Name="top_level_RX_methodology_drc_routed.pb"/>
+  <File Type="ROUTE-SIMILARITY" Name="top_level_RX_incremental_reuse_routed.rpt"/>
   <File Type="RDI-RDI" Name="deserializer.vdi"/>
-  <File Type="ROUTE-CLK" Name="CAN_RX_module_clock_utilization_routed.rpt"/>
-  <File Type="ROUTE-BUS-SKEW" Name="CAN_RX_module_bus_skew_routed.rpt"/>
-  <File Type="ROUTE-BUS-SKEW-RPX" Name="CAN_RX_module_bus_skew_routed.rpx"/>
-  <File Type="ROUTE-BUS-SKEW-PB" Name="CAN_RX_module_bus_skew_routed.pb"/>
-  <File Type="POSTROUTE-PHYSOPT-TIMING" Name="CAN_RX_module_timing_summary_postroute_physopted.rpt"/>
-  <File Type="POSTROUTE-PHYSOPT-TIMING-RPX" Name="CAN_RX_module_timing_summary_postroute_physopted.rpx"/>
-  <File Type="POSTROUTE-PHYSOPT-TIMING-PB" Name="CAN_RX_module_timing_summary_postroute_physopted.pb"/>
-  <File Type="POSTROUTE-PHYSOPT-BUS-SKEW" Name="CAN_RX_module_bus_skew_postroute_physopted.rpt"/>
-  <File Type="POSTROUTE-PHYSOPT-BUS-SKEW-RPX" Name="CAN_RX_module_bus_skew_postroute_physopted.rpx"/>
+  <File Type="ROUTE-CLK" Name="top_level_RX_clock_utilization_routed.rpt"/>
+  <File Type="ROUTE-BUS-SKEW" Name="top_level_RX_bus_skew_routed.rpt"/>
+  <File Type="ROUTE-BUS-SKEW-RPX" Name="top_level_RX_bus_skew_routed.rpx"/>
+  <File Type="ROUTE-BUS-SKEW-PB" Name="top_level_RX_bus_skew_routed.pb"/>
+  <File Type="POSTROUTE-PHYSOPT-TIMING" Name="top_level_RX_timing_summary_postroute_physopted.rpt"/>
+  <File Type="POSTROUTE-PHYSOPT-TIMING-RPX" Name="top_level_RX_timing_summary_postroute_physopted.rpx"/>
+  <File Type="POSTROUTE-PHYSOPT-TIMING-PB" Name="top_level_RX_timing_summary_postroute_physopted.pb"/>
+  <File Type="POSTROUTE-PHYSOPT-BUS-SKEW" Name="top_level_RX_bus_skew_postroute_physopted.rpt"/>
+  <File Type="POSTROUTE-PHYSOPT-BUS-SKEW-RPX" Name="top_level_RX_bus_skew_postroute_physopted.rpx"/>
   <File Type="BG-BIT" Name="deserializer.bit"/>
-  <File Type="POSTROUTE-PHYSOPT-BUS-SKEW-PB" Name="CAN_RX_module_bus_skew_postroute_physopted.pb"/>
+  <File Type="POSTROUTE-PHYSOPT-BUS-SKEW-PB" Name="top_level_RX_bus_skew_postroute_physopted.pb"/>
   <File Type="BITSTR-NKY" Name="deserializer.nky"/>
   <File Type="BITSTR-BMM" Name="deserializer_bd.bmm"/>
   <File Type="WBT-USG" Name="usage_statistics_webtalk.html"/>

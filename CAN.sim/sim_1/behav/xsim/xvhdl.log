@@ -1,6 +1,6 @@
-INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/croci/CAN/CAN.srcs/sources_1/new/Destuffing.vhd" into library xil_defaultlib
-INFO: [VRFC 10-3107] analyzing entity 'Destuffing'
-INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/croci/CAN/CAN.srcs/sources_1/new/CAN_RX_module.vhd" into library xil_defaultlib
-INFO: [VRFC 10-3107] analyzing entity 'CAN_RX_module'
-INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/croci/CAN/CAN.srcs/sim_1/new/tb_CAN_RX_module.vhd" into library xil_defaultlib
-INFO: [VRFC 10-3107] analyzing entity 'tb_CAN_RX_module'
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/croci/CAN/CAN.srcs/sources_1/new/mem_filterID.vhd" into library xil_defaultlib
+INFO: [VRFC 10-3107] analyzing entity 'mem_filterID'
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/croci/CAN/CAN.srcs/sources_1/new/top_level_RX.vhd" into library xil_defaultlib
+INFO: [VRFC 10-3107] analyzing entity 'top_level_RX'
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/croci/CAN/CAN.srcs/sim_1/new/tb_top_level_rx.vhd" into library xil_defaultlib
+INFO: [VRFC 10-3107] analyzing entity 'tb_top_level_RX'

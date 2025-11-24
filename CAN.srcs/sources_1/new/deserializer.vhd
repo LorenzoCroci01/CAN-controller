@@ -36,7 +36,8 @@ entity deserializer is
         data_len_o      : out unsigned(6 downto 0);           -- data field length 
         ack_slot        : out std_logic;                      -- ACK slot: '0' dominant 
         frame_rdy       : out std_logic;                      -- frame ready signal 
-        state_can       : out std_logic_vector(1 downto 0)    -- CAN controller state  
+        state_can       : out std_logic_vector(1 downto 0);   -- CAN controller state
+        sel_buff        : out std_logic                       -- buffer tristate selector  
     ); 
 end entity;
 
@@ -51,13 +52,17 @@ architecture arch_deserializer of deserializer is
     signal state        : state_type;
     signal s_bit_count  : unsigned(6 downto 0);     -- bit counter
     signal sv_dlc       : unsigned(3 downto 0);     -- dlc field bits
-    signal s_data_len   : unsigned(6 downto 0);     -- data field length
+    signal s_data_len   : unsigned(6 downto 0);     -- data field length    
+    signal sv_state_can : std_logic_vector(1 downto 0); -- internal can state
     
     signal sv_first_pt   : std_logic_vector(18 downto 0);   -- SOF + ID + CTRL + DLC
     signal sv_data_field : std_logic_vector(63 downto 0);   -- DATA (64 bits)
     signal sv_last_pt    : std_logic_vector(24 downto 0);   -- CRC + CRC delim + ACK + ACK delim + EOF + delim
-
+        
+    
 begin
+    
+    state_can <= sv_state_can;
 
     proc_deserializer : process(clock, reset)
     begin
@@ -73,13 +78,11 @@ begin
             ack_slot      <= '1';
             frame_rdy     <= '0';
             frame         <= (others => '0');
-            state_can     <= "00";
+            sv_state_can     <= "00";
 
         elsif rising_edge(clock) then
             
             frame_rdy <= '0';
-            ack_slot  <= '1';
-
             if bit_valid = '1' then
 
                 case state is
@@ -88,12 +91,12 @@ begin
                     when IDLE =>
                         if destuff_bit = '0' then
                             -- start of frame
-                            state_can     <= "01"; -- RECEIVING
+                            sv_state_can     <= "01"; -- RECEIVING
                             sv_data_field <= (others => '0');
                             sv_last_pt    <= (others => '0');
                             sv_first_pt   <= (others => '0');
                             s_bit_count   <= (others => '0');
-
+                            
                             sv_first_pt   <= sv_first_pt(17 downto 0) & destuff_bit;
                             state         <= ID;
                         end if;
@@ -172,11 +175,14 @@ begin
                     -- ACK slot - 1 bit
                     when ACK =>
                         ack_slot   <= '0'; -- dominant
+                        sel_buff   <= '1';
                         sv_last_pt <= sv_last_pt(23 downto 0) & '0';
                         state      <= ACK_DELIM;
 
                     -- ACK delimiter - 1 bit
                     when ACK_DELIM =>
+                        ack_slot   <= '1';
+                        sel_buff   <= '0';
                         sv_last_pt <= sv_last_pt(23 downto 0) & destuff_bit;
                         state      <= EOF;
 
@@ -203,7 +209,7 @@ begin
                     when DONE =>
                         frame     <= sv_first_pt & sv_data_field & sv_last_pt;
                         frame_rdy <= '1';
-                        state_can <= "00"; -- IDLE
+                        sv_state_can <= "00"; -- IDLE
                         state     <= IDLE;
 
                     when others =>

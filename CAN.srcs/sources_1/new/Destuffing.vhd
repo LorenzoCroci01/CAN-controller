@@ -24,15 +24,18 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity Destuffing is
     Port (
-        clock       : in std_logic;
-        reset       : in std_logic;
-        rx_in_sync  : in std_logic;
-        sample_tick : in std_logic;
-
-        bit_out     : out std_logic;
-        bit_valid   : out std_logic;
-        err_frame   : out std_logic;
-        edge_det    : out std_logic
+        -- input
+        clock       : in std_logic;     -- main clock
+        reset       : in std_logic;     -- async reset
+        rx_in_sync  : in std_logic;     -- sync rx bit
+        sample_tick : in std_logic;     -- sample tick signal
+        state_can   : in std_logic_vector(1 downto 0);  -- internal can state
+        
+        -- output
+        bit_out     : out std_logic;    -- output bit to deserializer    
+        bit_valid   : out std_logic;    -- bit valid flag
+        err_frame   : out std_logic;    -- error frame flag
+        edge_det    : out std_logic     -- edge detected
     );
 end Destuffing;
 
@@ -48,7 +51,7 @@ architecture arch_Destuffing of Destuffing is
     signal edge_det_o    : std_logic := '0';
 
 begin
-
+    
     bit_out   <= bit_out_o;
     bit_valid <= bit_valid_o;
     err_frame <= err_frame_o;
@@ -84,8 +87,11 @@ begin
                     bit_valid_o <= '0';
                     same_count  <= "000";
                     
-                    if rx_in_sync = last_bit then
-                        err_frame_o <= '1';
+                    -- error frame only if the node is not in IDLE state
+                    if state_can = "01" or state_can = "10" then
+                        if rx_in_sync = last_bit then
+                            err_frame_o <= '1';
+                        end if;
                     end if;
 
                 else

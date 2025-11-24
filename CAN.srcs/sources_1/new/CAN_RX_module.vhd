@@ -18,16 +18,15 @@
 -- 
 ----------------------------------------------------------------------------------
 
-
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 
 entity CAN_RX_module is
     Port (
-        clock        : in  std_logic;   -- main clock signal
-        reset        : in  std_logic;   -- asynchronous reset
-        rx_in        : in  std_logic;   -- bus serial signal
+        clock        : in std_logic;    -- main clock signal
+        reset        : in std_logic;    -- async reset
+        rx_in        : in std_logic;    -- bus serial signal
         
         -- configuration parameters BTU (baud rate)
         prop_seg     : in unsigned(7 downto 0);
@@ -40,6 +39,7 @@ entity CAN_RX_module is
         frame_rdy    : out std_logic;
         state_can    : out std_logic_vector(1 downto 0);
         err_frame    : out std_logic;
+        sel_buff     : out std_logic;
 
         -- debug output
         sample_tick_o : out std_logic
@@ -54,11 +54,14 @@ architecture arch_CAN_RX_module of CAN_RX_module is
 
     signal sl_bit_out       : std_logic;
     signal sl_bit_valid     : std_logic;
+    signal sv_state_can     : std_logic_vector(1 downto 0);
     
     signal sl_edge_det       : std_logic;
 
 begin
-
+    
+    state_can <= sv_state_can;
+    
     --------------------------------------------------------------------
     -- Sync FF
     u_ff : entity work.FF
@@ -68,14 +71,14 @@ begin
             rx_in      => rx_in,
             rx_in_sync => sl_rx_in_sync
         );
-
+        
     --------------------------------------------------------------------
     -- BTU
     u_btu : entity work.BTU
         port map (
             clock        => clock,
             reset        => reset,
-            edge_det   => sl_edge_det,
+            edge_det     => sl_edge_det,
             prop_seg     => prop_seg,
             phase_seg1   => phase_seg1,
             phase_seg2   => phase_seg2,
@@ -91,10 +94,11 @@ begin
             reset        => reset,
             rx_in_sync   => sl_rx_in_sync,
             sample_tick  => sl_sample_tick,
+            state_can    => sv_state_can,
             bit_out      => sl_bit_out,
             bit_valid    => sl_bit_valid,
             err_frame    => err_frame,
-            edge_det   => sl_edge_det
+            edge_det     => sl_edge_det
         );
 
     --------------------------------------------------------------------
@@ -109,12 +113,10 @@ begin
             frame       => frame,
             ack_slot    => ack_slot,
             frame_rdy   => frame_rdy,
-            state_can   => state_can
+            state_can   => state_can,
+            sel_buff    => sel_buff
         );
 
-    --------------------------------------------------------------------
-    -- Debug output
-    --------------------------------------------------------------------
     sample_tick_o <= sl_sample_tick;
 
 end architecture;
