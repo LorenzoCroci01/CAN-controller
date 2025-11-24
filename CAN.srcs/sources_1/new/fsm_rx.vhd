@@ -47,8 +47,6 @@ architecture arch_fsm_rx of fsm_rx is
     signal crc_field    : std_logic_vector(14 downto 0);
     signal crc_calc     : std_logic_vector(14 downto 0);
     
-    signal prova        : std_logic := '0';
-    
     signal id_addr      : unsigned(7 downto 0);  -- first 8 bit ID
     signal id_bit       : unsigned(2 downto 0);  -- last 3 bit ID
     
