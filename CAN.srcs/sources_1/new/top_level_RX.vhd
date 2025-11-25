@@ -74,7 +74,6 @@ begin
     u_driver_rx : entity work.driver_rx
         port map (
             ack_slot    =>  sl_ack_slot,
-            sel_buff    =>  sl_sel_buff,
             bus_line    =>  bus_line,
             rx_in       =>  sl_rx_in
         );
@@ -92,8 +91,7 @@ begin
             ack_slot    =>  sl_ack_slot,
             frame_rdy   =>  sl_frame_rdy,
             state_can   =>  sv_state_can,
-            err_frame   =>  err_frame,
-            sel_buff    =>  sl_sel_buff
+            err_frame   =>  err_frame
         );
      
     -- FSM RX (CRC + filtro ID via RAM)

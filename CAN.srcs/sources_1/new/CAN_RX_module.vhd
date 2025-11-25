@@ -39,7 +39,6 @@ entity CAN_RX_module is
         frame_rdy    : out std_logic;
         state_can    : out std_logic_vector(1 downto 0);
         err_frame    : out std_logic;
-        sel_buff     : out std_logic;
 
         -- debug output
         sample_tick_o : out std_logic
@@ -109,8 +108,7 @@ begin
             frame       => frame,
             ack_slot    => ack_slot,
             frame_rdy   => frame_rdy,
-            state_can   => state_can,
-            sel_buff    => sel_buff
+            state_can   => state_can
         );
 
     sample_tick_o <= sl_sample_tick;

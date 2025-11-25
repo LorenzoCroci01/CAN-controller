@@ -35,8 +35,7 @@ entity deserializer is
         frame           : out std_logic_vector(107 downto 0);   -- output complete frame 
         ack_slot        : out std_logic;                        -- ack slot: 0 dominant
         frame_rdy       : out std_logic;                        -- frame ready flag
-        state_can       : out std_logic_vector(1 downto 0);     -- state can (IDLE, RECEIVING, TRANSMITTING, ERROR)
-        sel_buff        : out std_logic                         -- driver enable
+        state_can       : out std_logic_vector(1 downto 0)      -- state can (IDLE, RECEIVING, TRANSMITTING, ERROR)
     ); 
 end entity;
 
@@ -170,14 +169,12 @@ begin
                     -- CRC delimiter
                     when CRC_DELIM =>
                         ack_slot   <= '0';  -- force dominant
-                        sel_buff   <= '1';  -- enable driver towards the bus
                         sv_last_pt <= sv_last_pt(23 downto 0) & destuff_bit;
                         state      <= ACK;
 
                     -- ACK slot - 1 bit
                     when ACK =>
                         ack_slot   <= '1';  -- recessive
-                        sel_buff   <= '0';  -- disable driver towards the bus
                         sv_last_pt <= sv_last_pt(23 downto 0) & '0';
                         state      <= ACK_DELIM;
 
