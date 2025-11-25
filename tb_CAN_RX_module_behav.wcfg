@@ -10,13 +10,13 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="4,699.985 ns"></ZoomStartTime>
-      <ZoomEndTime time="5,108.003 ns"></ZoomEndTime>
-      <Cursor1Time time="4,925.000 ns"></Cursor1Time>
+      <ZoomStartTime time="6,413.301 ns"></ZoomStartTime>
+      <ZoomEndTime time="6,889.340 ns"></ZoomEndTime>
+      <Cursor1Time time="6,810.000 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="204"></NameColumnWidth>
-      <ValueColumnWidth column_width="234"></ValueColumnWidth>
+      <ValueColumnWidth column_width="224"></ValueColumnWidth>
    </column_width_setting>
    <WVObjectSize size="13" />
    <wvobject fp_name="/tb_top_level_RX/clock" type="logic">
@@ -27,10 +27,6 @@
       <obj_property name="ElementShortName">reset</obj_property>
       <obj_property name="ObjectShortName">reset</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_top_level_RX/rx_in" type="logic">
-      <obj_property name="ElementShortName">rx_in</obj_property>
-      <obj_property name="ObjectShortName">rx_in</obj_property>
-   </wvobject>
    <wvobject fp_name="/tb_top_level_RX/UUT/u_can_rx_module/u_btu/sample_tick" type="logic">
       <obj_property name="ElementShortName">sample_tick</obj_property>
       <obj_property name="ObjectShortName">sample_tick</obj_property>
@@ -39,10 +35,6 @@
       <obj_property name="ElementShortName">state</obj_property>
       <obj_property name="ObjectShortName">state</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_top_level_RX/filter_id" type="array">
-      <obj_property name="ElementShortName">filter_id[10:0]</obj_property>
-      <obj_property name="ObjectShortName">filter_id[10:0]</obj_property>
-   </wvobject>
    <wvobject fp_name="/tb_top_level_RX/err_crc" type="logic">
       <obj_property name="ElementShortName">err_crc</obj_property>
       <obj_property name="ObjectShortName">err_crc</obj_property>
@@ -50,6 +42,10 @@
    <wvobject fp_name="/tb_top_level_RX/UUT/u_can_rx_module/err_frame" type="logic">
       <obj_property name="ElementShortName">err_frame</obj_property>
       <obj_property name="ObjectShortName">err_frame</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_level_RX/bus_line" type="logic">
+      <obj_property name="ElementShortName">bus_line</obj_property>
+      <obj_property name="ObjectShortName">bus_line</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_top_level_RX/UUT/u_can_rx_module/ack_slot" type="logic">
       <obj_property name="ElementShortName">ack_slot</obj_property>
@@ -70,5 +66,9 @@
    <wvobject fp_name="/tb_top_level_RX/UUT/u_fsm_rx/state" type="other">
       <obj_property name="ElementShortName">state</obj_property>
       <obj_property name="ObjectShortName">state</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_level_RX/UUT/u_ram_filter/reset_index" type="array">
+      <obj_property name="ElementShortName">reset_index[7:0]</obj_property>
+      <obj_property name="ObjectShortName">reset_index[7:0]</obj_property>
    </wvobject>
 </wave_config>

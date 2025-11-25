@@ -62,7 +62,6 @@ begin
     
     state_can <= sv_state_can;
     
-    --------------------------------------------------------------------
     -- Sync FF
     u_ff : entity work.FF
         port map (
@@ -72,7 +71,6 @@ begin
             rx_in_sync => sl_rx_in_sync
         );
         
-    --------------------------------------------------------------------
     -- BTU
     u_btu : entity work.BTU
         port map (
@@ -86,7 +84,6 @@ begin
             sample_tick  => sl_sample_tick
         );
 
-    --------------------------------------------------------------------
     -- Destuffing
     u_destuff : entity work.Destuffing
         port map (
@@ -101,7 +98,6 @@ begin
             edge_det     => sl_edge_det
         );
 
-    --------------------------------------------------------------------
     -- Deserializer
     u_deserial : entity work.deserializer
         port map (

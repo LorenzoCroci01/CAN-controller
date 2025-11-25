@@ -32,7 +32,7 @@ architecture tb of tb_top_level_RX is
     signal reset        : std_logic;
 
     -- bus (serial input)
-    signal rx_in        : std_logic;
+    signal bus_line        : std_logic;
 
     -- BTU config
     signal prop_seg     : unsigned(7 downto 0) := x"02";
@@ -54,7 +54,7 @@ architecture tb of tb_top_level_RX is
 
     -- CAN stuffed frame
     constant CAN_FRAME_STUFFED : std_logic_vector(62 downto 0) :=
-        "000010010011000001101010010100111100101100110101101111101111101";
+        "0000100100110000011010100101001111001011001101011011Z1101111101";
 
 begin
 
@@ -66,7 +66,7 @@ begin
         port map (
             clock        => clock,
             reset        => reset,
-            rx_in        => rx_in,
+            bus_line     => bus_line,
             prop_seg     => prop_seg,
             phase_seg1   => phase_seg1,
             phase_seg2   => phase_seg2,
@@ -86,7 +86,7 @@ begin
     begin
         -- reset
         reset <= '1';
-        rx_in <= '1';
+        bus_line <= '1';
         ram_we <= '0';
         wait for 50 ns;
         reset <= '0';
@@ -107,14 +107,17 @@ begin
         ram_dinID <= (others => '0');
         wait for 200 ns;
 
-        -- frame transmition
+        -- default bus recessive
+        bus_line <= '1';
+
+        -- Trasmissione frame simulata
         for i in CAN_FRAME_STUFFED'range loop
-            rx_in <= CAN_FRAME_STUFFED(i);
+            bus_line <= CAN_FRAME_STUFFED(i);
             wait for 70 ns;
         end loop;
-
-        rx_in <= '1';
-        wait for 2 us;
+        
+        bus_line <= '1';
+        wait for 1 us;
 
     end process;
 

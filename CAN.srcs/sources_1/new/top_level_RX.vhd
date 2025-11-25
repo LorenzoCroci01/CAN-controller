@@ -27,7 +27,7 @@ entity top_level_RX is
         -- input
         clock        : in std_logic;    -- main clock signal
         reset        : in std_logic;    -- async reset
-        rx_in        : in std_logic;    -- bus serial signal
+        bus_line     : inout std_logic; -- bus line
         
         -- input to CAN RX module (BTU config)
         prop_seg     : in unsigned(7 downto 0);
@@ -62,17 +62,29 @@ architecture arch_top_level_RX of top_level_RX is
     signal ram_addrID_fsm   : unsigned(7 downto 0);
     signal ram_addrID_int   : unsigned(7 downto 0);
     signal ram_doutID_int   : std_logic_vector(7 downto 0);
-    
     signal ram_we_int       : std_logic;
+    
+    -- can bus driver rx
+    signal sl_rx_in        : std_logic;
+    signal sl_sel_buff     : std_logic;
     
 begin
     
+    -- CAN bus driver tristate
+    u_driver_rx : entity work.driver_rx
+        port map (
+            ack_slot    =>  sl_ack_slot,
+            sel_buff    =>  sl_sel_buff,
+            bus_line    =>  bus_line,
+            rx_in       =>  sl_rx_in
+        );
+        
     -- CAN RX module
     u_can_rx_module : entity work.CAN_RX_module
         port map (
             clock       =>  clock,
             reset       =>  reset,
-            rx_in       =>  rx_in,
+            rx_in       =>  sl_rx_in,
             prop_seg    =>  prop_seg,
             phase_seg1  =>  phase_seg1,
             phase_seg2  =>  phase_seg2,
@@ -80,7 +92,8 @@ begin
             ack_slot    =>  sl_ack_slot,
             frame_rdy   =>  sl_frame_rdy,
             state_can   =>  sv_state_can,
-            err_frame   =>  err_frame
+            err_frame   =>  err_frame,
+            sel_buff    =>  sl_sel_buff
         );
      
     -- FSM RX (CRC + filtro ID via RAM)
@@ -111,7 +124,7 @@ begin
             dout    => ram_doutID_int,
             ram_rdy => ram_rdy
         );
-        
+                
     ack_slot <= sl_ack_slot;
             
 end architecture;

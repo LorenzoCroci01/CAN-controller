@@ -1,17 +1,26 @@
-
-*** Running vivado
-    with args -log top_level_RX.vds -m64 -product Vivado -mode batch -messageDb vivado.pb -notrace -source top_level_RX.tcl
-
-
-
-****** Vivado v2025.1 (64-bit)
-  **** SW Build 6140274 on Thu May 22 00:12:29 MDT 2025
-  **** IP Build 6138677 on Thu May 22 03:10:11 MDT 2025
-  **** SharedData Build 6139179 on Tue May 20 17:58:58 MDT 2025
-  **** Start of session at: Tue Nov 25 12:37:21 2025
-    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
-    ** Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
-
+#-----------------------------------------------------------
+# Vivado v2025.1 (64-bit)
+# SW Build 6140274 on Thu May 22 00:12:29 MDT 2025
+# IP Build 6138677 on Thu May 22 03:10:11 MDT 2025
+# SharedData Build 6139179 on Tue May 20 17:58:58 MDT 2025
+# Start of session at: Tue Nov 25 12:37:21 2025
+# Process ID         : 18328
+# Current directory  : C:/Users/croci/CAN/CAN.runs/synth_1
+# Command line       : vivado.exe -log top_level_RX.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source top_level_RX.tcl
+# Log file           : C:/Users/croci/CAN/CAN.runs/synth_1/top_level_RX.vds
+# Journal file       : C:/Users/croci/CAN/CAN.runs/synth_1\vivado.jou
+# Running On         : Croci
+# Platform           : Windows Server 2016 or Windows 10
+# Operating System   : 26200
+# Processor Detail   : 12th Gen Intel(R) Core(TM) i7-1255U
+# CPU Frequency      : 2611 MHz
+# CPU Physical cores : 10
+# CPU Logical cores  : 12
+# Host memory        : 16850 MB
+# Swap memory        : 1140 MB
+# Total Virtual      : 17991 MB
+# Available Virtual  : 7020 MB
+#-----------------------------------------------------------
 source top_level_RX.tcl -notrace
 create_project: Time (s): cpu = 00:00:12 ; elapsed = 00:00:07 . Memory (MB): peak = 503.723 ; gain = 210.047
 Command: read_checkpoint -auto_incremental -incremental C:/Users/croci/CAN/CAN.srcs/utils_1/imports/synth_1/Destuffing.dcp

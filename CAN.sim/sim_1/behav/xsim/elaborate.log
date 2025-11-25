@@ -12,6 +12,7 @@ Compiling package std.standard
 Compiling package std.textio
 Compiling package ieee.std_logic_1164
 Compiling package ieee.numeric_std
+Compiling architecture arch_driver_rx of entity xil_defaultlib.driver_rx [driver_rx_default]
 Compiling architecture arch_ff of entity xil_defaultlib.FF [ff_default]
 Compiling architecture arch_btu of entity xil_defaultlib.BTU [btu_default]
 Compiling architecture arch_destuffing of entity xil_defaultlib.Destuffing [destuffing_default]

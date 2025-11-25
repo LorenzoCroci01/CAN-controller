@@ -3,11 +3,11 @@
 # SW Build 6140274 on Thu May 22 00:12:29 MDT 2025
 # IP Build 6138677 on Thu May 22 03:10:11 MDT 2025
 # SharedData Build 6139179 on Tue May 20 17:58:58 MDT 2025
-# Start of session at: Thu Nov 13 11:35:59 2025
-# Process ID         : 14988
+# Start of session at: Tue Nov 25 12:37:21 2025
+# Process ID         : 18328
 # Current directory  : C:/Users/croci/CAN/CAN.runs/synth_1
-# Command line       : vivado.exe -log deserializer.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source deserializer.tcl
-# Log file           : C:/Users/croci/CAN/CAN.runs/synth_1/deserializer.vds
+# Command line       : vivado.exe -log top_level_RX.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source top_level_RX.tcl
+# Log file           : C:/Users/croci/CAN/CAN.runs/synth_1/top_level_RX.vds
 # Journal file       : C:/Users/croci/CAN/CAN.runs/synth_1\vivado.jou
 # Running On         : Croci
 # Platform           : Windows Server 2016 or Windows 10
@@ -17,8 +17,8 @@
 # CPU Physical cores : 10
 # CPU Logical cores  : 12
 # Host memory        : 16850 MB
-# Swap memory        : 1073 MB
-# Total Virtual      : 17923 MB
-# Available Virtual  : 7185 MB
+# Swap memory        : 1140 MB
+# Total Virtual      : 17991 MB
+# Available Virtual  : 7020 MB
 #-----------------------------------------------------------
-source deserializer.tcl -notrace
+source top_level_RX.tcl -notrace

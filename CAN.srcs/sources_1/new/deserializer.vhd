@@ -25,21 +25,21 @@ use IEEE.NUMERIC_STD.ALL;
 entity deserializer is 
     Port( 
         -- input 
-        clock           : in std_logic; -- main clock signal  
-        reset           : in std_logic; -- asynchronous reset 
-        destuff_bit     : in std_logic; -- destuffed input bit 
-        bit_valid       : in std_logic; -- bit valid from destuffer
-        sample_tick     : in std_logic; -- sample tick from BTU
+        clock           : in std_logic;     -- main clock
+        reset           : in std_logic;     -- async reset
+        destuff_bit     : in std_logic;     -- input destuffed bit
+        bit_valid       : in std_logic;     -- bit valid flag
+        sample_tick     : in std_logic;     -- sample tick signal
         
         -- output 
-        frame           : out std_logic_vector(107 downto 0); -- complete frame 
-        data_len_o      : out unsigned(6 downto 0);           -- data field length 
-        ack_slot        : out std_logic;                      -- ACK slot: '0' dominant 
-        frame_rdy       : out std_logic;                      -- frame ready signal 
-        state_can       : out std_logic_vector(1 downto 0);   -- CAN controller state
-        sel_buff        : out std_logic                       -- buffer tristate selector  
+        frame           : out std_logic_vector(107 downto 0);   -- output complete frame 
+        ack_slot        : out std_logic;                        -- ack slot: 0 dominant
+        frame_rdy       : out std_logic;                        -- frame ready flag
+        state_can       : out std_logic_vector(1 downto 0);     -- state can (IDLE, RECEIVING, TRANSMITTING, ERROR)
+        sel_buff        : out std_logic                         -- driver enable
     ); 
 end entity;
+
 
 architecture arch_deserializer of deserializer is
     -- FSM state
@@ -169,20 +169,20 @@ begin
 
                     -- CRC delimiter
                     when CRC_DELIM =>
+                        ack_slot   <= '0';  -- force dominant
+                        sel_buff   <= '1';  -- enable driver towards the bus
                         sv_last_pt <= sv_last_pt(23 downto 0) & destuff_bit;
                         state      <= ACK;
 
                     -- ACK slot - 1 bit
                     when ACK =>
-                        ack_slot   <= '0'; -- dominant
-                        sel_buff   <= '1';
+                        ack_slot   <= '1';  -- recessive
+                        sel_buff   <= '0';  -- disable driver towards the bus
                         sv_last_pt <= sv_last_pt(23 downto 0) & '0';
                         state      <= ACK_DELIM;
 
                     -- ACK delimiter - 1 bit
                     when ACK_DELIM =>
-                        ack_slot   <= '1';
-                        sel_buff   <= '0';
                         sv_last_pt <= sv_last_pt(23 downto 0) & destuff_bit;
                         state      <= EOF;
 
@@ -219,9 +219,6 @@ begin
             end if;
         end if;
     end process;
-
-    -- data field length
-    data_len_o <= s_data_len;
 
 end architecture;
 
