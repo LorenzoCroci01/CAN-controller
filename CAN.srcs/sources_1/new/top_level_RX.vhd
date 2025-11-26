@@ -73,6 +73,7 @@ begin
     -- CAN bus driver tristate
     u_driver_rx : entity work.driver_rx
         port map (
+            clock       =>  clock,
             ack_slot    =>  sl_ack_slot,
             bus_line    =>  bus_line,
             rx_in       =>  sl_rx_in

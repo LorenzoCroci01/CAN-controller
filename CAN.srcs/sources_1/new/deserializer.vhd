@@ -65,6 +65,7 @@ begin
 
     proc_deserializer : process(clock, reset)
     begin
+    
         if reset = '1' then
             state         <= IDLE;
             s_bit_count   <= (others => '0');
@@ -73,17 +74,17 @@ begin
             sv_data_field <= (others => '0');
             sv_first_pt   <= (others => '0');
             sv_last_pt    <= (others => '0');
-
-            ack_slot      <= '1';
+            
+            ack_slot      <= '0';
             frame_rdy     <= '0';
             frame         <= (others => '0');
-            sv_state_can     <= "00";
+            sv_state_can  <= "00";
 
         elsif rising_edge(clock) then
             
-            frame_rdy <= '0';
+            frame_rdy <= '0'; 
+            
             if bit_valid = '1' then
-
                 case state is
 
                     -- IDLE: wait sof
@@ -136,7 +137,6 @@ begin
                         s_data_len  <= sv_dlc & "000";       -- dlc * 8
                         s_bit_count <= (others => '0');
                         
-
                         if sv_dlc = "0000" then
                             -- no data bits
                             state <= CRC;
@@ -161,20 +161,20 @@ begin
                         sv_last_pt  <= sv_last_pt(23 downto 0) & destuff_bit;
                         s_bit_count <= s_bit_count + 1;
 
-                        if s_bit_count = to_unsigned(14, 7) then
+                        if s_bit_count = to_unsigned(14, 7) then 
                             s_bit_count <= (others => '0');
                             state       <= CRC_DELIM;
                         end if;
 
                     -- CRC delimiter
                     when CRC_DELIM =>
-                        ack_slot   <= '0';  -- force dominant
+                        ack_slot   <= '1'; 
                         sv_last_pt <= sv_last_pt(23 downto 0) & destuff_bit;
                         state      <= ACK;
 
                     -- ACK slot - 1 bit
-                    when ACK =>
-                        ack_slot   <= '1';  -- recessive
+                    when ACK => 
+                        ack_slot   <= '0'; 
                         sv_last_pt <= sv_last_pt(23 downto 0) & '0';
                         state      <= ACK_DELIM;
 

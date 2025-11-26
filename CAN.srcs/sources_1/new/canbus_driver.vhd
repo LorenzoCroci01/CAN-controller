@@ -24,7 +24,8 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity driver_rx is
     Port (
-        ack_slot    : in  std_logic;     -- 1 only during ack slot
+        clock       : in std_logic;
+        ack_slot    : in std_logic;     -- 1 only during ack slot
         bus_line    : inout std_logic;   -- CAN bus physics line
         rx_in       : out std_logic      -- received signal
     );
@@ -34,10 +35,7 @@ architecture arch_driver_rx of driver_rx is
 
 begin
     
-    -- control tristate
-    bus_line <= '0' when ack_slot = '0' else 'Z';
-    
-    -- read always from bus line
-    rx_in <= bus_line;
+    bus_line <= '0' when ack_slot = '1' else 'Z';
+    rx_in <= to_X01(bus_line);
         
 end architecture;
