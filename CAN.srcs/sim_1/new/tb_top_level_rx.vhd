@@ -54,8 +54,8 @@ architecture tb of tb_top_level_RX is
     signal ack_slot     : std_logic;
 
     -- Stuffed CAN frame
-    constant CAN_FRAME_STUFFED : std_logic_vector(62 downto 0) :=
-        "000010010011000001101010010100111100101100110101101111101111101";
+    constant CAN_FRAME_STUFFED : std_logic_vector(60 downto 0) :=
+        "0000100100110000011010100101001111001011001101011011111111111";
 
 begin
 
@@ -105,20 +105,19 @@ begin
         wait for 200 ns;
 
         -- Transmit frame
-        for i in 62 downto 0 loop
+        for i in 60 downto 0 loop
             tx_bit <= CAN_FRAME_STUFFED(i);
             wait for 70 ns;
         end loop;
 
         wait for 2 us;
-        wait;
     end process;
 
-    -- Bus driving logic (with ACK release)
+    -- Bus driving logic
     bus_drive : process(tx_bit, ack_slot)
     begin
         if ack_slot = '1' then
-            bus_line <= 'Z';         -- during ACK slot → release
+            bus_line <= 'Z';         -- during ACK slot release bus
         else
             if tx_bit = '0' then
                 bus_line <= '0';     -- dominant

@@ -42,10 +42,9 @@ end fsm_rx;
 architecture arch_fsm_rx of fsm_rx is
 
     type state_type is (IDLE, CRC_CHECK, ID_FILTER, DONE);
-    signal state        : state_type := IDLE;
+    signal state        : state_type;
 
     signal crc_field    : std_logic_vector(14 downto 0);
-    signal crc_calc     : std_logic_vector(14 downto 0);
     
     signal id_addr      : unsigned(7 downto 0);  -- first 8 bit ID
     signal id_bit       : unsigned(2 downto 0);  -- last 3 bit ID
