@@ -1,7 +1,7 @@
 Vivado Simulator v2025.1.0
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
 Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
-Running: C:/Xilinx/2025.1/Vivado/bin/unwrapped/win64.o/xelab.exe --incr --debug typical --relax --mt 2 -L xil_defaultlib -L secureip --snapshot tb_top_level_RX_behav xil_defaultlib.tb_top_level_RX -log elaborate.log 
+Running: C:/Xilinx/2025.1/Vivado/bin/unwrapped/win64.o/xelab.exe --incr --debug typical --relax --mt 2 -L xil_defaultlib -L secureip --snapshot tb_top_level_tx_behav xil_defaultlib.tb_top_level_tx -log elaborate.log 
 Using 2 slave threads.
 Starting static elaboration
 Completed static elaboration
@@ -12,14 +12,11 @@ Compiling package std.standard
 Compiling package std.textio
 Compiling package ieee.std_logic_1164
 Compiling package ieee.numeric_std
-Compiling architecture arch_driver_rx of entity xil_defaultlib.driver_rx [driver_rx_default]
-Compiling architecture arch_ff of entity xil_defaultlib.FF [ff_default]
+Compiling architecture arch_builder_tx of entity xil_defaultlib.builder_tx [builder_tx_default]
+Compiling architecture arch_arbiter of entity xil_defaultlib.arbiter [arbiter_default]
+Compiling architecture arch_bit_stuffer of entity xil_defaultlib.bit_stuffer [bit_stuffer_default]
 Compiling architecture arch_btu of entity xil_defaultlib.BTU [btu_default]
-Compiling architecture arch_destuffing of entity xil_defaultlib.Destuffing [destuffing_default]
-Compiling architecture arch_deserializer of entity xil_defaultlib.deserializer [deserializer_default]
-Compiling architecture arch_can_rx_module of entity xil_defaultlib.CAN_RX_module [can_rx_module_default]
-Compiling architecture arch_fsm_rx of entity xil_defaultlib.fsm_rx [fsm_rx_default]
-Compiling architecture behavioral of entity xil_defaultlib.mem_filterID [mem_filterid_default]
-Compiling architecture arch_top_level_rx of entity xil_defaultlib.top_level_RX [top_level_rx_default]
-Compiling architecture tb of entity xil_defaultlib.tb_top_level_rx
-Built simulation snapshot tb_top_level_RX_behav
+Compiling architecture arch_serializer of entity xil_defaultlib.serializer [serializer_default]
+Compiling architecture arch_top_level_tx of entity xil_defaultlib.top_level_tx [top_level_tx_default]
+Compiling architecture sim of entity xil_defaultlib.tb_top_level_tx
+Built simulation snapshot tb_top_level_tx_behav

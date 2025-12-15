@@ -72,15 +72,8 @@ set_property ip_cache_permissions {read write} [current_project]
 OPTRACE "Creating in-memory project" END { }
 OPTRACE "Adding files" START { }
 read_vhdl -library xil_defaultlib {
-  C:/Users/croci/CAN/CAN.srcs/sources_1/new/BTU.vhd
-  C:/Users/croci/CAN/CAN.srcs/sources_1/new/FF.vhd
-  C:/Users/croci/CAN/CAN.srcs/sources_1/new/Destuffing.vhd
-  C:/Users/croci/CAN/CAN.srcs/sources_1/new/deserializer.vhd
-  C:/Users/croci/CAN/CAN.srcs/sources_1/new/CAN_RX_module.vhd
-  C:/Users/croci/CAN/CAN.srcs/sources_1/new/fsm_rx.vhd
-  C:/Users/croci/CAN/CAN.srcs/sources_1/new/mem_filterID.vhd
-  C:/Users/croci/CAN/CAN.srcs/sources_1/new/top_level_RX.vhd
-  C:/Users/croci/CAN/CAN.srcs/sources_1/new/canbus_driver.vhd
+  C:/Users/croci/CAN/CAN.srcs/sources_1/new/fsm_tx.vhd
+  C:/Users/croci/CAN/CAN.srcs/sources_1/new/arbiter.vhd
 }
 OPTRACE "Adding files" END { }
 # Mark all dcp files as not used in implementation to prevent them from being

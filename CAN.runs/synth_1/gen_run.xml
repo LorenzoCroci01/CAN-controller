@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<GenRun Id="synth_1" LaunchPart="xc7a50tcpg236-1" LaunchTime="1764090605" LaunchIncrCheckpoint="$PSRCDIR/utils_1/imports/synth_1/Destuffing.dcp">
+<GenRun Id="synth_1" LaunchPart="xc7a50tcpg236-1" LaunchTime="1764174656" LaunchIncrCheckpoint="$PSRCDIR/utils_1/imports/synth_1/Destuffing.dcp">
   <File Type="REPORTS-TCL" Name="top_level_RX_reports.tcl"/>
-  <File Type="RDS-UTIL" Name="top_level_RX_utilization_synth.rpt"/>
-  <File Type="RDS-UTIL-PB" Name="top_level_RX_utilization_synth.pb"/>
+  <File Type="RDS-UTIL" Name="top_level_tx_utilization_synth.rpt"/>
+  <File Type="RDS-UTIL-PB" Name="top_level_tx_utilization_synth.pb"/>
   <File Type="PA-TCL" Name="top_level_RX.tcl"/>
   <File Type="RDS-RDS" Name="top_level_RX.vds"/>
   <File Type="RDS-DCP" Name="top_level_RX.dcp"/>
@@ -10,53 +10,74 @@
     <Filter Type="Srcs"/>
     <File Path="$PSRCDIR/sources_1/new/BTU.vhd">
       <FileInfo>
+        <Attr Name="UserDisabled" Val="1"/>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="simulation"/>
       </FileInfo>
     </File>
     <File Path="$PSRCDIR/sources_1/new/FF.vhd">
       <FileInfo>
+        <Attr Name="UserDisabled" Val="1"/>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="simulation"/>
       </FileInfo>
     </File>
     <File Path="$PSRCDIR/sources_1/new/Destuffing.vhd">
       <FileInfo>
+        <Attr Name="UserDisabled" Val="1"/>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="simulation"/>
       </FileInfo>
     </File>
     <File Path="$PSRCDIR/sources_1/new/deserializer.vhd">
       <FileInfo>
+        <Attr Name="UserDisabled" Val="1"/>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="simulation"/>
       </FileInfo>
     </File>
     <File Path="$PSRCDIR/sources_1/new/CAN_RX_module.vhd">
       <FileInfo>
+        <Attr Name="UserDisabled" Val="1"/>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="simulation"/>
       </FileInfo>
     </File>
     <File Path="$PSRCDIR/sources_1/new/fsm_rx.vhd">
       <FileInfo>
+        <Attr Name="UserDisabled" Val="1"/>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="simulation"/>
       </FileInfo>
     </File>
     <File Path="$PSRCDIR/sources_1/new/mem_filterID.vhd">
       <FileInfo>
+        <Attr Name="UserDisabled" Val="1"/>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="simulation"/>
       </FileInfo>
     </File>
     <File Path="$PSRCDIR/sources_1/new/top_level_RX.vhd">
       <FileInfo>
+        <Attr Name="UserDisabled" Val="1"/>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="simulation"/>
       </FileInfo>
     </File>
     <File Path="$PSRCDIR/sources_1/new/canbus_driver.vhd">
+      <FileInfo>
+        <Attr Name="UserDisabled" Val="1"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/new/fsm_tx.vhd">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/new/arbiter.vhd">
       <FileInfo>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="simulation"/>

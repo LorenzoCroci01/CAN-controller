@@ -1,0 +1,12 @@
+# compile vhdl design source files
+vhdl xil_defaultlib  \
+"../../../../CAN.srcs/sources_1/new/BTU.vhd" \
+"../../../../CAN.srcs/sources_1/new/builder_tx.vhd" \
+"../../../../CAN.srcs/sources_1/new/arbiter.vhd" \
+"../../../../CAN.srcs/sources_1/new/bit_stuffer.vhd" \
+"../../../../CAN.srcs/sources_1/new/serializer.vhd" \
+"../../../../CAN.srcs/sources_1/new/top_level_tx.vhd" \
+"../../../../CAN.srcs/sim_1/new/tb_top_level_TX.vhd" \
+
+# Do not sort compile order
+nosort

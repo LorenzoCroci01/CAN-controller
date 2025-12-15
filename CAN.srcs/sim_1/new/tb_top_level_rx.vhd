@@ -56,7 +56,6 @@ architecture tb of tb_top_level_RX is
     -- Stuffed CAN frame
     constant CAN_FRAME_STUFFED : std_logic_vector(60 downto 0) :=
         "0000100100110000011010100101001111001011001101011011111111111";
-
 begin
 
     -- Generate clock
@@ -96,10 +95,10 @@ begin
 
         -- Configure RAM
         ram_we <= '1';
-        ram_addrID <= x"13"; ram_dinID <= "00001000"; wait until rising_edge(clock);
-        ram_addrID <= x"34"; ram_dinID <= "00000100"; wait until rising_edge(clock);
-        ram_addrID <= x"12"; ram_dinID <= "00001000"; wait until rising_edge(clock);
-        ram_addrID <= x"24"; ram_dinID <= "00001000"; wait until rising_edge(clock);
+        ram_addrID <= x"13"; ram_dinID <= "00001000"; wait until rising_edge(clock);    -- 0x09b
+        ram_addrID <= x"34"; ram_dinID <= "00000100"; wait until rising_edge(clock);    -- 0x1a2
+        ram_addrID <= x"12"; ram_dinID <= "00001000"; wait until rising_edge(clock);    -- 0x093
+        ram_addrID <= x"24"; ram_dinID <= "00001000"; wait until rising_edge(clock);    -- 0x123
         ram_we <= '0';
 
         wait for 200 ns;

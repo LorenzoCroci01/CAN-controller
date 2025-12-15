@@ -25,17 +25,17 @@ use IEEE.NUMERIC_STD.ALL;
 entity deserializer is 
     Port( 
         -- input 
-        clock           : in std_logic;         
-        reset           : in std_logic;         
-        destuff_bit     : in std_logic;         
-        bit_valid       : in std_logic;         
-        sample_tick     : in std_logic;         
+        clock           : in std_logic;     -- main clock 
+        reset           : in std_logic;     -- async reset
+        destuff_bit     : in std_logic;     -- destuffed bit
+        bit_valid       : in std_logic;     -- bit valid flag for destuffing    
+        sample_tick     : in std_logic;     -- sample tick signal    
 
         -- output 
-        frame           : out std_logic_vector(107 downto 0);   
-        ack_slot        : out std_logic;        
-        frame_rdy       : out std_logic;        
-        state_can       : out std_logic_vector(1 downto 0)     
+        frame           : out std_logic_vector(107 downto 0);   -- complete frame
+        ack_slot        : out std_logic;    -- ack slot flag
+        frame_rdy       : out std_logic;    -- frame ready flag    
+        state_can       : inout std_logic_vector(1 downto 0)      -- state can   
     ); 
 end entity;
 
@@ -50,15 +50,12 @@ architecture arch_deserializer of deserializer is
     signal s_bit_count  : unsigned(6 downto 0);
     signal sv_dlc       : unsigned(3 downto 0);
     signal s_data_len   : unsigned(6 downto 0);   
-    signal sv_state_can : std_logic_vector(1 downto 0); 
     
     signal sv_first_pt   : std_logic_vector(18 downto 0);
     signal sv_data_field : std_logic_vector(63 downto 0); 
     signal sv_last_pt    : std_logic_vector(24 downto 0); 
     
 begin
-    
-    state_can <= sv_state_can;
 
     proc_deserializer : process(clock, reset)
     begin
@@ -75,7 +72,7 @@ begin
             ack_slot      <= '0';
             frame_rdy     <= '0';
             frame         <= (others => '0');
-            sv_state_can  <= "00";
+            state_can     <= "00";
 
         elsif rising_edge(clock) then
             
@@ -86,7 +83,7 @@ begin
                 -- IDLE: wait SOF
                 when IDLE =>
                     if bit_valid = '1' and destuff_bit = '0' then
-                        sv_state_can <= "01"; 
+                        state_can <= "01"; 
                         sv_data_field <= (others => '0');
                         sv_last_pt <= (others => '0');
                         sv_first_pt <= (others => '0');
@@ -207,7 +204,7 @@ begin
                 when DONE =>
                     frame <= sv_first_pt & sv_data_field & sv_last_pt;
                     frame_rdy <= '1';
-                    sv_state_can <= "00"; 
+                    state_can <= "00"; 
                     state <= IDLE;
 
                 when others =>

@@ -37,7 +37,7 @@ entity CAN_RX_module is
         frame        : out std_logic_vector(107 downto 0);
         ack_slot     : out std_logic;
         frame_rdy    : out std_logic;
-        state_can    : out std_logic_vector(1 downto 0);
+        state_can    : inout std_logic_vector(1 downto 0);
         err_frame    : out std_logic;
 
         -- debug output
