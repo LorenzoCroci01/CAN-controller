@@ -41,4 +41,4 @@ EAStep()
      fi
 }
 
-EAStep vivado -log top_level_RX.vds -m64 -product Vivado -mode batch -messageDb vivado.pb -notrace -source top_level_RX.tcl
+EAStep vivado -log top_level_tx.vds -m64 -product Vivado -mode batch -messageDb vivado.pb -notrace -source top_level_tx.tcl

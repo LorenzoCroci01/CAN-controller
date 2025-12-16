@@ -54,30 +54,42 @@
 #endif
 typedef void (*funcp)(char *, char *);
 extern int main(int, char**);
-IKI_DLLESPEC extern void execute_48(char*, char *);
-IKI_DLLESPEC extern void execute_49(char*, char *);
-IKI_DLLESPEC extern void execute_31(char*, char *);
 IKI_DLLESPEC extern void execute_32(char*, char *);
-IKI_DLLESPEC extern void execute_33(char*, char *);
+IKI_DLLESPEC extern void execute_75(char*, char *);
+IKI_DLLESPEC extern void execute_34(char*, char *);
 IKI_DLLESPEC extern void execute_35(char*, char *);
-IKI_DLLESPEC extern void execute_37(char*, char *);
-IKI_DLLESPEC extern void execute_39(char*, char *);
-IKI_DLLESPEC extern void execute_41(char*, char *);
+IKI_DLLESPEC extern void execute_36(char*, char *);
+IKI_DLLESPEC extern void execute_38(char*, char *);
+IKI_DLLESPEC extern void execute_40(char*, char *);
 IKI_DLLESPEC extern void execute_42(char*, char *);
-IKI_DLLESPEC extern void execute_43(char*, char *);
 IKI_DLLESPEC extern void execute_44(char*, char *);
 IKI_DLLESPEC extern void execute_45(char*, char *);
+IKI_DLLESPEC extern void execute_46(char*, char *);
 IKI_DLLESPEC extern void execute_47(char*, char *);
+IKI_DLLESPEC extern void execute_48(char*, char *);
+IKI_DLLESPEC extern void execute_50(char*, char *);
+IKI_DLLESPEC extern void execute_52(char*, char *);
+IKI_DLLESPEC extern void execute_54(char*, char *);
+IKI_DLLESPEC extern void execute_56(char*, char *);
+IKI_DLLESPEC extern void execute_64(char*, char *);
+IKI_DLLESPEC extern void execute_65(char*, char *);
+IKI_DLLESPEC extern void execute_66(char*, char *);
+IKI_DLLESPEC extern void execute_67(char*, char *);
+IKI_DLLESPEC extern void execute_68(char*, char *);
+IKI_DLLESPEC extern void execute_70(char*, char *);
+IKI_DLLESPEC extern void execute_71(char*, char *);
+IKI_DLLESPEC extern void execute_72(char*, char *);
+IKI_DLLESPEC extern void execute_74(char*, char *);
 IKI_DLLESPEC extern void transaction_0(char*, char*, unsigned, unsigned, unsigned);
 IKI_DLLESPEC extern void vhdl_transfunc_eventcallback(char*, char*, unsigned, unsigned, unsigned, char *);
-funcp funcTab[16] = {(funcp)execute_48, (funcp)execute_49, (funcp)execute_31, (funcp)execute_32, (funcp)execute_33, (funcp)execute_35, (funcp)execute_37, (funcp)execute_39, (funcp)execute_41, (funcp)execute_42, (funcp)execute_43, (funcp)execute_44, (funcp)execute_45, (funcp)execute_47, (funcp)transaction_0, (funcp)vhdl_transfunc_eventcallback};
-const int NumRelocateId= 16;
+funcp funcTab[28] = {(funcp)execute_32, (funcp)execute_75, (funcp)execute_34, (funcp)execute_35, (funcp)execute_36, (funcp)execute_38, (funcp)execute_40, (funcp)execute_42, (funcp)execute_44, (funcp)execute_45, (funcp)execute_46, (funcp)execute_47, (funcp)execute_48, (funcp)execute_50, (funcp)execute_52, (funcp)execute_54, (funcp)execute_56, (funcp)execute_64, (funcp)execute_65, (funcp)execute_66, (funcp)execute_67, (funcp)execute_68, (funcp)execute_70, (funcp)execute_71, (funcp)execute_72, (funcp)execute_74, (funcp)transaction_0, (funcp)vhdl_transfunc_eventcallback};
+const int NumRelocateId= 28;
 
 void relocate(char *dp)
 {
-	iki_relocate(dp, "xsim.dir/tb_top_level_tx_behav/xsim.reloc",  (void **)funcTab, 16);
-	iki_vhdl_file_variable_register(dp + 9840);
-	iki_vhdl_file_variable_register(dp + 9896);
+	iki_relocate(dp, "xsim.dir/tb_top_level_tx_behav/xsim.reloc",  (void **)funcTab, 28);
+	iki_vhdl_file_variable_register(dp + 17648);
+	iki_vhdl_file_variable_register(dp + 17704);
 
 
 	/*Populate the transaction function pointer field in the whole net structure */

@@ -54,11 +54,11 @@ begin
             sv_frame_tx  <= (others => '0');
 
         elsif rising_edge(clock) then
-            frame_tx_rdy <= '0';
 
             case state is
                 when IDLE =>
                     if state_can = "00" and tx_request = '1' then
+                        frame_tx_rdy <= '0';
                         sv_frame_tx(107 downto 25) <= frame_tx_in;
                         dividend := frame_tx_in & "000000000000000";
                         state <= BUILD;

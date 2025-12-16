@@ -27,7 +27,7 @@ entity top_level_RX is
         -- input
         clock        : in std_logic;    -- main clock signal
         reset        : in std_logic;    -- async reset
-        bus_line     : inout std_logic; -- bus line
+        rx_in        : in std_logic;
         
         -- input to CAN RX module (BTU config)
         prop_seg     : in unsigned(7 downto 0);
@@ -64,27 +64,14 @@ architecture arch_top_level_RX of top_level_RX is
     signal ram_doutID_int   : std_logic_vector(7 downto 0);
     signal ram_we_int       : std_logic;
     
-    -- can bus driver rx
-    signal sl_rx_in        : std_logic;
-    signal sl_sel_buff     : std_logic;
-    
 begin
-    
-    -- CAN bus driver tristate
-    u_driver_rx : entity work.driver_rx
-        port map (
-            clock       =>  clock,
-            ack_slot    =>  sl_ack_slot,
-            bus_line    =>  bus_line,
-            rx_in       =>  sl_rx_in
-        );
         
     -- CAN RX module
     u_can_rx_module : entity work.CAN_RX_module
         port map (
             clock       =>  clock,
             reset       =>  reset,
-            rx_in       =>  sl_rx_in,
+            rx_in       =>  rx_in,
             prop_seg    =>  prop_seg,
             phase_seg1  =>  phase_seg1,
             phase_seg2  =>  phase_seg2,

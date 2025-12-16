@@ -10,84 +10,73 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="1,073.165 ns"></ZoomStartTime>
-      <ZoomEndTime time="1,381.367 ns"></ZoomEndTime>
-      <Cursor1Time time="1,330.000 ns"></Cursor1Time>
+      <ZoomStartTime time="1,596.745 ns"></ZoomStartTime>
+      <ZoomEndTime time="2,140.651 ns"></ZoomEndTime>
+      <Cursor1Time time="2,050.000 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="217"></NameColumnWidth>
-      <ValueColumnWidth column_width="198"></ValueColumnWidth>
+      <ValueColumnWidth column_width="168"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="17" />
-   <wvobject fp_name="/tb_top_level_tx/UUT/u_builder_tx/tx_request" type="logic">
+   <WVObjectSize size="15" />
+   <wvobject fp_name="/tb_top_level_tx/DUT/u_builder_tx/tx_request" type="logic">
       <obj_property name="ElementShortName">tx_request</obj_property>
       <obj_property name="ObjectShortName">tx_request</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_top_level_tx/UUT/u_builder_tx/frame_tx_in" type="array">
+   <wvobject fp_name="/tb_top_level_tx/DUT/u_builder_tx/frame_tx_in" type="array">
       <obj_property name="ElementShortName">frame_tx_in[82:0]</obj_property>
       <obj_property name="ObjectShortName">frame_tx_in[82:0]</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_top_level_tx/UUT/u_builder_tx/frame_tx" type="array">
+   <wvobject fp_name="/tb_top_level_tx/DUT/u_builder_tx/frame_tx" type="array">
       <obj_property name="ElementShortName">frame_tx[107:0]</obj_property>
       <obj_property name="ObjectShortName">frame_tx[107:0]</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_top_level_tx/UUT/u_arbiter/id_tx" type="array">
-      <obj_property name="ElementShortName">id_tx[10:0]</obj_property>
-      <obj_property name="ObjectShortName">id_tx[10:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_top_level_tx/UUT/u_arbiter/id_rx" type="array">
-      <obj_property name="ElementShortName">id_rx[10:0]</obj_property>
-      <obj_property name="ObjectShortName">id_rx[10:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_top_level_tx/UUT/u_builder_tx/state" type="other">
-      <obj_property name="ElementShortName">state</obj_property>
-      <obj_property name="ObjectShortName">state</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_top_level_tx/UUT/u_arbiter/frame_tx_rdy" type="logic">
+   <wvobject fp_name="/tb_top_level_tx/DUT/u_builder_tx/frame_tx_rdy" type="logic">
       <obj_property name="ElementShortName">frame_tx_rdy</obj_property>
       <obj_property name="ObjectShortName">frame_tx_rdy</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_top_level_tx/UUT/u_arbiter/arbitration" type="logic">
+   <wvobject fp_name="/tb_top_level_tx/DUT/u_arbiter/id_tx" type="array">
+      <obj_property name="ElementShortName">id_tx[10:0]</obj_property>
+      <obj_property name="ObjectShortName">id_tx[10:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_level_tx/DUT/u_arbiter/id_rx" type="array">
+      <obj_property name="ElementShortName">id_rx[10:0]</obj_property>
+      <obj_property name="ObjectShortName">id_rx[10:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_level_tx/DUT/u_arbiter/arbitration" type="logic">
       <obj_property name="ElementShortName">arbitration</obj_property>
       <obj_property name="ObjectShortName">arbitration</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_top_level_tx/UUT/u_arbiter/frame_tx_out" type="array">
-      <obj_property name="ElementShortName">frame_tx_out[107:0]</obj_property>
-      <obj_property name="ObjectShortName">frame_tx_out[107:0]</obj_property>
-      <obj_property name="Radix">HEXRADIX</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_top_level_tx/UUT/u_bit_stuffer/frame_stuff_out" type="array">
+   <wvobject fp_name="/tb_top_level_tx/DUT/u_bit_stuffer/frame_stuff_out" type="array">
       <obj_property name="ElementShortName">frame_stuff_out[159:0]</obj_property>
       <obj_property name="ObjectShortName">frame_stuff_out[159:0]</obj_property>
-      <obj_property name="Radix">HEXRADIX</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_top_level_tx/UUT/u_bit_stuffer/frame_stuff_len" type="array">
-      <obj_property name="ElementShortName">frame_stuff_len[7:0]</obj_property>
-      <obj_property name="ObjectShortName">frame_stuff_len[7:0]</obj_property>
-      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_top_level_tx/UUT/u_bit_stuffer/valid" type="logic">
-      <obj_property name="ElementShortName">valid</obj_property>
-      <obj_property name="ObjectShortName">valid</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_top_level_tx/UUT/u_serializer/bit_serial_out" type="logic">
+   <wvobject fp_name="/tb_top_level_tx/DUT/u_serializer/bit_serial_out" type="logic">
       <obj_property name="ElementShortName">bit_serial_out</obj_property>
       <obj_property name="ObjectShortName">bit_serial_out</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_top_level_tx/UUT/u_serializer/valid_stuf_frm" type="logic">
-      <obj_property name="ElementShortName">valid_stuf_frm</obj_property>
-      <obj_property name="ObjectShortName">valid_stuf_frm</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_top_level_tx/UUT/u_serializer/bit_tick" type="logic">
-      <obj_property name="ElementShortName">bit_tick</obj_property>
-      <obj_property name="ObjectShortName">bit_tick</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_top_level_tx/UUT/u_serializer/end_tx" type="logic">
-      <obj_property name="ElementShortName">end_tx</obj_property>
-      <obj_property name="ObjectShortName">end_tx</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_top_level_tx/state_can" type="array">
       <obj_property name="ElementShortName">state_can[1:0]</obj_property>
       <obj_property name="ObjectShortName">state_can[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_level_tx/bus_line" type="logic">
+      <obj_property name="ElementShortName">bus_line</obj_property>
+      <obj_property name="ObjectShortName">bus_line</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_level_tx/end_tx" type="logic">
+      <obj_property name="ElementShortName">end_tx</obj_property>
+      <obj_property name="ObjectShortName">end_tx</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_level_tx/DUT/u_can_readTX/u_deserializerTX/sv_id_rx" type="array">
+      <obj_property name="ElementShortName">sv_id_rx[10:0]</obj_property>
+      <obj_property name="ObjectShortName">sv_id_rx[10:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_level_tx/DUT/u_can_readTX/u_deserializerTX/bit_valid" type="logic">
+      <obj_property name="ElementShortName">bit_valid</obj_property>
+      <obj_property name="ObjectShortName">bit_valid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_level_tx/DUT/u_can_readTX/u_deserializerTX/destuff_bit" type="logic">
+      <obj_property name="ElementShortName">destuff_bit</obj_property>
+      <obj_property name="ObjectShortName">destuff_bit</obj_property>
    </wvobject>
 </wave_config>

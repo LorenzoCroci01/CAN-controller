@@ -24,43 +24,64 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity CAN_RX_module is
     Port (
-        clock        : in std_logic;    -- main clock signal
-        reset        : in std_logic;    -- async reset
-        rx_in        : in std_logic;    -- bus serial signal
-        
-        -- configuration parameters BTU (baud rate)
-        prop_seg     : in unsigned(7 downto 0);
-        phase_seg1   : in unsigned(7 downto 0);
-        phase_seg2   : in unsigned(7 downto 0);
+        clock         : in  std_logic;
+        reset         : in  std_logic;
+        rx_in         : in  std_logic;
 
-        -- outputs
-        frame        : out std_logic_vector(107 downto 0);
-        ack_slot     : out std_logic;
-        frame_rdy    : out std_logic;
-        state_can    : inout std_logic_vector(1 downto 0);
-        err_frame    : out std_logic;
+        prop_seg      : in  unsigned(7 downto 0);
+        phase_seg1    : in  unsigned(7 downto 0);
+        phase_seg2    : in  unsigned(7 downto 0);
 
-        -- debug output
+        frame         : out std_logic_vector(107 downto 0);
+        state_can     : out std_logic_vector(1 downto 0);
+        ack_slot      : out std_logic;
+        frame_rdy     : out std_logic;
+        err_frame     : out std_logic;
+
         sample_tick_o : out std_logic
     );
 end CAN_RX_module;
 
 architecture arch_CAN_RX_module of CAN_RX_module is
 
-    signal sl_rx_in_sync    : std_logic;
-    signal sl_sample_tick   : std_logic;
-    signal sl_bit_tick      : std_logic;
+    signal sl_rx_in_sync   : std_logic;
+    signal sl_sample_tick  : std_logic;
+    signal sl_bit_tick     : std_logic;
 
-    signal sl_bit_out       : std_logic;
-    signal sl_bit_valid     : std_logic;
-    signal sv_state_can     : std_logic_vector(1 downto 0);
-    
-    signal sl_edge_det       : std_logic;
+    signal sl_bit_out      : std_logic;
+    signal sl_bit_valid    : std_logic;
+
+    signal sl_edge_det     : std_logic;
+
+    signal state_can_r     : std_logic_vector(1 downto 0) := "00"; -- IDLE
+
+    signal sl_err_frame    : std_logic;
+    signal sl_frame_rdy    : std_logic;
 
 begin
-    
-    state_can <= sv_state_can;
-    
+    -- outputs
+    state_can     <= state_can_r;
+    frame_rdy     <= sl_frame_rdy;
+    err_frame     <= sl_err_frame;
+    sample_tick_o <= sl_sample_tick;
+
+    -- can state manager
+    process(clock, reset)
+    begin
+        if reset = '1' then
+            state_can_r <= "00"; -- IDLE
+        elsif rising_edge(clock) then
+            -- error frame or end of frame -> IDLE
+            if sl_err_frame = '1' or sl_frame_rdy = '1' then
+                state_can_r <= "00";
+
+            -- start reception
+            elsif state_can_r = "00" and sl_bit_valid = '1' and sl_bit_out = '0' then
+                state_can_r <= "01"; -- RECEIVING
+            end if;
+        end if;
+    end process;
+
     -- Sync FF
     u_ff : entity work.FF
         port map (
@@ -69,7 +90,7 @@ begin
             rx_in      => rx_in,
             rx_in_sync => sl_rx_in_sync
         );
-        
+
     -- BTU
     u_btu : entity work.BTU
         port map (
@@ -90,29 +111,29 @@ begin
             reset        => reset,
             rx_in_sync   => sl_rx_in_sync,
             sample_tick  => sl_sample_tick,
-            state_can    => sv_state_can,
+            state_can    => state_can_r,
             bit_out      => sl_bit_out,
             bit_valid    => sl_bit_valid,
-            err_frame    => err_frame,
+            err_frame    => sl_err_frame,
             edge_det     => sl_edge_det
         );
 
     -- Deserializer
     u_deserial : entity work.deserializer
         port map (
-            clock       => clock,
-            reset       => reset,
-            destuff_bit => sl_bit_out,
-            bit_valid   => sl_bit_valid,
-            sample_tick => sl_sample_tick,
-            frame       => frame,
-            ack_slot    => ack_slot,
-            frame_rdy   => frame_rdy,
-            state_can   => state_can
+            clock          => clock,
+            reset          => reset,
+            destuff_bit    => sl_bit_out,
+            bit_valid      => sl_bit_valid,
+            sample_tick    => sl_sample_tick,
+            state_can      => state_can_r,
+            frame          => frame,
+            ack_slot       => ack_slot,
+            frame_rdy      => sl_frame_rdy
         );
 
-    sample_tick_o <= sl_sample_tick;
-
 end architecture;
+
+
 
 

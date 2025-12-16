@@ -1,14 +1,14 @@
 ----------------------------------------------------------------------------------
--- Company:             Università Politecnica delle Marche
--- Engineer:            Lorenzo Croci
+-- Company: 
+-- Engineer: 
 -- 
--- Create Date:         11.11.2025 09:17:16
+-- Create Date: 16.12.2025 09:27:28
 -- Design Name: 
--- Module Name:         deserializer - arch_deserializer
--- Project Name:        CAN
+-- Module Name: deserializerTX - arch_deserializerTX
+-- Project Name: 
 -- Target Devices: 
 -- Tool Versions: 
--- Description:         Deserializer (serial to parallel converter)
+-- Description: 
 -- 
 -- Dependencies: 
 -- 
@@ -18,27 +18,27 @@
 -- 
 ----------------------------------------------------------------------------------
 
+
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 
-entity deserializer is 
+entity deserializerTX is 
     Port( 
-        clock           : in  std_logic;
-        reset           : in  std_logic;
-        destuff_bit     : in  std_logic;
-        bit_valid       : in  std_logic;
-        sample_tick     : in  std_logic;
-        state_can       : in  std_logic_vector(1 downto 0);
+        clock           : in std_logic;
+        reset           : in std_logic;
+        destuff_bit     : in std_logic;
+        bit_valid       : in std_logic;
+        sample_tick     : in std_logic;
+        state_can       : in std_logic_vector(1 downto 0);
 
-        frame           : out std_logic_vector(107 downto 0);
-        ack_slot        : out std_logic;
-        frame_rdy       : out std_logic;
-        next_state_can  : out std_logic_vector(1 downto 0)
+        id_rx           : out std_logic_vector(10 downto 0);
+        ack_bit         : out std_logic;
+        frame_rdy       : out std_logic
     ); 
 end entity;
 
-architecture arch_deserializer of deserializer is
+architecture arch_deserializerTX of deserializerTX is
     type state_type is (
         IDLE, ID, CTRL, DLC, DATA_LEN,
         DATA, CRC, CRC_DELIM, ACK,
@@ -50,57 +50,43 @@ architecture arch_deserializer of deserializer is
     signal sv_dlc       : unsigned(3 downto 0) := (others => '0');
     signal s_data_len   : unsigned(6 downto 0) := (others => '0');
 
-    signal sv_first_pt   : std_logic_vector(18 downto 0) := (others => '0');
-    signal sv_data_field : std_logic_vector(63 downto 0) := (others => '0');
-    signal sv_last_pt    : std_logic_vector(24 downto 0) := (others => '0');
+    signal sv_id_rx     : std_logic_vector(10 downto 0) := (others => '0');
+    signal sl_ack_bit   : std_logic := '1';
 
 begin
+    id_rx   <= sv_id_rx;
+    ack_bit <= sl_ack_bit;
 
-    proc_deserializer : process(clock, reset)
+    proc_deserializerTX : process(clock, reset)
     begin
         if reset = '1' then
-            state          <= IDLE;
-            s_bit_count    <= (others => '0');
-            sv_dlc         <= (others => '0');
-            s_data_len     <= (others => '0');
-            sv_data_field  <= (others => '0');
-            sv_first_pt    <= (others => '0');
-            sv_last_pt     <= (others => '0');
-
-            ack_slot       <= '0';
-            frame_rdy      <= '0';
-            frame          <= (others => '0');
-            next_state_can <= "00";
+            state       <= IDLE;
+            s_bit_count <= (others => '0');
+            sv_dlc      <= (others => '0');
+            s_data_len  <= (others => '0');
+            sv_id_rx    <= (others => '1');
+            sl_ack_bit  <= '1';
+            frame_rdy   <= '0';
 
         elsif rising_edge(clock) then
+            
             frame_rdy <= '0';
-            ack_slot  <= '0';
-
-            if state = IDLE then
-                next_state_can <= "00";
-            else
-                next_state_can <= "01";
-            end if;
 
             case state is
 
-                -- IDLE: wait SOF
                 when IDLE =>
-                    if state_can = "00" and bit_valid = '1' and destuff_bit = '0' then
-                        -- start reception
-                        sv_data_field <= (others => '0');
-                        sv_last_pt    <= (others => '0');
-                        sv_first_pt   <= (others => '0');
-                        s_bit_count   <= (others => '0');
-
-                        sv_first_pt <= sv_first_pt(17 downto 0) & destuff_bit; -- SOF
-                        state <= ID;
+                    -- wait SOF (dominant 0)
+                    if bit_valid = '1' and destuff_bit = '0' then
+                        sv_id_rx    <= (others => '0');
+                        sl_ack_bit  <= '1';
+                        sv_dlc      <= (others => '0');
+                        s_bit_count <= (others => '0');
+                        state       <= ID;
                     end if;
 
-                -- ID field (11 bits)
                 when ID =>
                     if bit_valid = '1' then
-                        sv_first_pt <= sv_first_pt(17 downto 0) & destuff_bit;
+                        sv_id_rx    <= sv_id_rx(9 downto 0) & destuff_bit;
                         s_bit_count <= s_bit_count + 1;
 
                         if s_bit_count = to_unsigned(10, 7) then
@@ -109,10 +95,8 @@ begin
                         end if;
                     end if;
 
-                -- CTRL (3 bits)
                 when CTRL =>
                     if bit_valid = '1' then
-                        sv_first_pt <= sv_first_pt(17 downto 0) & destuff_bit;
                         s_bit_count <= s_bit_count + 1;
 
                         if s_bit_count = to_unsigned(2, 7) then
@@ -121,10 +105,8 @@ begin
                         end if;
                     end if;
 
-                -- DLC (4 bits)
                 when DLC =>
                     if bit_valid = '1' then
-                        sv_first_pt <= sv_first_pt(17 downto 0) & destuff_bit;
                         sv_dlc      <= sv_dlc(2 downto 0) & destuff_bit;
                         s_bit_count <= s_bit_count + 1;
 
@@ -134,7 +116,6 @@ begin
                         end if;
                     end if;
 
-                -- DATA_LEN
                 when DATA_LEN =>
                     if bit_valid = '1' then
                         s_data_len  <= sv_dlc & "000";  -- dlc*8
@@ -143,15 +124,12 @@ begin
                         if sv_dlc = "0000" then
                             state <= CRC;
                         else
-                            sv_data_field(0) <= destuff_bit; -- first data bit
                             state <= DATA;
                         end if;
                     end if;
 
-                -- DATA (0-64 bits)
                 when DATA =>
                     if bit_valid = '1' then
-                        sv_data_field <= sv_data_field(62 downto 0) & destuff_bit;
                         s_bit_count <= s_bit_count + 1;
 
                         if s_bit_count = s_data_len - 2 then
@@ -160,10 +138,8 @@ begin
                         end if;
                     end if;
 
-                -- CRC (15 bits)
                 when CRC =>
                     if bit_valid = '1' then
-                        sv_last_pt  <= sv_last_pt(23 downto 0) & destuff_bit;
                         s_bit_count <= s_bit_count + 1;
 
                         if s_bit_count = to_unsigned(14, 7) then
@@ -172,34 +148,23 @@ begin
                         end if;
                     end if;
 
-                -- CRC_DELIM (non destuffed)
                 when CRC_DELIM =>
-                    ack_slot  <= '1';
-                    sv_last_pt <= sv_last_pt(23 downto 0) & destuff_bit;
                     state <= ACK;
 
-                -- ACK slot (non destuffed)
                 when ACK =>
-                    ack_slot  <= '0';
-                    sv_last_pt <= sv_last_pt(23 downto 0) & destuff_bit;
+                    sl_ack_bit <= destuff_bit;
                     state <= ACK_DELIM;
 
-                -- ACK delimiter
                 when ACK_DELIM =>
-                    sv_last_pt <= sv_last_pt(23 downto 0) & destuff_bit;
                     state <= EOF;
 
-                -- EOF (7 bits)
                 when EOF =>
-                    sv_last_pt  <= sv_last_pt(23 downto 0) & destuff_bit;
                     s_bit_count <= s_bit_count + 1;
-
                     if s_bit_count = to_unsigned(6, 7) then
                         s_bit_count <= (others => '0');
                         state <= DELIM;
                     end if;
 
-                -- DELIM (3 bits intermission)
                 when DELIM =>
                     s_bit_count <= s_bit_count + 1;
                     if s_bit_count = to_unsigned(2, 7) then
@@ -208,9 +173,8 @@ begin
                     end if;
 
                 when DONE =>
-                    frame     <= sv_first_pt & sv_data_field & sv_last_pt;
                     frame_rdy <= '1';
-                    state     <= IDLE;
+                    state <= IDLE;
 
                 when others =>
                     state <= IDLE;
@@ -220,8 +184,3 @@ begin
     end process;
 
 end architecture;
-
-
-
-
-

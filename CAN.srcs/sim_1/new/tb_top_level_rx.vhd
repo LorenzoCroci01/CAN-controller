@@ -32,7 +32,7 @@ architecture tb of tb_top_level_RX is
     signal reset        : std_logic;
 
     -- simulated bus line
-    signal bus_line     : std_logic := '1';
+    signal rx_in        : std_logic := '1';
     signal tx_bit       : std_logic := '1';
 
     -- BTU config
@@ -66,7 +66,7 @@ begin
         port map (
             clock       => clock,
             reset       => reset,
-            bus_line    => bus_line,
+            rx_in       => rx_in,
             prop_seg    => prop_seg,
             phase_seg1  => phase_seg1,
             phase_seg2  => phase_seg2,
@@ -105,25 +105,11 @@ begin
 
         -- Transmit frame
         for i in 60 downto 0 loop
-            tx_bit <= CAN_FRAME_STUFFED(i);
+            rx_in <= CAN_FRAME_STUFFED(i);
             wait for 70 ns;
         end loop;
 
         wait for 2 us;
-    end process;
-
-    -- Bus driving logic
-    bus_drive : process(tx_bit, ack_slot)
-    begin
-        if ack_slot = '1' then
-            bus_line <= 'Z';         -- during ACK slot release bus
-        else
-            if tx_bit = '0' then
-                bus_line <= '0';     -- dominant
-            else
-                bus_line <= '1';     -- recessive
-            end if;
-        end if;
     end process;
 
 end architecture;

@@ -17,6 +17,12 @@ Compiling architecture arch_arbiter of entity xil_defaultlib.arbiter [arbiter_de
 Compiling architecture arch_bit_stuffer of entity xil_defaultlib.bit_stuffer [bit_stuffer_default]
 Compiling architecture arch_btu of entity xil_defaultlib.BTU [btu_default]
 Compiling architecture arch_serializer of entity xil_defaultlib.serializer [serializer_default]
+Compiling architecture arch_driver_tx of entity xil_defaultlib.driver_tx [driver_tx_default]
+Compiling architecture arch_ff of entity xil_defaultlib.FF [ff_default]
+Compiling architecture arch_destuffing of entity xil_defaultlib.Destuffing [destuffing_default]
+Compiling architecture arch_deserializertx of entity xil_defaultlib.deserializerTX [deserializertx_default]
+Compiling architecture arch_can_readtx of entity xil_defaultlib.can_readTX [can_readtx_default]
+Compiling architecture arch_ack_check of entity xil_defaultlib.ack_check [ack_check_default]
 Compiling architecture arch_top_level_tx of entity xil_defaultlib.top_level_tx [top_level_tx_default]
 Compiling architecture sim of entity xil_defaultlib.tb_top_level_tx
 Built simulation snapshot tb_top_level_tx_behav

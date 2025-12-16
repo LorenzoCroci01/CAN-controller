@@ -4,7 +4,7 @@
 
 set TIME_start [clock seconds] 
 namespace eval ::optrace {
-  variable script "C:/Users/croci/CAN/CAN.runs/synth_1/top_level_RX.tcl"
+  variable script "C:/Users/croci/CAN/CAN.runs/synth_1/top_level_tx.tcl"
   variable category "vivado_synth"
 }
 
@@ -72,8 +72,20 @@ set_property ip_cache_permissions {read write} [current_project]
 OPTRACE "Creating in-memory project" END { }
 OPTRACE "Adding files" START { }
 read_vhdl -library xil_defaultlib {
-  C:/Users/croci/CAN/CAN.srcs/sources_1/new/fsm_tx.vhd
+  C:/Users/croci/CAN/CAN.srcs/sources_1/new/BTU.vhd
+  C:/Users/croci/CAN/CAN.srcs/sources_1/new/FF.vhd
+  C:/Users/croci/CAN/CAN.srcs/sources_1/new/Destuffing.vhd
+  C:/Users/croci/CAN/CAN.srcs/sources_1/new/deserializer.vhd
+  C:/Users/croci/CAN/CAN.srcs/sources_1/new/CAN_RX_module.vhd
+  C:/Users/croci/CAN/CAN.srcs/sources_1/new/builder_tx.vhd
   C:/Users/croci/CAN/CAN.srcs/sources_1/new/arbiter.vhd
+  C:/Users/croci/CAN/CAN.srcs/sources_1/new/bit_stuffer.vhd
+  C:/Users/croci/CAN/CAN.srcs/sources_1/new/serializer.vhd
+  C:/Users/croci/CAN/CAN.srcs/sources_1/new/top_level_tx.vhd
+  C:/Users/croci/CAN/CAN.srcs/sources_1/new/driver_tx.vhd
+  C:/Users/croci/CAN/CAN.srcs/sources_1/new/deserializerTX.vhd
+  C:/Users/croci/CAN/CAN.srcs/sources_1/new/ack_check.vhd
+  C:/Users/croci/CAN/CAN.srcs/sources_1/new/can_readTX.vhd
 }
 OPTRACE "Adding files" END { }
 # Mark all dcp files as not used in implementation to prevent them from being
@@ -90,7 +102,7 @@ read_checkpoint -auto_incremental -incremental C:/Users/croci/CAN/CAN.srcs/utils
 close [open __synthesis_is_running__ w]
 
 OPTRACE "synth_design" START { }
-synth_design -top top_level_RX -part xc7a50tcpg236-1
+synth_design -top top_level_tx -part xc7a50tcpg236-1
 OPTRACE "synth_design" END { }
 if { [get_msg_config -count -severity {CRITICAL WARNING}] > 0 } {
  send_msg_id runtcl-6 info "Synthesis results are not added to the cache due to CRITICAL_WARNING"
@@ -100,10 +112,10 @@ if { [get_msg_config -count -severity {CRITICAL WARNING}] > 0 } {
 OPTRACE "write_checkpoint" START { CHECKPOINT }
 # disable binary constraint mode for synth run checkpoints
 set_param constraints.enableBinaryConstraints false
-write_checkpoint -force -noxdef top_level_RX.dcp
+write_checkpoint -force -noxdef top_level_tx.dcp
 OPTRACE "write_checkpoint" END { }
 OPTRACE "synth reports" START { REPORT }
-generate_parallel_reports -reports { "report_utilization -file top_level_RX_utilization_synth.rpt -pb top_level_RX_utilization_synth.pb"  } 
+generate_parallel_reports -reports { "report_utilization -file top_level_tx_utilization_synth.rpt -pb top_level_tx_utilization_synth.pb"  } 
 OPTRACE "synth reports" END { }
 file delete __synthesis_is_running__
 close [open __synthesis_is_complete__ w]

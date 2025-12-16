@@ -2,10 +2,16 @@
 2020.2
 May 22 2025
 00:13:55
-C:/Users/croci/CAN/CAN.srcs/sim_1/new/tb_top_level_TX.vhd,1765808858,vhdl,,,,tb_top_level_tx,,,,,,,,
-C:/Users/croci/CAN/CAN.srcs/sources_1/new/BTU.vhd,1763562949,vhdl,C:/Users/croci/CAN/CAN.srcs/sources_1/new/top_level_tx.vhd,,,btu,,,,,,,,
-C:/Users/croci/CAN/CAN.srcs/sources_1/new/arbiter.vhd,1765806354,vhdl,C:/Users/croci/CAN/CAN.srcs/sources_1/new/top_level_tx.vhd,,,arbiter,,,,,,,,
+C:/Users/croci/CAN/CAN.srcs/sim_1/new/tb_top_level_TX.vhd,1765895048,vhdl,,,,tb_top_level_tx,,,,,,,,
+C:/Users/croci/CAN/CAN.srcs/sources_1/new/BTU.vhd,1763562949,vhdl,C:/Users/croci/CAN/CAN.srcs/sources_1/new/can_readTX.vhd;C:/Users/croci/CAN/CAN.srcs/sources_1/new/top_level_tx.vhd,,,btu,,,,,,,,
+C:/Users/croci/CAN/CAN.srcs/sources_1/new/Destuffing.vhd,1763718787,vhdl,C:/Users/croci/CAN/CAN.srcs/sources_1/new/can_readTX.vhd,,,destuffing,,,,,,,,
+C:/Users/croci/CAN/CAN.srcs/sources_1/new/FF.vhd,1762612654,vhdl,C:/Users/croci/CAN/CAN.srcs/sources_1/new/can_readTX.vhd,,,ff,,,,,,,,
+C:/Users/croci/CAN/CAN.srcs/sources_1/new/ack_check.vhd,1765878060,vhdl,C:/Users/croci/CAN/CAN.srcs/sources_1/new/top_level_tx.vhd,,,ack_check,,,,,,,,
+C:/Users/croci/CAN/CAN.srcs/sources_1/new/arbiter.vhd,1765902774,vhdl,C:/Users/croci/CAN/CAN.srcs/sources_1/new/top_level_tx.vhd,,,arbiter,,,,,,,,
 C:/Users/croci/CAN/CAN.srcs/sources_1/new/bit_stuffer.vhd,1765806789,vhdl,C:/Users/croci/CAN/CAN.srcs/sources_1/new/top_level_tx.vhd,,,bit_stuffer,,,,,,,,
-C:/Users/croci/CAN/CAN.srcs/sources_1/new/builder_tx.vhd,1765808600,vhdl,C:/Users/croci/CAN/CAN.srcs/sources_1/new/top_level_tx.vhd,,,builder_tx,,,,,,,,
-C:/Users/croci/CAN/CAN.srcs/sources_1/new/serializer.vhd,1765808984,vhdl,C:/Users/croci/CAN/CAN.srcs/sources_1/new/top_level_tx.vhd,,,serializer,,,,,,,,
-C:/Users/croci/CAN/CAN.srcs/sources_1/new/top_level_tx.vhd,1765808653,vhdl,C:/Users/croci/CAN/CAN.srcs/sim_1/new/tb_top_level_TX.vhd,,,top_level_tx,,,,,,,,
+C:/Users/croci/CAN/CAN.srcs/sources_1/new/builder_tx.vhd,1765885971,vhdl,C:/Users/croci/CAN/CAN.srcs/sources_1/new/top_level_tx.vhd,,,builder_tx,,,,,,,,
+C:/Users/croci/CAN/CAN.srcs/sources_1/new/can_readTX.vhd,1765903053,vhdl,C:/Users/croci/CAN/CAN.srcs/sources_1/new/top_level_tx.vhd,,,can_readtx,,,,,,,,
+C:/Users/croci/CAN/CAN.srcs/sources_1/new/deserializerTX.vhd,1765903822,vhdl,C:/Users/croci/CAN/CAN.srcs/sources_1/new/can_readTX.vhd,,,deserializertx,,,,,,,,
+C:/Users/croci/CAN/CAN.srcs/sources_1/new/driver_tx.vhd,1765900933,vhdl,C:/Users/croci/CAN/CAN.srcs/sources_1/new/top_level_tx.vhd,,,driver_tx,,,,,,,,
+C:/Users/croci/CAN/CAN.srcs/sources_1/new/serializer.vhd,1765893160,vhdl,C:/Users/croci/CAN/CAN.srcs/sources_1/new/top_level_tx.vhd,,,serializer,,,,,,,,
+C:/Users/croci/CAN/CAN.srcs/sources_1/new/top_level_tx.vhd,1765903536,vhdl,C:/Users/croci/CAN/CAN.srcs/sim_1/new/tb_top_level_TX.vhd,,,top_level_tx,,,,,,,,

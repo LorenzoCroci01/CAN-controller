@@ -31,28 +31,30 @@ entity arbiter is
         id_rx           : in  std_logic_vector(10 downto 0);
 
         frame_tx_out    : out std_logic_vector(107 downto 0);
-        arbitration     : out std_logic;
-        state_next      : out std_logic_vector(1 downto 0)   -- <==
+        arbitration     : out std_logic;                 -- 1=win
+        state_next      : out std_logic_vector(1 downto 0) -- 10 TX, 01 RX, 00 IDLE
     );
 end arbiter;
 
 architecture arch_arbiter of arbiter is
 begin
-    process(id_tx, id_rx)
+    process(frame_tx_rdy)
     begin
+        -- default
         arbitration  <= '0';
         frame_tx_out <= (others => '1');
-        state_next   <= "00"; -- default IDLE
+        state_next   <= "00";
 
         if frame_tx_rdy = '1' then
-            if unsigned(id_tx) < unsigned(id_rx) then
-                arbitration  <= '1';
+            -- compare IDs
+            if unsigned(id_tx) <= unsigned(id_rx) then
+                arbitration  <= '1';          -- win
                 frame_tx_out <= frame_tx;
-                state_next   <= "10"; -- TRANSMITTING
+                state_next   <= "10";         -- TRANSMITTING
             else
-                arbitration  <= '0';
+                arbitration  <= '0';          -- lost
                 frame_tx_out <= (others => '1');
-                state_next   <= "01"; -- RECEIVING
+                state_next   <= "01";         -- RECEIVING
             end if;
         end if;
     end process;

@@ -38,8 +38,9 @@ entity serializer is
 end serializer;
 
 architecture arch_serializer of serializer is
-    signal bit_cnt : unsigned(7 downto 0) := (others => '0');
+    signal bit_cnt      : unsigned(7 downto 0) := (others => '0');
 begin
+    
     process(clock, reset)
     begin
         if reset = '1' then
@@ -48,10 +49,10 @@ begin
             end_tx         <= '0';
 
         elsif rising_edge(clock) then
-            end_tx <= '0';
             
             if state_can = "10" then
                 if valid_stuf_frm = '1' and bit_tick = '1' then
+                    end_tx <= '0';
                     if bit_cnt < frame_ser_len then
                         bit_serial_out <= frame_ser_in(159 - to_integer(bit_cnt));
                         bit_cnt <= bit_cnt + 1;
@@ -64,8 +65,6 @@ begin
                     bit_cnt        <= (others => '0');
                     bit_serial_out <= '1';
                 end if;
-            else
-                bit_serial_out <= 'Z';
             end if;
         end if;
     end process;
