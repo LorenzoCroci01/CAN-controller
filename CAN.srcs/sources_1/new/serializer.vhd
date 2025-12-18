@@ -1,14 +1,14 @@
 ----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
+-- Company:             Università Politecnica delle Marche
+-- Engineer:            Lorenzo Croci
 -- 
--- Create Date: 15.12.2025 10:13:59
+-- Create Date:         15.12.2025 10:13:59
 -- Design Name: 
--- Module Name: serializer - arch_serializer
--- Project Name: 
--- Target Devices: 
--- Tool Versions: 
--- Description: 
+-- Module Name:         serializer - arch_serializer
+-- Project Name:        CAN
+-- Target Devices:  
+-- Tool Versions:   
+-- Description:         serializer TX
 -- 
 -- Dependencies: 
 -- 
@@ -24,16 +24,16 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity serializer is
     Port (
-        clock           : in std_logic;
-        reset           : in std_logic;
-        sample_tick        : in std_logic;
-        valid_stuf_frm  : in std_logic;
-        frame_ser_in    : in std_logic_vector(159 downto 0);
-        frame_ser_len   : in unsigned(7 downto 0);
-        state_can       : in std_logic_vector(1 downto 0);
+        clock           : in std_logic;     -- main clock
+        reset           : in std_logic;     -- async reset
+        sample_tick     : in std_logic;     -- sample tick pulse
+        valid_stuf_frm  : in std_logic;     -- valid stuffed frame flag
+        frame_ser_in    : in std_logic_vector(159 downto 0);    -- stuffed frame input
+        frame_ser_len   : in unsigned(7 downto 0);              -- stuffed frame input length
+        state_can       : in std_logic_vector(1 downto 0);      -- can node state
 
-        bit_serial_out  : out std_logic;
-        end_tx          : out std_logic
+        bit_serial_out  : out std_logic;    -- serial bit output
+        end_tx          : out std_logic     -- end transmition flag
     );
 end serializer;
 

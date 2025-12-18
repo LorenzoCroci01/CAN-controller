@@ -24,17 +24,17 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity deserializer is 
     Port( 
-        clock           : in  std_logic;
-        reset           : in  std_logic;
-        destuff_bit     : in  std_logic;
-        bit_valid       : in  std_logic;
-        sample_tick     : in  std_logic;
-        state_can       : in  std_logic_vector(1 downto 0);
+        clock           : in  std_logic;    -- main clock
+        reset           : in  std_logic;    -- async reset
+        destuff_bit     : in  std_logic;    -- input destuffed bit
+        bit_valid       : in  std_logic;    -- bit valid flag
+        sample_tick     : in  std_logic;    -- sample tick pulse
+        state_can       : in  std_logic_vector(1 downto 0);     -- can node state
 
-        frame           : out std_logic_vector(107 downto 0);
-        ack_slot        : out std_logic;
-        frame_rdy       : out std_logic;
-        next_state_can  : out std_logic_vector(1 downto 0)
+        frame           : out std_logic_vector(107 downto 0);   -- deserialized frame output
+        ack_slot        : out std_logic;    -- ack slot flag
+        frame_rdy       : out std_logic;    -- frame ready flag
+        next_state_can  : out std_logic_vector(1 downto 0)      -- next can node state
     ); 
 end entity;
 

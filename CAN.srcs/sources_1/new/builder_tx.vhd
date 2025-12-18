@@ -25,14 +25,14 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity builder_tx is
     Port (
-        clock           : in std_logic;
-        reset           : in std_logic;
-        frame_tx_in     : in std_logic_vector(82 downto 0);
-        tx_request      : in std_logic;
-        state_can       : in std_logic_vector(1 downto 0);
+        clock           : in std_logic;     -- main clock
+        reset           : in std_logic;     -- async reset
+        frame_tx_in     : in std_logic_vector(82 downto 0);     -- data to transmit
+        tx_request      : in std_logic;     -- tx request flag
+        state_can       : in std_logic_vector(1 downto 0);      -- can node state
 
-        frame_tx        : out std_logic_vector(107 downto 0);
-        frame_tx_rdy    : out std_logic
+        frame_tx        : out std_logic_vector(107 downto 0);   -- complete frame to transmit
+        frame_tx_rdy    : out std_logic     -- frame ready flag
     );
 end entity;
 

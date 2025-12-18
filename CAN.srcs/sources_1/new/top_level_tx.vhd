@@ -1,14 +1,14 @@
 ----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
+-- Company:             Università Politecnica delle Marche
+-- Engineer:            Lorenzo Croci
 -- 
--- Create Date: 27.11.2025 13:07:44
+-- Create Date:         27.11.2025 13:07:44
 -- Design Name: 
--- Module Name: top_level_tx - arch_top_level_tx
--- Project Name: 
+-- Module Name:         top_level_tx - arch_top_level_tx
+-- Project Name:        CAN
 -- Target Devices: 
 -- Tool Versions: 
--- Description: 
+-- Description:         top level TX
 -- 
 -- Dependencies: 
 -- 
@@ -25,19 +25,19 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity top_level_tx is
     Port (
-        clock           : in std_logic;
-        reset           : in std_logic;
-        frame_tx_in     : in std_logic_vector(82 downto 0);
-        tx_request      : in std_logic;
-        ack_in          : in std_logic;
+        clock           : in std_logic;     -- main clock
+        reset           : in std_logic;     -- async reset
+        frame_tx_in     : in std_logic_vector(82 downto 0); -- data to transmit
+        tx_request      : in std_logic;     -- tx request flag
+        ack_in          : in std_logic;     -- ack in bit
 
         prop_seg        : in unsigned(7 downto 0);
         phase_seg1      : in unsigned(7 downto 0);
         phase_seg2      : in unsigned(7 downto 0);
 
-        frame_tx_rdy    : out std_logic;
-        err_ack         : out std_logic;
-        state_can       : in std_logic_vector(1 downto 0);  -- node state
+        frame_tx_rdy    : out std_logic;    -- frame ready flag
+        err_ack         : out std_logic;    -- error ack flag
+        state_can       : in std_logic_vector(1 downto 0);  -- can node state
         bus_line        : inout std_logic;  -- bus line
         end_tx          : out std_logic;    -- end of transmition
         lost_arbitration : out std_logic    -- inform node controller

@@ -27,8 +27,8 @@ entity top_level_RX is
         -- input
         clock        : in std_logic;    -- main clock signal
         reset        : in std_logic;    -- async reset
-        rx_in        : in std_logic;
-        rx_enable    : in std_logic;
+        rx_in        : in std_logic;    -- rx async bit input
+        rx_enable    : in std_logic;    -- rx enable flag
 
         -- input to CAN RX module (BTU config)
         prop_seg     : in unsigned(7 downto 0);
@@ -42,8 +42,8 @@ entity top_level_RX is
         ram_rdy      : out std_logic;                       -- ram ready flag
 
         -- output from CAN RX module
-        ack_slot     : out std_logic;
-        err_frame    : out std_logic;
+        ack_slot     : out std_logic;   -- ack slot flag
+        err_frame    : out std_logic;   -- error frame flag
 
         -- expose RX state to node
         state_can_rx_out : out std_logic_vector(1 downto 0);

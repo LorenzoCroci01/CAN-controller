@@ -1,14 +1,14 @@
 ----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
+-- Company:             Università Politecnica delle Marche
+-- Engineer:            Lorenzo Croci
 -- 
--- Create Date: 16.12.2025 09:59:27
+-- Create Date:         16.12.2025 09:59:27
 -- Design Name: 
--- Module Name: can_readTX - arch_can_readTX
--- Project Name: 
+-- Module Name:         can_readTX - arch_can_readTX
+-- Project Name:        CAN
 -- Target Devices: 
 -- Tool Versions: 
--- Description: 
+-- Description:         CAN bus reader TX
 -- 
 -- Dependencies: 
 -- 
@@ -24,18 +24,18 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity can_readTX is
     Port (
-        clock       : in  std_logic;
-        reset       : in  std_logic;
-        rx_in       : in  std_logic;
+        clock       : in  std_logic;    -- main clock
+        reset       : in  std_logic;    -- async reset
+        rx_in       : in  std_logic;    -- rx async bit input
 
         prop_seg    : in  unsigned(7 downto 0);
         phase_seg1  : in  unsigned(7 downto 0);
         phase_seg2  : in  unsigned(7 downto 0);
 
-        id_rx       : out std_logic_vector(10 downto 0);
-        ack_bit     : out std_logic;
-        frame_rdy   : out std_logic;
-        err_ack     : out std_logic
+        id_rx       : out std_logic_vector(10 downto 0);    -- id frame on bus
+        ack_bit     : out std_logic;    -- ack bit flag
+        frame_rdy   : out std_logic;    -- frame ready flag
+        err_ack     : out std_logic     -- error ack flag
     );
 end can_readTX;
 

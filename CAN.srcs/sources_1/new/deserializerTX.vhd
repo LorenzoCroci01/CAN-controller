@@ -1,14 +1,14 @@
 ----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
+-- Company:             Università Politecnica delle Marche
+-- Engineer:            Lorenzo Croci
 -- 
--- Create Date: 16.12.2025 09:27:28
+-- Create Date:         16.12.2025 09:27:28
 -- Design Name: 
--- Module Name: deserializerTX - arch_deserializerTX
--- Project Name: 
+-- Module Name:         deserializerTX - arch_deserializerTX
+-- Project Name:        CAN
 -- Target Devices: 
 -- Tool Versions: 
--- Description: 
+-- Description:         deserializer TX module (can bus reader)
 -- 
 -- Dependencies: 
 -- 
@@ -25,16 +25,16 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity deserializerTX is 
     Port( 
-        clock           : in std_logic;
-        reset           : in std_logic;
-        destuff_bit     : in std_logic;
-        bit_valid       : in std_logic;
-        sample_tick     : in std_logic;
-        state_can       : in std_logic_vector(1 downto 0);
+        clock           : in std_logic;     -- main clock
+        reset           : in std_logic;     -- async reset
+        destuff_bit     : in std_logic;     -- destuffed bit input
+        bit_valid       : in std_logic;     -- valid bit flag
+        sample_tick     : in std_logic;     -- sample tick pulse
+        state_can       : in std_logic_vector(1 downto 0);      -- can bus state
 
-        id_rx           : out std_logic_vector(10 downto 0);
-        frame_rdy       : out std_logic;
-        err_ack         : out std_logic
+        id_rx           : out std_logic_vector(10 downto 0);    -- id frame on can bus
+        frame_rdy       : out std_logic;    -- frame ready flag
+        err_ack         : out std_logic     -- error ack flag
     ); 
 end entity;
 

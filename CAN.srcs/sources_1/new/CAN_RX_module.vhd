@@ -24,23 +24,22 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity CAN_RX_module is
     Port (
-        clock         : in  std_logic;
-        reset         : in  std_logic;
-        rx_in         : in  std_logic;
-        rx_enable     : in std_logic;
-
+        clock         : in  std_logic;      -- main clock
+        reset         : in  std_logic;      -- async reset
+        rx_in         : in  std_logic;      -- rx async bit input
+        rx_enable     : in std_logic;       -- rx enable flag
 
         prop_seg      : in  unsigned(7 downto 0);
         phase_seg1    : in  unsigned(7 downto 0);
         phase_seg2    : in  unsigned(7 downto 0);
+        
+        frame         : out std_logic_vector(107 downto 0);     -- deserialized frame output
+        state_can     : out std_logic_vector(1 downto 0);       -- can node state
+        ack_slot      : out std_logic;      -- ack slot flag
+        frame_rdy     : out std_logic;      -- frame ready flag
+        err_frame     : out std_logic;      -- error frame flag
 
-        frame         : out std_logic_vector(107 downto 0);
-        state_can     : out std_logic_vector(1 downto 0);
-        ack_slot      : out std_logic;
-        frame_rdy     : out std_logic;
-        err_frame     : out std_logic;
-
-        sample_tick_o : out std_logic
+        sample_tick_o : out std_logic       -- sample tick pulse
     );
 end CAN_RX_module;
 

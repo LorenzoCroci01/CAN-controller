@@ -86,13 +86,6 @@ begin
                     skip_next   <= '0';
                     bit_valid_o <= '0';
                     same_count  <= "000";
-                    
-                    -- error frame only if the node is in RX state
-                    --if state_can = "01" then
-                    --    if rx_in_sync = last_bit then
-                    --        err_frame_o <= '1';
-                    --    end if;
-                    --end if;
 
                 else
                     -- valid bit

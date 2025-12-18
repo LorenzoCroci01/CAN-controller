@@ -1,14 +1,14 @@
 ----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
+-- Company:             Università Politecnica delle Marche
+-- Engineer:            Lorenzo Croci
 -- 
--- Create Date: 17.12.2025 09:32:46
+-- Create Date:         17.12.2025 09:32:46
 -- Design Name: 
--- Module Name: can_node_top - arch_can_nome_top
--- Project Name: 
+-- Module Name:         can_node_top - arch_can_nome_top
+-- Project Name:        CAN
 -- Target Devices: 
 -- Tool Versions: 
--- Description: 
+-- Description:         CAN node top level
 -- 
 -- Dependencies: 
 -- 
@@ -25,24 +25,24 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity can_node_top is
     Port (
-        clock       : in  std_logic;
-        reset       : in  std_logic;
-        bus_line    : inout std_logic;
+        clock       : in  std_logic;    -- main clock
+        reset       : in  std_logic;    -- async reset
+        bus_line    : inout std_logic;  -- bus line
 
-        prop_seg    : in unsigned(7 downto 0);
+        prop_seg    : in unsigned(7 downto 0);  
         phase_seg1  : in unsigned(7 downto 0);
         phase_seg2  : in unsigned(7 downto 0);
 
-        frame_rx_out : out std_logic_vector(107 downto 0);
+        frame_rx_out : out std_logic_vector(107 downto 0);  -- complete deserialized frame rx 
 
-        frame_tx_in  : in std_logic_vector(82 downto 0);
-        tx_request   : in std_logic;
+        frame_tx_in  : in std_logic_vector(82 downto 0);    -- data to transmit
+        tx_request   : in std_logic;    -- tx request flag
 
         -- RAM filter ID interface (to program the RX filter)
-        we_memID     : in  std_logic;
-        ram_addrID   : in  unsigned(7 downto 0);
-        ram_dinID    : in  std_logic_vector(7 downto 0);
-        ram_rdy      : out std_logic
+        we_memID     : in  std_logic;   -- write enable RAM ID
+        ram_addrID   : in  unsigned(7 downto 0);            -- address RAM ID
+        ram_dinID    : in  std_logic_vector(7 downto 0);    -- bit select RAM ID
+        ram_rdy      : out std_logic    -- RAM ready flag
     );
 end can_node_top;
 
