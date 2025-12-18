@@ -26,7 +26,7 @@ entity serializer is
     Port (
         clock           : in std_logic;
         reset           : in std_logic;
-        bit_tick        : in std_logic;
+        sample_tick        : in std_logic;
         valid_stuf_frm  : in std_logic;
         frame_ser_in    : in std_logic_vector(159 downto 0);
         frame_ser_len   : in unsigned(7 downto 0);
@@ -51,7 +51,7 @@ begin
         elsif rising_edge(clock) then
             
             if state_can = "10" then
-                if valid_stuf_frm = '1' and bit_tick = '1' then
+                if valid_stuf_frm = '1' and sample_tick = '1' then
                     end_tx <= '0';
                     if bit_cnt < frame_ser_len then
                         bit_serial_out <= frame_ser_in(159 - to_integer(bit_cnt));

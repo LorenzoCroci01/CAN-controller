@@ -81,12 +81,12 @@ begin
             else
                 next_state_can <= "01";
             end if;
+            
+            if state_can = "01" then
+                case state is
 
-            case state is
-
-                -- IDLE: wait SOF
-                when IDLE =>
-                    if state_can = "00" and bit_valid = '1' and destuff_bit = '0' then
+                    -- IDLE: wait SOF
+                    when IDLE =>   
                         -- start reception
                         sv_data_field <= (others => '0');
                         sv_last_pt    <= (others => '0');
@@ -95,127 +95,138 @@ begin
 
                         sv_first_pt <= sv_first_pt(17 downto 0) & destuff_bit; -- SOF
                         state <= ID;
-                    end if;
 
-                -- ID field (11 bits)
-                when ID =>
-                    if bit_valid = '1' then
-                        sv_first_pt <= sv_first_pt(17 downto 0) & destuff_bit;
-                        s_bit_count <= s_bit_count + 1;
+                    -- ID field (11 bits)
+                    when ID =>
+                        if bit_valid = '1' then
+                            sv_first_pt <= sv_first_pt(17 downto 0) & destuff_bit;
+                            s_bit_count <= s_bit_count + 1;
 
-                        if s_bit_count = to_unsigned(10, 7) then
+                            if s_bit_count = to_unsigned(10, 7) then
+                                s_bit_count <= (others =>  '0');
+                                state <= CTRL;
+                            end if;
+                        end if;
+
+                    -- CTRL (3 bits)
+                    when CTRL =>
+                        if bit_valid = '1' then
+                            sv_first_pt <= sv_first_pt(17 downto 0) & destuff_bit;
+                            s_bit_count <= s_bit_count + 1;
+
+                            if s_bit_count = to_unsigned(2, 7) then
+                                s_bit_count <= (others => '0');
+                                state <= DLC;
+                            end if;
+                        end if;
+
+                    -- DLC (4 bits)
+                    when DLC =>
+                        if bit_valid = '1' then
+                            sv_first_pt <= sv_first_pt(17 downto 0) & destuff_bit;
+                            sv_dlc      <= sv_dlc(2 downto 0) & destuff_bit;
+                            s_bit_count <= s_bit_count + 1;
+
+                            if s_bit_count = to_unsigned(3, 7) then
+                                s_bit_count <= (others => '0');
+                                state <= DATA_LEN;
+                            end if;
+                        end if;
+                
+                    -- DATA_LEN
+                    when DATA_LEN =>
+                        if bit_valid = '1' then
+                            s_data_len  <= sv_dlc & "000";  -- dlc*8
                             s_bit_count <= (others => '0');
-                            state <= CTRL;
+
+                            if sv_dlc = "0000" then
+                                state <= CRC;
+                            else
+                                sv_data_field <= sv_data_field(62 downto 0) & destuff_bit; -- first data bit
+                                s_bit_count   <= "0000001";    -- 1 bit already stored
+                                state         <= DATA;
+                            end if;
                         end if;
-                    end if;
 
-                -- CTRL (3 bits)
-                when CTRL =>
-                    if bit_valid = '1' then
-                        sv_first_pt <= sv_first_pt(17 downto 0) & destuff_bit;
-                        s_bit_count <= s_bit_count + 1;
-
-                        if s_bit_count = to_unsigned(2, 7) then
-                            s_bit_count <= (others => '0');
-                            state <= DLC;
+                    -- DATA (0-64 bits)
+                    when DATA =>
+                        if bit_valid = '1' then
+                            sv_data_field <= sv_data_field(62 downto 0) & destuff_bit;
+                            s_bit_count <= s_bit_count + 1;
+                        
+                            if s_bit_count = 63 then
+                                s_bit_count <= (others => '0');
+                                state <= CRC;
+                            end if;
                         end if;
-                    end if;
 
-                -- DLC (4 bits)
-                when DLC =>
-                    if bit_valid = '1' then
-                        sv_first_pt <= sv_first_pt(17 downto 0) & destuff_bit;
-                        sv_dlc      <= sv_dlc(2 downto 0) & destuff_bit;
-                        s_bit_count <= s_bit_count + 1;
+                    -- CRC (15 bits)
+                    when CRC =>
+                        if bit_valid = '1' then
+                            sv_last_pt  <= sv_last_pt(23 downto 0) & destuff_bit;
+                            s_bit_count <= s_bit_count + 1;
 
-                        if s_bit_count = to_unsigned(3, 7) then
-                            s_bit_count <= (others => '0');
-                            state <= DATA_LEN;
+                            if s_bit_count = to_unsigned(14, 7) then
+                                s_bit_count <= (others => '0');
+                                state <= CRC_DELIM;
+                            end if;
                         end if;
-                    end if;
 
-                -- DATA_LEN
-                when DATA_LEN =>
-                    if bit_valid = '1' then
-                        s_data_len  <= sv_dlc & "000";  -- dlc*8
-                        s_bit_count <= (others => '0');
-
-                        if sv_dlc = "0000" then
-                            state <= CRC;
-                        else
-                            sv_data_field(0) <= destuff_bit; -- first data bit
-                            state <= DATA;
+                    -- CRC_DELIM (non destuffed)
+                    when CRC_DELIM =>
+                        if sample_tick = '1' then
+                            sv_last_pt <= sv_last_pt(23 downto 0) & destuff_bit;
+                            state <= ACK;
                         end if;
-                    end if;
 
-                -- DATA (0-64 bits)
-                when DATA =>
-                    if bit_valid = '1' then
-                        sv_data_field <= sv_data_field(62 downto 0) & destuff_bit;
-                        s_bit_count <= s_bit_count + 1;
-
-                        if s_bit_count = s_data_len - 2 then
-                            s_bit_count <= (others => '0');
-                            state <= CRC;
+                    -- ACK slot (non destuffed)
+                    when ACK =>
+                        ack_slot  <= '1';
+                        if sample_tick = '1' then
+                            sv_last_pt <= sv_last_pt(23 downto 0) & destuff_bit;
+                            state <= ACK_DELIM;
                         end if;
-                    end if;
 
-                -- CRC (15 bits)
-                when CRC =>
-                    if bit_valid = '1' then
-                        sv_last_pt  <= sv_last_pt(23 downto 0) & destuff_bit;
-                        s_bit_count <= s_bit_count + 1;
-
-                        if s_bit_count = to_unsigned(14, 7) then
-                            s_bit_count <= (others => '0');
-                            state <= CRC_DELIM;
+                    -- ACK delimiter (non destuffed)
+                    when ACK_DELIM =>
+                        ack_slot  <= '0';
+                        if sample_tick = '1' then
+                            sv_last_pt <= sv_last_pt(23 downto 0) & destuff_bit;
+                            state <= EOF;
                         end if;
-                    end if;
 
-                -- CRC_DELIM (non destuffed)
-                when CRC_DELIM =>
-                    ack_slot  <= '1';
-                    sv_last_pt <= sv_last_pt(23 downto 0) & destuff_bit;
-                    state <= ACK;
+                    -- EOF (7 bits)
+                    when EOF =>
+                        if sample_tick = '1' then
+                            sv_last_pt  <= sv_last_pt(23 downto 0) & destuff_bit;
+                            s_bit_count <= s_bit_count + 1;
 
-                -- ACK slot (non destuffed)
-                when ACK =>
-                    ack_slot  <= '0';
-                    sv_last_pt <= sv_last_pt(23 downto 0) & destuff_bit;
-                    state <= ACK_DELIM;
+                            if s_bit_count = to_unsigned(6, 7) then
+                                s_bit_count <= (others => '0');
+                                state <= DELIM;
+                            end if;
+                        end if;
 
-                -- ACK delimiter
-                when ACK_DELIM =>
-                    sv_last_pt <= sv_last_pt(23 downto 0) & destuff_bit;
-                    state <= EOF;
+                    -- DELIM (3 bits intermission)
+                    when DELIM =>
+                        if sample_tick = '1' then
+                            s_bit_count <= s_bit_count + 1;
+                            if s_bit_count = to_unsigned(2, 7) then
+                                s_bit_count <= (others => '0');
+                                state <= DONE;
+                            end if;
+                        end if;
 
-                -- EOF (7 bits)
-                when EOF =>
-                    sv_last_pt  <= sv_last_pt(23 downto 0) & destuff_bit;
-                    s_bit_count <= s_bit_count + 1;
+                    when DONE =>
+                        frame     <= sv_first_pt & sv_data_field & sv_last_pt;
+                        frame_rdy <= '1';
+                        state     <= IDLE;
 
-                    if s_bit_count = to_unsigned(6, 7) then
-                        s_bit_count <= (others => '0');
-                        state <= DELIM;
-                    end if;
+                    when others =>
+                        state <= IDLE;
 
-                -- DELIM (3 bits intermission)
-                when DELIM =>
-                    s_bit_count <= s_bit_count + 1;
-                    if s_bit_count = to_unsigned(2, 7) then
-                        s_bit_count <= (others => '0');
-                        state <= DONE;
-                    end if;
-
-                when DONE =>
-                    frame     <= sv_first_pt & sv_data_field & sv_last_pt;
-                    frame_rdy <= '1';
-                    state     <= IDLE;
-
-                when others =>
-                    state <= IDLE;
-
-            end case;
+                end case;
+            end if;
         end if;
     end process;
 

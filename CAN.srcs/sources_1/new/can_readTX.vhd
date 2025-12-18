@@ -34,7 +34,8 @@ entity can_readTX is
 
         id_rx       : out std_logic_vector(10 downto 0);
         ack_bit     : out std_logic;
-        frame_rdy   : out std_logic
+        frame_rdy   : out std_logic;
+        err_ack     : out std_logic
     );
 end can_readTX;
 
@@ -98,8 +99,8 @@ begin
             sample_tick  => sl_sample_tick,
             state_can    => state_can_r,
             id_rx        => id_rx,
-            ack_bit      => ack_bit,
-            frame_rdy    => sl_frame_rdy
+            frame_rdy    => sl_frame_rdy,
+            err_ack      => err_ack
         );
 
 end architecture;

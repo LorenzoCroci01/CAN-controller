@@ -1,7 +1,7 @@
 Vivado Simulator v2025.1.0
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
 Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
-Running: C:/Xilinx/2025.1/Vivado/bin/unwrapped/win64.o/xelab.exe --incr --debug typical --relax --mt 2 -L xil_defaultlib -L secureip --snapshot tb_top_level_tx_behav xil_defaultlib.tb_top_level_tx -log elaborate.log 
+Running: C:/Xilinx/2025.1/Vivado/bin/unwrapped/win64.o/xelab.exe --incr --debug typical --relax --mt 2 -L xil_defaultlib -L secureip --snapshot tb_can_bus1_behav xil_defaultlib.tb_can_bus1 -log elaborate.log 
 Using 2 slave threads.
 Starting static elaboration
 Completed static elaboration
@@ -22,7 +22,12 @@ Compiling architecture arch_ff of entity xil_defaultlib.FF [ff_default]
 Compiling architecture arch_destuffing of entity xil_defaultlib.Destuffing [destuffing_default]
 Compiling architecture arch_deserializertx of entity xil_defaultlib.deserializerTX [deserializertx_default]
 Compiling architecture arch_can_readtx of entity xil_defaultlib.can_readTX [can_readtx_default]
-Compiling architecture arch_ack_check of entity xil_defaultlib.ack_check [ack_check_default]
 Compiling architecture arch_top_level_tx of entity xil_defaultlib.top_level_tx [top_level_tx_default]
-Compiling architecture sim of entity xil_defaultlib.tb_top_level_tx
-Built simulation snapshot tb_top_level_tx_behav
+Compiling architecture arch_deserializer of entity xil_defaultlib.deserializer [deserializer_default]
+Compiling architecture arch_can_rx_module of entity xil_defaultlib.CAN_RX_module [can_rx_module_default]
+Compiling architecture arch_fsm_rx of entity xil_defaultlib.fsm_rx [fsm_rx_default]
+Compiling architecture behavioral of entity xil_defaultlib.mem_filterID [mem_filterid_default]
+Compiling architecture arch_top_level_rx of entity xil_defaultlib.top_level_RX [top_level_rx_default]
+Compiling architecture arch_can_node_top of entity xil_defaultlib.can_node_top [can_node_top_default]
+Compiling architecture sim of entity xil_defaultlib.tb_can_bus1
+Built simulation snapshot tb_can_bus1_behav

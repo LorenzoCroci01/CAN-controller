@@ -29,6 +29,7 @@ entity top_level_tx is
         reset           : in std_logic;
         frame_tx_in     : in std_logic_vector(82 downto 0);
         tx_request      : in std_logic;
+        ack_in          : in std_logic;
 
         prop_seg        : in unsigned(7 downto 0);
         phase_seg1      : in unsigned(7 downto 0);
@@ -36,9 +37,11 @@ entity top_level_tx is
 
         frame_tx_rdy    : out std_logic;
         err_ack         : out std_logic;
-        state_can       : out std_logic_vector(1 downto 0);
-        bus_line        : inout std_logic;
-        end_tx          : inout std_logic
+        state_can       : in std_logic_vector(1 downto 0);  -- node state
+        bus_line        : inout std_logic;  -- bus line
+        end_tx          : out std_logic;    -- end of transmition
+        lost_arbitration : out std_logic    -- inform node controller
+        
     );
 end top_level_tx;
 
@@ -52,10 +55,10 @@ architecture arch_top_level_tx of top_level_tx is
     signal sl_valid         : std_logic;
     signal sl_frm_tx_rdy    : std_logic;
     signal sl_arbitration   : std_logic;
-    signal sl_bit_tick      : std_logic;
+    signal sl_sample_tick   : std_logic;
     signal sl_bit_serial    : std_logic;
+    signal bus_rx_norm      : std_logic;
 
-    signal state_can_r      : std_logic_vector(1 downto 0) := "00";
     signal state_next_arb   : std_logic_vector(1 downto 0);
 
     -- bus sniff
@@ -65,26 +68,13 @@ architecture arch_top_level_tx of top_level_tx is
 
 begin
     frame_tx_rdy <= sl_frm_tx_rdy;
-    state_can    <= state_can_r;
+    
+    -- Treat released bus as recessive '1'
+    bus_rx_norm <= '1' when (bus_line = 'Z' or bus_line = 'H') else bus_line;
 
-    process(clock, reset)
-    begin
-        if reset = '1' then
-            state_can_r <= "00"; -- IDLE
-        elsif rising_edge(clock) then
 
-            -- end of transmition -> IDLE
-            if end_tx = '1' then
-                state_can_r <= "00";
-
-            -- arbitration
-            elsif sl_frm_tx_rdy = '1' then
-                state_can_r <= state_next_arb; -- "10" TX o "01" RX
-            end if;
-
-        end if;
-    end process;
-
+    -- lost arbitration if arbiter says next is RX ("01") while we were trying to tx
+    lost_arbitration <= '1' when (sl_frm_tx_rdy = '1' and state_next_arb = "01") else '0';
 
     -- Frame builder TX
     u_builder_tx : entity work.builder_tx
@@ -93,7 +83,7 @@ begin
             reset        => reset,
             frame_tx_in  => frame_tx_in,
             tx_request   => tx_request,
-            state_can    => state_can_r,
+            state_can    => state_can,
             frame_tx     => sv_frm_build_out,
             frame_tx_rdy => sl_frm_tx_rdy
         );
@@ -110,7 +100,7 @@ begin
             state_next   => state_next_arb
         );
 
-    -- Bi stuffer
+    -- Bit stuffer
     u_bit_stuffer : entity work.bit_stuffer
         port map (
             frame_in        => sv_frm_arb_out,
@@ -129,7 +119,7 @@ begin
             prop_seg    => prop_seg,
             phase_seg1  => phase_seg1,
             phase_seg2  => phase_seg2,
-            bit_tick    => sl_bit_tick
+            sample_tick => sl_sample_tick
         );
 
     -- Serializer
@@ -137,11 +127,11 @@ begin
         port map (
             clock           => clock,
             reset           => reset,
-            bit_tick        => sl_bit_tick,
+            sample_tick     => sl_sample_tick,
             valid_stuf_frm  => sl_valid,
             frame_ser_in    => sv_frm_stuf_out,
             frame_ser_len   => sv_frm_stuf_len,
-            state_can       => state_can_r,
+            state_can       => state_can,
             bit_serial_out  => sl_bit_serial,
             end_tx          => end_tx
         );
@@ -150,7 +140,8 @@ begin
     u_driver_tx : entity work.driver_tx
         port map (
             bit_in    => sl_bit_serial,
-            state_can => state_can_r,
+            state_can => state_can,
+            ack_slot  => ack_in,
             bit_out   => bus_line
         );
 
@@ -159,26 +150,17 @@ begin
         port map (
             clock      => clock,
             reset      => reset,
-            rx_in      => bus_line,
+            rx_in      => bus_rx_norm,
             prop_seg   => prop_seg,
             phase_seg1 => phase_seg1,
             phase_seg2 => phase_seg2,
             id_rx      => sv_id_rx,
             ack_bit    => sl_ack_bit,
-            frame_rdy  => sl_bus_frame_rdy
+            frame_rdy  => sl_bus_frame_rdy,
+            err_ack    => err_ack
         );
-    
-    -- ACK check module
-    u_ack_check : entity work.ack_check
-        port map (
-            clock     => clock,
-            reset     => reset,
-            frame_rdy => sl_bus_frame_rdy,
-            ack_bit   => sl_ack_bit,
-            err_ack   => err_ack
-        );
+
 
 end architecture;
-
 
 

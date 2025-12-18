@@ -27,19 +27,30 @@ entity driver_tx is
     Port (
         bit_in      : in std_logic;
         state_can   : in std_logic_vector(1 downto 0);
+        ack_slot    : in std_logic;
         bit_out     : out std_logic
     );
 end driver_tx;
 
 architecture arch_driver_tx of driver_tx is
 begin
-    process(state_can, bit_in)
-    begin
-        if state_can = "10" or state_can = "11" then
-            bit_out <= bit_in;
-        else
-            bit_out <= 'Z';
-        end if;
-    end process;
+  process(bit_in, state_can, ack_slot)
+  begin
+    bit_out <= 'Z'; -- default: release
+
+    -- TX: drive dominant only
+    if state_can = "10" then
+      if bit_in = '0' then
+        bit_out <= '0';
+      else
+        bit_out <= 'Z';
+      end if;
+
+    -- RX: ACK slot forces dominant
+    elsif (state_can = "01" and ack_slot = '1') then
+      bit_out <= '0';
+    end if;
+  end process;
 end architecture;
+
 

@@ -41,14 +41,14 @@ end Destuffing;
 
 architecture arch_Destuffing of Destuffing is
 
-    signal last_bit    : std_logic := '1';
-    signal same_count  : unsigned(2 downto 0) := (others => '0');
-    signal skip_next   : std_logic := '0';
+    signal last_bit    : std_logic;
+    signal same_count  : unsigned(2 downto 0);
+    signal skip_next   : std_logic;
 
-    signal bit_out_o     : std_logic := '1';
-    signal bit_valid_o   : std_logic := '0';
-    signal err_frame_o   : std_logic := '0';
-    signal edge_det_o    : std_logic := '0';
+    signal bit_out_o     : std_logic;
+    signal bit_valid_o   : std_logic;
+    signal err_frame_o   : std_logic;
+    signal edge_det_o    : std_logic;
 
 begin
     
@@ -87,12 +87,12 @@ begin
                     bit_valid_o <= '0';
                     same_count  <= "000";
                     
-                    -- error frame only if the node is not in IDLE state
-                    if state_can = "01" or state_can = "10" then
-                        if rx_in_sync = last_bit then
-                            err_frame_o <= '1';
-                        end if;
-                    end if;
+                    -- error frame only if the node is in RX state
+                    --if state_can = "01" then
+                    --    if rx_in_sync = last_bit then
+                    --        err_frame_o <= '1';
+                    --    end if;
+                    --end if;
 
                 else
                     -- valid bit

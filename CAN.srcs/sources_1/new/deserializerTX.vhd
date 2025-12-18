@@ -33,8 +33,8 @@ entity deserializerTX is
         state_can       : in std_logic_vector(1 downto 0);
 
         id_rx           : out std_logic_vector(10 downto 0);
-        ack_bit         : out std_logic;
-        frame_rdy       : out std_logic
+        frame_rdy       : out std_logic;
+        err_ack         : out std_logic
     ); 
 end entity;
 
@@ -51,11 +51,10 @@ architecture arch_deserializerTX of deserializerTX is
     signal s_data_len   : unsigned(6 downto 0) := (others => '0');
 
     signal sv_id_rx     : std_logic_vector(10 downto 0) := (others => '0');
-    signal sl_ack_bit   : std_logic := '1';
+    signal sl_ack_in    : std_logic;
 
 begin
     id_rx   <= sv_id_rx;
-    ack_bit <= sl_ack_bit;
 
     proc_deserializerTX : process(clock, reset)
     begin
@@ -65,7 +64,7 @@ begin
             sv_dlc      <= (others => '0');
             s_data_len  <= (others => '0');
             sv_id_rx    <= (others => '1');
-            sl_ack_bit  <= '1';
+            err_ack     <= '0';
             frame_rdy   <= '0';
 
         elsif rising_edge(clock) then
@@ -77,8 +76,8 @@ begin
                 when IDLE =>
                     -- wait SOF (dominant 0)
                     if bit_valid = '1' and destuff_bit = '0' then
-                        sv_id_rx    <= (others => '0');
-                        sl_ack_bit  <= '1';
+                        --sv_id_rx    <= (others => '0');
+                        err_ack     <= '0';
                         sv_dlc      <= (others => '0');
                         s_bit_count <= (others => '0');
                         state       <= ID;
@@ -132,7 +131,7 @@ begin
                     if bit_valid = '1' then
                         s_bit_count <= s_bit_count + 1;
 
-                        if s_bit_count = s_data_len - 2 then
+                        if s_bit_count = 63 then
                             s_bit_count <= (others => '0');
                             state <= CRC;
                         end if;
@@ -149,29 +148,43 @@ begin
                     end if;
 
                 when CRC_DELIM =>
-                    state <= ACK;
+                    if sample_tick = '1' then
+                        state <= ACK;
+                    end if;
 
                 when ACK =>
-                    sl_ack_bit <= destuff_bit;
-                    state <= ACK_DELIM;
-
-                when ACK_DELIM =>
-                    state <= EOF;
+                    if destuff_bit = '1' then
+                        err_ack <= '1';
+                    else
+                        err_ack <= '0';
+                    end if; 
+                    if sample_tick = '1' then
+                        state <= ACK_DELIM;
+                    end if;
+                    
+                when ACK_DELIM =>       
+                    if sample_tick = '1' then
+                        state <= EOF;
+                    end if;
 
                 when EOF =>
-                    s_bit_count <= s_bit_count + 1;
-                    if s_bit_count = to_unsigned(6, 7) then
-                        s_bit_count <= (others => '0');
-                        state <= DELIM;
+                    if sample_tick = '1' then
+                        s_bit_count <= s_bit_count + 1;
+                        if s_bit_count = to_unsigned(6, 7) then
+                            s_bit_count <= (others => '0');
+                            state <= DELIM;
+                        end if;
                     end if;
-
+                    
                 when DELIM =>
-                    s_bit_count <= s_bit_count + 1;
-                    if s_bit_count = to_unsigned(2, 7) then
-                        s_bit_count <= (others => '0');
-                        state <= DONE;
+                    if sample_tick = '1' then
+                        s_bit_count <= s_bit_count + 1;
+                        if s_bit_count = to_unsigned(2, 7) then
+                            s_bit_count <= (others => '0');
+                            state <= DONE;
+                        end if;
                     end if;
-
+                    
                 when DONE =>
                     frame_rdy <= '1';
                     state <= IDLE;

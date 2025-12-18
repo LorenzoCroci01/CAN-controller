@@ -27,6 +27,8 @@ entity CAN_RX_module is
         clock         : in  std_logic;
         reset         : in  std_logic;
         rx_in         : in  std_logic;
+        rx_enable     : in std_logic;
+
 
         prop_seg      : in  unsigned(7 downto 0);
         phase_seg1    : in  unsigned(7 downto 0);
@@ -71,12 +73,12 @@ begin
         if reset = '1' then
             state_can_r <= "00"; -- IDLE
         elsif rising_edge(clock) then
-            -- error frame or end of frame -> IDLE
-            if sl_err_frame = '1' or sl_frame_rdy = '1' then
+            -- end of frame -> IDLE
+            if sl_frame_rdy = '1' then
                 state_can_r <= "00";
 
             -- start reception
-            elsif state_can_r = "00" and sl_bit_valid = '1' and sl_bit_out = '0' then
+            elsif (rx_enable = '1' and state_can_r = "00" and sl_bit_valid='1' and sl_bit_out='0') then
                 state_can_r <= "01"; -- RECEIVING
             end if;
         end if;
