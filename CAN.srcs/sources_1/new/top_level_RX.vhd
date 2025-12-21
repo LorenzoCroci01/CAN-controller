@@ -127,4 +127,3 @@ begin
     state_can_rx_out <= sv_state_can;
 
 end architecture;
-

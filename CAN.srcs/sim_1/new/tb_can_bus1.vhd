@@ -1,14 +1,14 @@
 ----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
+-- Company:             Università Politecnica delle Marche
+-- Engineer:            Lorenzo Croci
 -- 
--- Create Date: 17.12.2025 12:45:24
+-- Create Date:         17.12.2025 12:45:24
 -- Design Name: 
--- Module Name: tb_can_bus1 - tb
--- Project Name: 
+-- Module Name:         tb_can_bus1 - tb
+-- Project Name:        CAN
 -- Target Devices: 
 -- Tool Versions: 
--- Description: 
+-- Description:         testbench CAN bus communication
 -- 
 -- Dependencies: 
 -- 
@@ -67,9 +67,29 @@ architecture sim of tb_can_bus1 is
     signal ram_dinID_peer  : std_logic_vector(7 downto 0) := (others => '0');
     signal ram_rdy_peer    : std_logic;
 
-    -- same frame you used before
-    constant FRAME : std_logic_vector(82 downto 0) :=
+    --------------------------------------------------------------------
+    -- Two frames with different IDs to force arbitration
+    --
+    -- Your old frame starts with ID = 0x049 (00001001001)
+    -- We'll keep DUT = 0x049 (lower ID -> should WIN)
+    -- and set PEER = 0x04B (00001001011) (higher -> should LOSE)
+    --
+    -- Frame format here: [19 bits header] & [64 bits data] = 83 bits
+    -- In your previous TB, the 19-bit header was:
+    --   "0000100100110000010"
+    -- which includes ID + CTRL + DLC etc. We only tweak the ID bits.
+    --------------------------------------------------------------------
+
+    -- DUT frame: ID = 0x049 (same as you used)
+    constant FRAME_DUT : std_logic_vector(82 downto 0) :=
         "0000100100110000010" &
+        "0000000000000000000000000000000000000000000000001010010100111100";
+
+    -- PEER frame: ID = 0x04B (only ID bits changed: 00001001011)
+    -- header becomes: 00001001011 10000010  (keeping rest same style)
+    -- NOTE: if your builder expects exact fields, only the first 11 bits matter for arbitration.
+    constant FRAME_PEER : std_logic_vector(82 downto 0) :=
+        "0000100101110000010" &
         "0000000000000000000000000000000000000000000000001010010100111100";
 
 begin
@@ -126,9 +146,21 @@ begin
             wait until rising_edge(clock);
         end procedure;
 
+        procedure ram_write_dut(a : unsigned(7 downto 0); d : std_logic_vector(7 downto 0)) is
+        begin
+            ram_addrID_dut <= a;
+            ram_dinID_dut  <= d;
+            we_memID_dut   <= '1';
+            wait until rising_edge(clock);
+            we_memID_dut   <= '0';
+            wait until rising_edge(clock);
+        end procedure;
+
     begin
-        -- init
-        frame_tx_in_dut <= FRAME;
+        -- init frames
+        frame_tx_in_dut  <= FRAME_DUT;
+        frame_tx_in_peer <= FRAME_PEER;
+
         tx_request_dut  <= '0';
         tx_request_peer <= '0';
 
@@ -142,34 +174,38 @@ begin
         reset_peer <= '0';
         wait for 50 ns;
 
-        wait until ram_rdy_peer = '1';
+        -- wait RAM ready (both)
+        wait until (ram_rdy_peer = '1' and ram_rdy_dut = '1');
 
-        ----------------------------------------------------------------
-        -- Program PEER filter RAM
-        -- 0x09B -> addr 0x13, bit3 -> 00001000
-        -- 0x1A2 -> addr 0x34, bit2 -> 00000100
-        -- 0x093 -> addr 0x12, bit3 -> 00001000
-        -- 0x123 -> addr 0x24, bit3 -> 00001000
-        ----------------------------------------------------------------
+        -- program PEER filter RAM (optional, kept from your TB)
         ram_write_peer(x"13", "00001000");
         ram_write_peer(x"34", "00000100");
         ram_write_peer(x"12", "00001000");
         ram_write_peer(x"24", "00001000");
 
+        -- program DUT filter RAM too (optional)
+        ram_write_dut(x"13", "00001000");
+        ram_write_dut(x"34", "00000100");
+        ram_write_dut(x"12", "00001000");
+        ram_write_dut(x"24", "00001000");
+
         wait for 200 ns;
 
-        -- dut tx request
-        tx_request_dut <= '1';
+        ----------------------------------------------------------------
+        -- START BOTH TRANSMISSIONS AT THE SAME TIME (arbitration test)
+        ----------------------------------------------------------------
+        tx_request_dut  <= '1';
+        tx_request_peer <= '1';
         wait for 20 ns;
-        tx_request_dut <= '0';
-        
-        frame_tx_in_dut <= (others => '1');
-        
-        wait for 30 us;
+        tx_request_dut  <= '0';
+        tx_request_peer <= '0';
 
+        -- let it run
+        wait for 50 us;
         wait;
     end process;
 
 end architecture;
+
 
 

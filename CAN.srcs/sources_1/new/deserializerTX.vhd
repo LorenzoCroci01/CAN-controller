@@ -63,7 +63,7 @@ begin
             s_bit_count <= (others => '0');
             sv_dlc      <= (others => '0');
             s_data_len  <= (others => '0');
-            sv_id_rx    <= (others => '1');
+            sv_id_rx    <= (others => '0');
             err_ack     <= '0';
             frame_rdy   <= '0';
 
