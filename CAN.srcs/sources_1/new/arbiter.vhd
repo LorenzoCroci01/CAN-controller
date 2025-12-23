@@ -32,18 +32,19 @@ entity arbiter is
 
         frame_tx_out    : out std_logic_vector(107 downto 0);
         arbitration     : out std_logic;                 -- 1=win
-        state_next      : out std_logic_vector(1 downto 0) -- 10 TX, 01 RX, 00 IDLE
+        state_next      : out std_logic_vector(1 downto 0); -- 10 TX, 01 RX, 00 IDLE
+        id_rx_out       : out std_logic_vector(10 downto 0)
     );
 end arbiter;
 
 architecture arch_arbiter of arbiter is
 begin
-    process(frame_tx_rdy)
+    process(id_tx, id_rx)
     begin
-        -- default
         arbitration  <= '0';
         frame_tx_out <= (others => '1');
         state_next   <= "00";
+        id_rx_out    <= (others => '1');
 
         if frame_tx_rdy = '1' then
             -- compare IDs
@@ -54,8 +55,10 @@ begin
             else
                 arbitration  <= '0';          -- lost
                 frame_tx_out <= (others => '1');
+                id_rx_out    <= id_rx;
                 state_next   <= "01";         -- RECEIVING
             end if;
         end if;
     end process;
 end architecture;
+

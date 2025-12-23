@@ -40,8 +40,8 @@ entity top_level_tx is
         state_can       : in std_logic_vector(1 downto 0);  -- can node state
         bus_line        : inout std_logic;  -- bus line
         end_tx          : out std_logic;    -- end of transmition
-        lost_arbitration : out std_logic    -- inform node controller
-        
+        lost_arbitration : out std_logic;   -- inform node controller
+        id_rx_out        : out std_logic_vector(10 downto 0)
     );
 end top_level_tx;
 
@@ -72,7 +72,6 @@ begin
     -- Treat released bus as recessive '1'
     bus_rx_norm <= '1' when (bus_line = 'Z' or bus_line = 'H') else bus_line;
 
-
     -- lost arbitration if arbiter says next is RX ("01") while we were trying to tx
     lost_arbitration <= '1' when (sl_frm_tx_rdy = '1' and state_next_arb = "01") else '0';
 
@@ -97,7 +96,8 @@ begin
             id_rx        => sv_id_rx,
             frame_tx_out => sv_frm_arb_out,
             arbitration  => sl_arbitration,
-            state_next   => state_next_arb
+            state_next   => state_next_arb,
+            id_rx_out    => id_rx_out
         );
 
     -- Bit stuffer
@@ -162,6 +162,4 @@ begin
 
 
 end architecture;
-
-
 

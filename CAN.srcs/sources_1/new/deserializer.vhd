@@ -30,6 +30,8 @@ entity deserializer is
         bit_valid       : in  std_logic;    -- bit valid flag
         sample_tick     : in  std_logic;    -- sample tick pulse
         state_can       : in  std_logic_vector(1 downto 0);     -- can node state
+        lost_arbitration : in std_logic;
+        id_rx_in        : in std_logic_vector(10 downto 0);
 
         frame           : out std_logic_vector(107 downto 0);   -- deserialized frame output
         ack_slot        : out std_logic;    -- ack slot flag
@@ -82,7 +84,7 @@ begin
                 next_state_can <= "01";
             end if;
             
-            if state_can = "01" then
+            if state_can = "01" or (state_can = "10" and lost_arbitration = '1') then
                 case state is
 
                     -- IDLE: wait SOF
@@ -98,13 +100,19 @@ begin
 
                     -- ID field (11 bits)
                     when ID =>
-                        if bit_valid = '1' then
-                            sv_first_pt <= sv_first_pt(17 downto 0) & destuff_bit;
-                            s_bit_count <= s_bit_count + 1;
+                        if lost_arbitration = '1' then
+                            sv_first_pt <= sv_first_pt(6 downto 0) & id_rx_in & destuff_bit;
+                            s_bit_count <= (others =>  '0');
+                            state <= CTRL;
+                        else    
+                            if bit_valid = '1' then
+                                sv_first_pt <= sv_first_pt(17 downto 0) & destuff_bit;
+                                s_bit_count <= s_bit_count + 1;
 
-                            if s_bit_count = to_unsigned(10, 7) then
-                                s_bit_count <= (others =>  '0');
-                                state <= CTRL;
+                                if s_bit_count = to_unsigned(10, 7) then
+                                    s_bit_count <= (others =>  '0');
+                                    state <= CTRL;
+                                end if;
                             end if;
                         end if;
 
@@ -114,7 +122,7 @@ begin
                             sv_first_pt <= sv_first_pt(17 downto 0) & destuff_bit;
                             s_bit_count <= s_bit_count + 1;
 
-                            if s_bit_count = to_unsigned(2, 7) then
+                            if s_bit_count = to_unsigned(1, 7) then
                                 s_bit_count <= (others => '0');
                                 state <= DLC;
                             end if;
@@ -231,7 +239,6 @@ begin
     end process;
 
 end architecture;
-
 
 
 

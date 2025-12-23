@@ -29,6 +29,8 @@ entity top_level_RX is
         reset        : in std_logic;    -- async reset
         rx_in        : in std_logic;    -- rx async bit input
         rx_enable    : in std_logic;    -- rx enable flag
+        lost_arbitration : in std_logic;
+        id_rx_in         : in std_logic_vector(10 downto 0);
 
         -- input to CAN RX module (BTU config)
         prop_seg     : in unsigned(7 downto 0);
@@ -83,6 +85,8 @@ begin
             reset       => reset,
             rx_in       => rx_in_norm,
             rx_enable   => rx_enable,
+            lost_arbitration => lost_arbitration,
+            id_rx_in    => id_rx_in,
             prop_seg    => prop_seg,
             phase_seg1  => phase_seg1,
             phase_seg2  => phase_seg2,
@@ -127,3 +131,4 @@ begin
     state_can_rx_out <= sv_state_can;
 
 end architecture;
+

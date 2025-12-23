@@ -28,6 +28,8 @@ entity CAN_RX_module is
         reset         : in  std_logic;      -- async reset
         rx_in         : in  std_logic;      -- rx async bit input
         rx_enable     : in std_logic;       -- rx enable flag
+        lost_arbitration : in std_logic;
+        id_rx_in      : in std_logic_vector(10 downto 0);
 
         prop_seg      : in  unsigned(7 downto 0);
         phase_seg1    : in  unsigned(7 downto 0);
@@ -128,12 +130,13 @@ begin
             bit_valid      => sl_bit_valid,
             sample_tick    => sl_sample_tick,
             state_can      => state_can_r,
+            lost_arbitration => lost_arbitration,
+            id_rx_in       => id_rx_in,
             frame          => frame,
             ack_slot       => ack_slot,
             frame_rdy      => sl_frame_rdy
         );
 
 end architecture;
-
 
 
