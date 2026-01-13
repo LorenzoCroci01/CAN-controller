@@ -1,9 +1,10 @@
 Vivado Simulator v2025.1.0
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
 Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
-Running: C:/Xilinx/2025.1/Vivado/bin/unwrapped/win64.o/xelab.exe --incr --debug typical --relax --mt 2 -L xil_defaultlib -L secureip --snapshot tb_can_bus1_behav xil_defaultlib.tb_can_bus1 -log elaborate.log 
+Running: C:/Xilinx/2025.1/Vivado/bin/unwrapped/win64.o/xelab.exe --incr --debug typical --relax --mt 2 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot tb_can_bus1_behav xil_defaultlib.tb_can_bus1 xil_defaultlib.glbl -log elaborate.log 
 Using 2 slave threads.
 Starting static elaboration
+Pass Through NonSizing Optimizer
 Completed static elaboration
 Starting simulation data flow analysis
 Completed simulation data flow analysis
@@ -12,6 +13,7 @@ Compiling package std.standard
 Compiling package std.textio
 Compiling package ieee.std_logic_1164
 Compiling package ieee.numeric_std
+Compiling module xil_defaultlib.glbl
 Compiling architecture arch_builder_tx of entity xil_defaultlib.builder_tx [builder_tx_default]
 Compiling architecture arch_arbiter of entity xil_defaultlib.arbiter [arbiter_default]
 Compiling architecture arch_bit_stuffer of entity xil_defaultlib.bit_stuffer [bit_stuffer_default]

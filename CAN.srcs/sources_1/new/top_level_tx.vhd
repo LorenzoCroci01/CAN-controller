@@ -41,7 +41,8 @@ entity top_level_tx is
         bus_line        : inout std_logic;  -- bus line
         end_tx          : out std_logic;    -- end of transmition
         lost_arbitration : out std_logic;   -- inform node controller
-        id_rx_out        : out std_logic_vector(10 downto 0)
+        id_rx_out        : out std_logic_vector(10 downto 0);
+        id_len          : out integer range 0 to 10
     );
 end top_level_tx;
 
@@ -65,6 +66,8 @@ architecture arch_top_level_tx of top_level_tx is
     signal sv_id_rx         : std_logic_vector(10 downto 0);
     signal sl_ack_bit       : std_logic;
     signal sl_bus_frame_rdy : std_logic;
+    signal sl_bus_busy      : std_logic;
+    signal sl_id_bit_valid  : std_logic;
 
 begin
     frame_tx_rdy <= sl_frm_tx_rdy;
@@ -73,7 +76,7 @@ begin
     bus_rx_norm <= '1' when (bus_line = 'Z' or bus_line = 'H') else bus_line;
 
     -- lost arbitration if arbiter says next is RX ("01") while we were trying to tx
-    lost_arbitration <= '1' when (sl_frm_tx_rdy = '1' and state_next_arb = "01") else '0';
+    lost_arbitration <= '1' when (sl_frm_tx_rdy = '1' and sl_bus_busy = '1' and state_next_arb = "01") else '0';
 
     -- Frame builder TX
     u_builder_tx : entity work.builder_tx
@@ -90,14 +93,20 @@ begin
     -- Arbiter
     u_arbiter : entity work.arbiter
         port map (
+            clock        => clock,
+            reset        => reset,
+            state_can    => state_can,
             frame_tx_rdy => sl_frm_tx_rdy,
+            bus_busy     => sl_bus_busy,
             frame_tx     => sv_frm_build_out,
             id_tx        => sv_frm_build_out(106 downto 96),
             id_rx        => sv_id_rx,
+            id_bit_valid => sl_id_bit_valid,
             frame_tx_out => sv_frm_arb_out,
             arbitration  => sl_arbitration,
             state_next   => state_next_arb,
-            id_rx_out    => id_rx_out
+            id_rx_out    => id_rx_out,
+            id_len       => id_len
         );
 
     -- Bit stuffer
@@ -154,6 +163,8 @@ begin
             prop_seg   => prop_seg,
             phase_seg1 => phase_seg1,
             phase_seg2 => phase_seg2,
+            id_bit_valid => sl_id_bit_valid,
+            busy       => sl_bus_busy,
             id_rx      => sv_id_rx,
             ack_bit    => sl_ack_bit,
             frame_rdy  => sl_bus_frame_rdy,
@@ -162,4 +173,3 @@ begin
 
 
 end architecture;
-

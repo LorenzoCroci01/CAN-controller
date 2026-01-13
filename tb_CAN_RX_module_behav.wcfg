@@ -5,72 +5,98 @@
    <db_ref_list>
       <db_ref path="tb_can_bus1_behav.wdb" id="1">
          <top_modules>
+            <top_module name="glbl" />
             <top_module name="tb_can_bus1" />
          </top_modules>
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="2,747.500 ns"></ZoomStartTime>
-      <ZoomEndTime time="4,262.501 ns"></ZoomEndTime>
-      <Cursor1Time time="4,010.000 ns"></Cursor1Time>
+      <ZoomStartTime time="0.000000 us"></ZoomStartTime>
+      <ZoomEndTime time="17.899208 us"></ZoomEndTime>
+      <Cursor1Time time="12.380000 us"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="217"></NameColumnWidth>
-      <ValueColumnWidth column_width="133"></ValueColumnWidth>
+      <NameColumnWidth column_width="259"></NameColumnWidth>
+      <ValueColumnWidth column_width="323"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="15" />
-   <wvobject fp_name="/tb_can_bus1/DUT/u_tx_module/u_serializer/bit_serial_out" type="logic">
-      <obj_property name="ElementShortName">bit_serial_out</obj_property>
-      <obj_property name="ObjectShortName">bit_serial_out</obj_property>
+   <WVObjectSize size="20" />
+   <wvobject fp_name="/tb_can_bus1/DUT/bus_line" type="logic">
+      <obj_property name="ElementShortName">bus_line</obj_property>
+      <obj_property name="ObjectShortName">bus_line</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_can_bus1/PEER/u_rx_module/u_can_rx_module/u_ff/rx_in" type="logic">
-      <obj_property name="ElementShortName">rx_in</obj_property>
-      <obj_property name="ObjectShortName">rx_in</obj_property>
+   <wvobject fp_name="/tb_can_bus1/PEER/u_rx_module/u_can_rx_module/u_deserial/destuff_bit" type="logic">
+      <obj_property name="ElementShortName">destuff_bit</obj_property>
+      <obj_property name="ObjectShortName">destuff_bit</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_can_bus1/PEER/u_rx_module/u_can_rx_module/u_deserial/state" type="other">
       <obj_property name="ElementShortName">state</obj_property>
       <obj_property name="ObjectShortName">state</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_can_bus1/DUT/bus_line" type="logic">
-      <obj_property name="ElementShortName">bus_line</obj_property>
-      <obj_property name="ObjectShortName">bus_line</obj_property>
+   <wvobject fp_name="/tb_can_bus1/DUT/state_can_node" type="array">
+      <obj_property name="ElementShortName">state_can_node[1:0]</obj_property>
+      <obj_property name="ObjectShortName">state_can_node[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_can_bus1/DUT/u_tx_module/u_arbiter/frame_tx_rdy" type="logic">
+      <obj_property name="ElementShortName">frame_tx_rdy</obj_property>
+      <obj_property name="ObjectShortName">frame_tx_rdy</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_can_bus1/DUT/u_tx_module/u_arbiter/bus_busy" type="logic">
+      <obj_property name="ElementShortName">bus_busy</obj_property>
+      <obj_property name="ObjectShortName">bus_busy</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_can_bus1/DUT/u_tx_module/lost_arbitration" type="logic">
+      <obj_property name="ElementShortName">lost_arbitration</obj_property>
+      <obj_property name="ObjectShortName">lost_arbitration</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_can_bus1/DUT/u_tx_module/u_arbiter/id_tx" type="array">
       <obj_property name="ElementShortName">id_tx[10:0]</obj_property>
       <obj_property name="ObjectShortName">id_tx[10:0]</obj_property>
       <obj_property name="Radix">BINARYRADIX</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_can_bus1/DUT/u_tx_module/u_can_readTX/u_deserializerTX/id_rx" type="array">
+   <wvobject fp_name="/tb_can_bus1/DUT/u_tx_module/u_arbiter/id_rx" type="array">
       <obj_property name="ElementShortName">id_rx[10:0]</obj_property>
       <obj_property name="ObjectShortName">id_rx[10:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_can_bus1/PEER/u_rx_module/ack_slot" type="logic">
-      <obj_property name="ElementShortName">ack_slot</obj_property>
-      <obj_property name="ObjectShortName">ack_slot</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_can_bus1/DUT/u_tx_module/u_can_readTX/err_ack" type="logic">
-      <obj_property name="ElementShortName">err_ack</obj_property>
-      <obj_property name="ObjectShortName">err_ack</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_can_bus1/DUT/u_tx_module/end_tx" type="logic">
-      <obj_property name="ElementShortName">end_tx</obj_property>
-      <obj_property name="ObjectShortName">end_tx</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_can_bus1/DUT/state_can_node" type="array">
-      <obj_property name="ElementShortName">state_can_node[1:0]</obj_property>
-      <obj_property name="ObjectShortName">state_can_node[1:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_can_bus1/PEER/state_can_node" type="array">
       <obj_property name="ElementShortName">state_can_node[1:0]</obj_property>
       <obj_property name="ObjectShortName">state_can_node[1:0]</obj_property>
    </wvobject>
+   <wvobject fp_name="/tb_can_bus1/PEER/u_tx_module/lost_arbitration" type="logic">
+      <obj_property name="ElementShortName">lost_arbitration</obj_property>
+      <obj_property name="ObjectShortName">lost_arbitration</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_can_bus1/PEER/u_tx_module/u_arbiter/id_tx" type="array">
+      <obj_property name="ElementShortName">id_tx[10:0]</obj_property>
+      <obj_property name="ObjectShortName">id_tx[10:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_can_bus1/PEER/u_tx_module/u_arbiter/id_rx" type="array">
+      <obj_property name="ElementShortName">id_rx[10:0]</obj_property>
+      <obj_property name="ObjectShortName">id_rx[10:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_can_bus1/PEER/u_rx_module/ack_slot" type="logic">
+      <obj_property name="ElementShortName">ack_slot</obj_property>
+      <obj_property name="ObjectShortName">ack_slot</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_can_bus1/DUT/u_tx_module/end_tx" type="logic">
+      <obj_property name="ElementShortName">end_tx</obj_property>
+      <obj_property name="ObjectShortName">end_tx</obj_property>
+   </wvobject>
    <wvobject fp_name="/tb_can_bus1/PEER/u_rx_module/u_fsm_rx/frame_in" type="array">
       <obj_property name="ElementShortName">frame_in[107:0]</obj_property>
       <obj_property name="ObjectShortName">frame_in[107:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_can_bus1/PEER/u_rx_module/u_fsm_rx/frame_out" type="array">
       <obj_property name="ElementShortName">frame_out[107:0]</obj_property>
       <obj_property name="ObjectShortName">frame_out[107:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_can_bus1/DUT/u_tx_module/u_can_readTX/err_ack" type="logic">
+      <obj_property name="ElementShortName">err_ack</obj_property>
+      <obj_property name="ObjectShortName">err_ack</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_can_bus1/PEER/u_rx_module/u_fsm_rx/err_crc" type="logic">
       <obj_property name="ElementShortName">err_crc</obj_property>

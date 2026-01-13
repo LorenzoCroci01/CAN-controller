@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenRun Id="fifo_tx_83bit_synth_1" LaunchPart="xc7a50tcpg236-1" LaunchTime="1767799956">
+  <File Type="REPORTS-TCL" Name="fifo_tx_83bit_reports.tcl"/>
+  <File Type="RDS-UTIL" Name="fifo_tx_83bit_utilization_synth.rpt"/>
+  <File Type="RDS-UTIL-PB" Name="fifo_tx_83bit_utilization_synth.pb"/>
+  <File Type="PA-TCL" Name="fifo_tx_83bit.tcl"/>
+  <File Type="RDS-RDS" Name="fifo_tx_83bit.vds"/>
+  <File Type="RDS-DCP" Name="fifo_tx_83bit.dcp"/>
+  <FileSet Name="sources" Type="BlockSrcs" RelSrcDir="$PSRCDIR/fifo_tx_83bit" RelGenDir="$PGENDIR/fifo_tx_83bit">
+    <File Path="$PSRCDIR/sources_1/ip/fifo_tx_83bit/fifo_tx_83bit.xci">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <Config>
+      <Option Name="TopModule" Val="fifo_tx_83bit"/>
+      <Option Name="UseBlackboxStub" Val="1"/>
+    </Config>
+  </FileSet>
+  <FileSet Name="constrs_in" Type="BlockSrcs" RelSrcDir="$PSRCDIR/fifo_tx_83bit" RelGenDir="$PGENDIR/fifo_tx_83bit">
+    <File Path="$PSRCDIR/sources_1/ip/fifo_tx_83bit/fifo_tx_83bit.xci">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <Config>
+      <Option Name="TopModule" Val="fifo_tx_83bit"/>
+      <Option Name="UseBlackboxStub" Val="1"/>
+    </Config>
+  </FileSet>
+  <FileSet Name="utils" Type="Utils" RelSrcDir="$PSRCDIR/utils_1" RelGenDir="$PGENDIR/utils_1">
+    <Filter Type="Utils"/>
+    <File Path="$PSRCDIR/utils_1/imports/synth_1/Destuffing.dcp">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedInSteps" Val="synth_1"/>
+        <Attr Name="AutoDcp" Val="1"/>
+      </FileInfo>
+    </File>
+    <Config>
+      <Option Name="TopAutoSet" Val="TRUE"/>
+    </Config>
+  </FileSet>
+  <Strategy Version="1" Minor="2">
+    <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2025"/>
+    <Step Id="synth_design"/>
+  </Strategy>
+</GenRun>

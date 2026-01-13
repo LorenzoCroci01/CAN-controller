@@ -30,6 +30,7 @@ entity CAN_RX_module is
         rx_enable     : in std_logic;       -- rx enable flag
         lost_arbitration : in std_logic;
         id_rx_in      : in std_logic_vector(10 downto 0);
+        id_len        : in integer range 0 to 10;
 
         prop_seg      : in  unsigned(7 downto 0);
         phase_seg1    : in  unsigned(7 downto 0);
@@ -39,7 +40,8 @@ entity CAN_RX_module is
         state_can     : out std_logic_vector(1 downto 0);       -- can node state
         ack_slot      : out std_logic;      -- ack slot flag
         frame_rdy     : out std_logic;      -- frame ready flag
-        err_frame     : out std_logic;      -- error frame flag
+        err_frame     : out std_logic;      -- error stuffed flag
+        err_format    : out std_logic;      -- error frame format flag
 
         sample_tick_o : out std_logic       -- sample tick pulse
     );
@@ -132,8 +134,10 @@ begin
             state_can      => state_can_r,
             lost_arbitration => lost_arbitration,
             id_rx_in       => id_rx_in,
+            id_len         => id_len,
             frame          => frame,
             ack_slot       => ack_slot,
+            err_format     => err_format,
             frame_rdy      => sl_frame_rdy
         );
 

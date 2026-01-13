@@ -89,7 +89,7 @@ architecture sim of tb_can_bus1 is
     -- header becomes: 00001001011 10000010  (keeping rest same style)
     -- NOTE: if your builder expects exact fields, only the first 11 bits matter for arbitration.
     constant FRAME_PEER : std_logic_vector(82 downto 0) :=
-        "0000100101110000010" &
+        "0000101100110000010" &
         "0000000000000000000000000000000000000000000000001010010100111100";
 
 begin

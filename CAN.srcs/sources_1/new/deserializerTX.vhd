@@ -31,7 +31,9 @@ entity deserializerTX is
         bit_valid       : in std_logic;     -- valid bit flag
         sample_tick     : in std_logic;     -- sample tick pulse
         state_can       : in std_logic_vector(1 downto 0);      -- can bus state
-
+        
+        id_bit_valid    : out std_logic;
+        busy            : out std_logic;    -- busy bus
         id_rx           : out std_logic_vector(10 downto 0);    -- id frame on can bus
         frame_rdy       : out std_logic;    -- frame ready flag
         err_ack         : out std_logic     -- error ack flag
@@ -66,17 +68,21 @@ begin
             sv_id_rx    <= (others => '1');
             err_ack     <= '0';
             frame_rdy   <= '0';
+            busy        <= '0';
+            id_bit_valid <= '0';
 
         elsif rising_edge(clock) then
             
-            frame_rdy <= '0';
-
+            frame_rdy       <= '0';
+            id_bit_valid    <= '0';
+            
             case state is
 
                 when IDLE =>
                     -- wait SOF (dominant 0)
                     if bit_valid = '1' and destuff_bit = '0' then
                         --sv_id_rx    <= (others => '0');
+                        busy        <= '1';
                         err_ack     <= '0';
                         sv_dlc      <= (others => '0');
                         s_bit_count <= (others => '0');
@@ -85,6 +91,7 @@ begin
 
                 when ID =>
                     if bit_valid = '1' then
+                        id_bit_valid <= '1';
                         sv_id_rx    <= sv_id_rx(9 downto 0) & destuff_bit;
                         s_bit_count <= s_bit_count + 1;
 
@@ -186,6 +193,7 @@ begin
                     end if;
                     
                 when DONE =>
+                    busy      <= '0';
                     frame_rdy <= '1';
                     state <= IDLE;
 

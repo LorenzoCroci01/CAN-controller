@@ -31,7 +31,9 @@ entity can_readTX is
         prop_seg    : in  unsigned(7 downto 0);
         phase_seg1  : in  unsigned(7 downto 0);
         phase_seg2  : in  unsigned(7 downto 0);
-
+        
+        id_bit_valid : out std_logic;
+        busy        : out std_logic;    -- busy bus
         id_rx       : out std_logic_vector(10 downto 0);    -- id frame on bus
         ack_bit     : out std_logic;    -- ack bit flag
         frame_rdy   : out std_logic;    -- frame ready flag
@@ -98,10 +100,11 @@ begin
             bit_valid    => sl_bit_valid,
             sample_tick  => sl_sample_tick,
             state_can    => state_can_r,
+            id_bit_valid => id_bit_valid,
+            busy         => busy,
             id_rx        => id_rx,
             frame_rdy    => sl_frame_rdy,
             err_ack      => err_ack
         );
 
 end architecture;
-

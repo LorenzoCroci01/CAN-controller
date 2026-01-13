@@ -56,6 +56,7 @@ architecture arch_can_node_top of can_node_top is
     signal sl_end_tx          : std_logic;
     signal sl_lost_arb        : std_logic;
     signal sv_id_rx           : std_logic_vector(10 downto 0);
+    signal s_id_len           : integer range 0 to 10;
     signal tx_bus_line        : std_logic;
 
     -- RX
@@ -136,7 +137,8 @@ begin
             bus_line         => bus_line,
             end_tx           => sl_end_tx,
             lost_arbitration => sl_lost_arb,
-            id_rx_out        => sv_id_rx
+            id_rx_out        => sv_id_rx,
+            id_len           => s_id_len
         );
 
     -- RX module
@@ -148,6 +150,7 @@ begin
             rx_enable        => sl_rx_enable,
             lost_arbitration => sl_lost_arb,
             id_rx_in         => sv_id_rx,
+            id_len           => s_id_len,
             prop_seg         => prop_seg,
             phase_seg1       => phase_seg1,
             phase_seg2       => phase_seg2,
@@ -166,5 +169,3 @@ begin
     ram_rdy <= sl_ram_rdy;
 
 end architecture;
-
-

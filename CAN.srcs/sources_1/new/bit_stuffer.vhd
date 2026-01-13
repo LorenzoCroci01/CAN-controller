@@ -35,7 +35,7 @@ end entity;
 
 architecture arch_bit_stuffer of bit_stuffer is
 begin
-    process(arbitration)
+    process(frame_in, arbitration)
         variable tmp      : std_logic_vector(159 downto 0);
         variable wr       : integer;
         variable run_cnt  : integer;
