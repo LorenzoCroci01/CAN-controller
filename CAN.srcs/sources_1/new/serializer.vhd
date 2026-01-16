@@ -31,14 +31,14 @@ entity serializer is
         frame_ser_in    : in std_logic_vector(159 downto 0);    -- stuffed frame input
         frame_ser_len   : in unsigned(7 downto 0);              -- stuffed frame input length
         state_can       : in std_logic_vector(1 downto 0);      -- can node state
-
+        
         bit_serial_out  : out std_logic;    -- serial bit output
         end_tx          : out std_logic     -- end transmition flag
     );
 end serializer;
 
 architecture arch_serializer of serializer is
-    signal bit_cnt      : unsigned(7 downto 0) := (others => '0');
+    signal bit_cnt          : unsigned(7 downto 0);
 begin
     
     process(clock, reset)
@@ -49,8 +49,9 @@ begin
             end_tx         <= '0';
 
         elsif rising_edge(clock) then
-            
-            if state_can = "10" then
+            end_tx  <= '0';
+                    
+            if state_can = "10" or state_can = "11" then
                 if valid_stuf_frm = '1' and sample_tick = '1' then
                     end_tx <= '0';
                     if bit_cnt < frame_ser_len then
@@ -65,6 +66,7 @@ begin
                     bit_cnt        <= (others => '0');
                     bit_serial_out <= '1';
                 end if;
+                
             end if;
         end if;
     end process;

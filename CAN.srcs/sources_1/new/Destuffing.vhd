@@ -49,7 +49,7 @@ architecture arch_Destuffing of Destuffing is
     signal bit_valid_o   : std_logic;
     signal err_frame_o   : std_logic;
     signal edge_det_o    : std_logic;
-
+    
 begin
     
     bit_out   <= bit_out_o;
@@ -67,13 +67,13 @@ begin
             bit_valid_o  <= '0';
             err_frame_o  <= '0';
             edge_det_o   <= '0';
-
+            
         elsif rising_edge(clock) then
 
             bit_valid_o <= '0';
             edge_det_o  <= '0';
             err_frame_o <= '0';
-
+            
             if sample_tick = '1' then
 
                 -- edge detection for hard sync
@@ -83,10 +83,17 @@ begin
 
                 -- skip stuffed
                 if skip_next = '1' then
-                    skip_next   <= '0';
-                    bit_valid_o <= '0';
-                    same_count  <= "000";
-
+                    if rx_in_sync = last_bit then
+                        bit_valid_o <= '1';
+                        bit_out_o   <= rx_in_sync;
+                        skip_next   <= '0';
+                        err_frame_o <= '1';
+                        same_count  <= "000";
+                    else    
+                        bit_valid_o <= '0';
+                        skip_next   <= '0';
+                        same_count  <= "000";
+                    end if;    
                 else
                     -- valid bit
                     bit_out_o   <= rx_in_sync;

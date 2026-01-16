@@ -18,22 +18,23 @@
 -- 
 ----------------------------------------------------------------------------------
 
+
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 
 entity deserializer is 
-    Port( 
-        clock            : in  std_logic;
-        reset            : in  std_logic;
+    Port(
+        clock            : in std_logic;
+        reset            : in std_logic;
 
-        destuff_bit      : in  std_logic;
-        bit_valid        : in  std_logic;
-        sample_tick      : in  std_logic;
-        state_can        : in  std_logic_vector(1 downto 0);
-        lost_arbitration : in  std_logic;
-        id_rx_in         : in  std_logic_vector(10 downto 0);
-        id_len           : in  integer range 0 to 10;
+        destuff_bit      : in std_logic;
+        bit_valid        : in std_logic;
+        sample_tick      : in std_logic;
+        state_can        : in std_logic_vector(1 downto 0);
+        lost_arbitration : in std_logic;
+        id_rx_in         : in std_logic_vector(10 downto 0);
+        id_len           : in integer range 0 to 10;
 
         frame            : out std_logic_vector(107 downto 0);
         ack_slot         : out std_logic;
@@ -60,8 +61,11 @@ architecture arch_deserializer of deserializer is
     signal sv_first_pt   : std_logic_vector(18 downto 0) := (others => '0');    -- SOF+ID+CTRL+DLC
     signal sv_data_field : std_logic_vector(63 downto 0) := (others => '0');    -- DATA
     signal sv_last_pt    : std_logic_vector(24 downto 0) := (others => '0');    -- CRC+ACK+EOF
-
+    signal sl_err_format : std_logic;
+    
 begin
+
+    err_format  <= sl_err_format;
 
     proc_deserializer : process(clock, reset)
     begin
@@ -76,7 +80,7 @@ begin
             sv_last_pt     <= (others => '0');
 
             ack_slot       <= '0';
-            err_format     <= '0';
+            sl_err_format     <= '0';
             frame_rdy      <= '0';
             frame          <= (others => '0');
             next_state_can <= "00";
@@ -84,7 +88,7 @@ begin
         elsif rising_edge(clock) then
             frame_rdy  <= '0';
             ack_slot   <= '0';
-            err_format <= '0';
+            sl_err_format <= '0';
 
             if state = IDLE then
                 next_state_can <= "00";
@@ -105,6 +109,7 @@ begin
                         sv_dlc        <= (others => '0');
                         s_data_len    <= (others => '0');
                         s_bit_count   <= (others => '0');
+                        
                         
                         -- arbitration lost
                         if lost_arbitration = '1' then
@@ -214,8 +219,16 @@ begin
                         ack_slot <= '1';
                         if sample_tick = '1' then
                             sv_last_pt <= sv_last_pt(23 downto 0) & destuff_bit;
-                            state <= ACK_DELIM;
+                                
+                            -- check crc delim bit = 1
+                            if destuff_bit = '0' then
+                                --state <= IDLE;
+                                sl_err_format <= '1';
+                            end if;
+                                
+                            state <= ACK_DELIM;  
                         end if;
+
 
                     -- ACK delimiter (no destuffed)
                     when ACK_DELIM =>
@@ -223,12 +236,18 @@ begin
                         if sample_tick = '1' then
                             sv_last_pt <= sv_last_pt(23 downto 0) & destuff_bit;
                             state <= EOF;
-                        end if;
+                    end if;
 
                     -- EOF (7 bits)
                     when EOF =>
                         if sample_tick = '1' then
-                            sv_last_pt  <= sv_last_pt(23 downto 0) & destuff_bit;
+                            sv_last_pt <= sv_last_pt(23 downto 0) & destuff_bit;
+                            
+                            -- check ack delim bit and eof bits = 1
+                            if destuff_bit = '0' then
+                                --state <= IDLE;
+                                sl_err_format <= '1';
+                            end if;
 
                             if s_bit_count = to_unsigned(6, 7) then
                                 s_bit_count <= (others => '0');
@@ -244,6 +263,13 @@ begin
                             if s_bit_count = to_unsigned(2, 7) then
                                 s_bit_count <= (others => '0');
                                 state <= DONE;
+                                
+                            elsif s_bit_count = to_unsigned(0, 7) then
+                                s_bit_count <= s_bit_count + 1;
+                                if destuff_bit = '0' then
+                                    --state <= IDLE;
+                                    sl_err_format <= '1';
+                                end if;
                             else
                                 s_bit_count <= s_bit_count + 1;
                             end if;
@@ -251,13 +277,22 @@ begin
 
                     when DONE =>
                         frame     <= sv_first_pt & sv_data_field & sv_last_pt;
-                        frame_rdy <= '1';
+                        --frame_rdy <= '1';
                         state     <= IDLE;
+                        if sl_err_format = '1' then
+                            frame_rdy <= '0';
+                        else
+                            frame_rdy <= '1';
+                        end if;
 
                     when others =>
                         state <= IDLE;
 
                 end case;
+
+            elsif state_can = "11" then
+                sl_err_format <= '1';
+                frame_rdy <= '0';
             end if;
         end if;
     end process;

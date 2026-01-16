@@ -14,6 +14,7 @@ Compiling package std.textio
 Compiling package ieee.std_logic_1164
 Compiling package ieee.numeric_std
 Compiling module xil_defaultlib.glbl
+Compiling architecture arch_driver_err of entity xil_defaultlib.driver_err [driver_err_default]
 Compiling architecture arch_builder_tx of entity xil_defaultlib.builder_tx [builder_tx_default]
 Compiling architecture arch_arbiter of entity xil_defaultlib.arbiter [arbiter_default]
 Compiling architecture arch_bit_stuffer of entity xil_defaultlib.bit_stuffer [bit_stuffer_default]
@@ -30,6 +31,7 @@ Compiling architecture arch_can_rx_module of entity xil_defaultlib.CAN_RX_module
 Compiling architecture arch_fsm_rx of entity xil_defaultlib.fsm_rx [fsm_rx_default]
 Compiling architecture behavioral of entity xil_defaultlib.mem_filterID [mem_filterid_default]
 Compiling architecture arch_top_level_rx of entity xil_defaultlib.top_level_RX [top_level_rx_default]
+Compiling architecture arch_error_manager of entity xil_defaultlib.error_manager [error_manager_default]
 Compiling architecture arch_can_node_top of entity xil_defaultlib.can_node_top [can_node_top_default]
 Compiling architecture sim of entity xil_defaultlib.tb_can_bus1
 Built simulation snapshot tb_can_bus1_behav

@@ -11,13 +11,13 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="0.000000 us"></ZoomStartTime>
-      <ZoomEndTime time="17.899208 us"></ZoomEndTime>
-      <Cursor1Time time="12.380000 us"></Cursor1Time>
+      <ZoomStartTime time="10,115.833 ns"></ZoomStartTime>
+      <ZoomEndTime time="11,730.834 ns"></ZoomEndTime>
+      <Cursor1Time time="12,520.000 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="259"></NameColumnWidth>
-      <ValueColumnWidth column_width="323"></ValueColumnWidth>
+      <NameColumnWidth column_width="116"></NameColumnWidth>
+      <ValueColumnWidth column_width="135"></ValueColumnWidth>
    </column_width_setting>
    <WVObjectSize size="20" />
    <wvobject fp_name="/tb_can_bus1/DUT/bus_line" type="logic">
@@ -36,13 +36,9 @@
       <obj_property name="ElementShortName">state_can_node[1:0]</obj_property>
       <obj_property name="ObjectShortName">state_can_node[1:0]</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_can_bus1/DUT/u_tx_module/u_arbiter/frame_tx_rdy" type="logic">
-      <obj_property name="ElementShortName">frame_tx_rdy</obj_property>
-      <obj_property name="ObjectShortName">frame_tx_rdy</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_can_bus1/DUT/u_tx_module/u_arbiter/bus_busy" type="logic">
-      <obj_property name="ElementShortName">bus_busy</obj_property>
-      <obj_property name="ObjectShortName">bus_busy</obj_property>
+   <wvobject fp_name="/tb_can_bus1/DUT/u_tx_module/u_can_readTX/u_deserializerTX/state" type="other">
+      <obj_property name="ElementShortName">state</obj_property>
+      <obj_property name="ObjectShortName">state</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_can_bus1/DUT/u_tx_module/lost_arbitration" type="logic">
       <obj_property name="ElementShortName">lost_arbitration</obj_property>
@@ -61,10 +57,6 @@
    <wvobject fp_name="/tb_can_bus1/PEER/state_can_node" type="array">
       <obj_property name="ElementShortName">state_can_node[1:0]</obj_property>
       <obj_property name="ObjectShortName">state_can_node[1:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_can_bus1/PEER/u_tx_module/lost_arbitration" type="logic">
-      <obj_property name="ElementShortName">lost_arbitration</obj_property>
-      <obj_property name="ObjectShortName">lost_arbitration</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_can_bus1/PEER/u_tx_module/u_arbiter/id_tx" type="array">
       <obj_property name="ElementShortName">id_tx[10:0]</obj_property>
@@ -105,5 +97,13 @@
    <wvobject fp_name="/tb_can_bus1/PEER/u_rx_module/u_can_rx_module/u_destuff/err_frame" type="logic">
       <obj_property name="ElementShortName">err_frame</obj_property>
       <obj_property name="ObjectShortName">err_frame</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_can_bus1/PEER/u_rx_module/u_can_rx_module/u_deserial/err_format" type="logic">
+      <obj_property name="ElementShortName">err_format</obj_property>
+      <obj_property name="ObjectShortName">err_format</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_can_bus1/PEER/u_rx_module/u_fsm_rx/valid_frame" type="logic">
+      <obj_property name="ElementShortName">valid_frame</obj_property>
+      <obj_property name="ObjectShortName">valid_frame</obj_property>
    </wvobject>
 </wave_config>

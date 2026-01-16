@@ -81,9 +81,9 @@ begin
                 when IDLE =>
                     -- wait SOF (dominant 0)
                     if bit_valid = '1' and destuff_bit = '0' then
-                        --sv_id_rx    <= (others => '0');
                         busy        <= '1';
                         err_ack     <= '0';
+                        sv_id_rx    <= (others => '1');
                         sv_dlc      <= (others => '0');
                         s_bit_count <= (others => '0');
                         state       <= ID;
@@ -193,8 +193,10 @@ begin
                     end if;
                     
                 when DONE =>
+                    err_ack   <= '0';
                     busy      <= '0';
                     frame_rdy <= '1';
+                    --sv_id_rx    <= (others => '1');
                     state <= IDLE;
 
                 when others =>

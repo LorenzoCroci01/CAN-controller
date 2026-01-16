@@ -37,6 +37,7 @@ entity can_readTX is
         id_rx       : out std_logic_vector(10 downto 0);    -- id frame on bus
         ack_bit     : out std_logic;    -- ack bit flag
         frame_rdy   : out std_logic;    -- frame ready flag
+        err_frame   : out std_logic;
         err_ack     : out std_logic     -- error ack flag
     );
 end can_readTX;
@@ -88,6 +89,7 @@ begin
             state_can    => state_can_r,
             bit_out      => sl_bit_out,
             bit_valid    => sl_bit_valid,
+            err_frame    => err_frame,
             edge_det     => sl_edge_det
         );
 

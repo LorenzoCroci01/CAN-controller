@@ -45,17 +45,18 @@ entity arbiter is
 end arbiter;
 
 architecture arch_arbiter of arbiter is
-    signal count        : integer range 0 to 10 := 10;
-    signal sl_arb_on    : std_logic := '0';
-    signal sl_lost      : std_logic := '0';
+    signal count        : integer range 0 to 10;
+    signal sl_arb_on    : std_logic;
+    signal sl_lost      : std_logic;
 
-    signal sl_frame_tx_rdy  : std_logic := '0';
-    signal sl_bus_busy      : std_logic := '0';
+    signal sl_frame_tx_rdy  : std_logic;
+    signal sl_bus_busy      : std_logic;
 
-    signal pending_tx   : std_logic := '0';
-    signal wait_cnt     : integer range 0 to 31 := 0;  -- waiting counter
+    signal pending_tx   : std_logic;
+    signal wait_cnt     : integer range 0 to 31;  -- waiting counter
     
 begin
+    
     process(clock, reset)
         variable rise_txrdy : std_logic;
         variable rise_busy  : std_logic;
@@ -85,7 +86,7 @@ begin
 
             -- new bit received
             new_id_bit := id_bit_valid;
-
+            
             -- transmition ready (wait for checking frame on the bus)
             if rise_txrdy = '1' then
                 count        <= 10;
@@ -131,10 +132,16 @@ begin
             end if;
             
             -- If transmition in process and rise_busy = 1 -> arbitration
-            if (state_can = "10") and (rise_busy = '1') and (sl_lost = '0') then
+            if state_can = "10" and (rise_busy = '1') and (sl_lost = '0') then
                 sl_arb_on <= '1';
+            -- If error
+            elsif state_can = "11" then
+                arbitration <= '1';
+                sl_arb_on   <= '0';
+                sl_lost     <= '0';
+                frame_tx_out <= frame_tx;
             end if;
-
+            
             -- Arbitration in process
             if sl_arb_on = '1' and sl_lost = '0' then
                 if new_id_bit = '1' then

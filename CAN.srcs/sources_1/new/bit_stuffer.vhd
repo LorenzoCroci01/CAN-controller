@@ -24,9 +24,11 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity bit_stuffer is
     Port(
-        frame_in         : in  std_logic_vector(107 downto 0);
-        arbitration      : in  std_logic;
-
+        frame_in         : in std_logic_vector(107 downto 0);
+        arbitration      : in std_logic;
+        state_can        : in std_logic_vector(1 downto 0);
+        err_event        : in std_logic;
+        
         frame_stuff_out  : out std_logic_vector(159 downto 0);
         frame_stuff_len  : out unsigned(7 downto 0);
         valid            : out std_logic
@@ -44,57 +46,66 @@ begin
         variable stuff_b  : std_logic;
         variable used_bits: integer;
     begin
-        tmp          := (others => '0');
-        wr           := 159;
-        valid        <= '0';
-        frame_stuff_len <= (others => '0');
-        frame_stuff_out <= (others => '0');
+        if err_event = '0' then
+            tmp          := (others => '0');
+            wr           := 159;
+            valid        <= '0';
+            frame_stuff_len <= (others => '0');
+            frame_stuff_out <= (others => '1');
 
-        if arbitration = '1' then
-            -- first bit
-            b := frame_in(107);
-            tmp(wr) := b;
-            wr := wr - 1;
-            last_b := b;
-            run_cnt := 1;
 
-            -- stuffing on SOF, ID, CTRL, DLC, DATA, CRC fields (107 downto 10)
-            for i in 106 downto 10 loop
-                b := frame_in(i);
-
-                if b = last_b then
-                    run_cnt := run_cnt + 1;
-                else
-                    run_cnt := 1;
-                    last_b := b;
-                end if;
-
+            if arbitration = '1' then
+                -- first bit
+                b := frame_in(107);
                 tmp(wr) := b;
                 wr := wr - 1;
+                last_b := b;
+                run_cnt := 1;
 
-                if run_cnt = 5 then
-                    stuff_b := not last_b;
-                    tmp(wr) := stuff_b;
+                -- stuffing on SOF, ID, CTRL, DLC, DATA, CRC fields (107 downto 10)
+                for i in 106 downto 10 loop
+                    b := frame_in(i);
+
+                    if b = last_b then
+                        run_cnt := run_cnt + 1;
+                    else
+                        run_cnt := 1;
+                        last_b := b;
+                    end if;
+
+                    tmp(wr) := b;
                     wr := wr - 1;
 
-                    last_b := stuff_b;
-                    run_cnt := 1;
-                end if;
-            end loop;
+                    if run_cnt = 5 then
+                        stuff_b := not last_b;
+                        tmp(wr) := stuff_b;
+                        wr := wr - 1;
 
-            -- tail (CRC delim, ACK, EOF) no stuffing
-            for i in 9 downto 0 loop
-                tmp(wr) := frame_in(i);
-                wr := wr - 1;
-            end loop;
+                        last_b := stuff_b;
+                        run_cnt := 1;
+                    end if;
+                end loop;
 
-            used_bits := 159 - wr;  -- number of bits
-            frame_stuff_out <= tmp;
-            frame_stuff_len <= to_unsigned(used_bits, 8);
-            valid <= '1';
-        end if;
+                -- tail (CRC delim, ACK, EOF) no stuffing
+                for i in 9 downto 0 loop
+                    tmp(wr) := frame_in(i);
+                    wr := wr - 1;
+                end loop;
+
+                used_bits := 159 - wr;  -- number of bits
+                frame_stuff_out <= tmp;
+                frame_stuff_len <= to_unsigned(used_bits, 8);
+                valid <= '1';
+            end if;
+        
+        else
+            frame_stuff_out(159 downto 154)  <= frame_in(106 downto 101);
+            frame_stuff_out(153 downto 0)    <= (others => '1');
+            frame_stuff_len <= to_unsigned(6, 8);
+            valid           <= '1';
+        end if;                    
+            
     end process;
 end architecture;
-
 
 

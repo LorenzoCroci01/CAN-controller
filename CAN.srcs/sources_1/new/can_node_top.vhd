@@ -63,12 +63,17 @@ architecture arch_can_node_top of can_node_top is
     signal sl_ack_slot        : std_logic;
     signal sl_err_frame       : std_logic;
     signal sl_err_crc         : std_logic;
+    signal sl_err_format      : std_logic;
     signal sl_valid_frame     : std_logic;
     signal state_can_rx_out   : std_logic_vector(1 downto 0);
     signal sl_ram_rdy         : std_logic;
     signal sl_rx_enable       : std_logic;
 
-
+    -- ERROR MANAGER
+    signal sv_err_status      : std_logic_vector(1 downto 0);
+    signal sl_err_event       : std_logic;
+    signal sl_bus_off         : std_logic;
+    
 begin
 
     -- node state manager
@@ -77,13 +82,12 @@ begin
         if reset = '1' then
             state_can_node <= "00";
         elsif rising_edge(clock) then
-            case state_can_node is
+            
+                case state_can_node is
 
                 when "00" => -- IDLE
                     sl_rx_enable <= '1';
-                    if (sl_err_crc = '1') then
-                        state_can_node <= "11"; -- ERROR
-                    elsif (state_can_rx_out = "01") then
+                    if (state_can_rx_out = "01") then
                         state_can_node <= "01"; -- RX started
                     elsif (tx_request = '1') then
                         state_can_node <= "10"; -- start TX
@@ -93,45 +97,55 @@ begin
 
                 when "01" => -- RX
                     sl_rx_enable <= '1';
-                    if (sl_err_frame = '1' or sl_err_crc = '1') then
+                    if sl_err_crc = '1' or sl_err_format = '1' then
                         state_can_node <= "11"; -- ERROR
-                    elsif (sl_valid_frame = '1') then
+                    elsif sl_valid_frame = '1' then
                         state_can_node <= "00"; -- RX ended
+                    elsif sl_err_frame = '1' then
+                        state_can_node <= "10";
                     else
                         state_can_node <= "01";
                     end if;
 
                 when "10" => -- TX
                     sl_rx_enable <= '0';
-                    if (sl_err_ack = '1') then
+                    if sl_err_ack = '1' then
                         state_can_node <= "11"; -- ERROR
-                    elsif (sl_end_tx = '1') then
+                    elsif sl_end_tx = '1' then
                         state_can_node <= "00"; -- end TX -> IDLE
-                    elsif (sl_lost_arb = '1') then
+                    elsif sl_lost_arb = '1' then
                         state_can_node <= "01"; -- lost arbitration -> RX
                     else
                         state_can_node <= "10";
                     end if;
 
                 when others => -- "11" ERROR
-                    state_can_node <= "11";
+                    sl_rx_enable <= '0';
+                    if sl_end_tx = '1' then
+                        state_can_node  <= "00";
+                    end if;
 
             end case;
         end if;
     end process;
+    
 
     -- TX module
     u_tx_module : entity work.top_level_tx
         port map (
             clock            => clock,
             reset            => reset,
-            frame_tx_in      => frame_tx_in,
+            frame_tx_fifo    => frame_tx_in,
             tx_request       => tx_request,
             ack_in           => sl_ack_slot,
+            bus_off          => sl_bus_off,
+            err_status       => sv_err_status,
+            err_event        => sl_err_event,
             prop_seg         => prop_seg,
             phase_seg1       => phase_seg1,
             phase_seg2       => phase_seg2,
             frame_tx_rdy     => sl_frame_tx_rdy,
+            err_frame        => sl_err_frame,
             err_ack          => sl_err_ack,
             state_can        => state_can_node,
             bus_line         => bus_line,
@@ -140,6 +154,8 @@ begin
             id_rx_out        => sv_id_rx,
             id_len           => s_id_len
         );
+        
+        
 
     -- RX module
     u_rx_module : entity work.top_level_rx
@@ -159,11 +175,29 @@ begin
             ram_dinID        => ram_dinID,
             ram_rdy          => sl_ram_rdy,
             ack_slot         => sl_ack_slot,
-            err_frame        => sl_err_frame,
+            err_frame        => open,
+            err_format       => sl_err_format,
             state_can_rx_out => state_can_rx_out,
             err_crc          => sl_err_crc,
             valid_frame      => sl_valid_frame,
             frame_out        => frame_rx_out
+        );
+        
+        -- Error manager
+        u_error_manager : entity work.error_manager
+        port map (
+            clock           => clock,
+            reset           => reset,
+            state_can       => state_can_node,
+            end_tx          => sl_end_tx,
+            valid_frm_rx    => sl_valid_frame,
+            err_frame       => '0',
+            err_format      => sl_err_format,
+            err_crc         => sl_err_crc,
+            err_ack         => sl_err_ack,
+            err_status      => sv_err_status,
+            bus_off         => sl_bus_off,
+            err_event       => sl_err_event
         );
 
     ram_rdy <= sl_ram_rdy;

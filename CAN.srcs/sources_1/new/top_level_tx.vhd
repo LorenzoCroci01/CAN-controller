@@ -18,7 +18,6 @@
 -- 
 ----------------------------------------------------------------------------------
 
-
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
@@ -27,15 +26,19 @@ entity top_level_tx is
     Port (
         clock           : in std_logic;     -- main clock
         reset           : in std_logic;     -- async reset
-        frame_tx_in     : in std_logic_vector(82 downto 0); -- data to transmit
+        frame_tx_fifo   : in std_logic_vector(82 downto 0); -- data to transmit
         tx_request      : in std_logic;     -- tx request flag
         ack_in          : in std_logic;     -- ack in bit
-
+        bus_off         : in std_logic;     -- bus off flag
+        err_status      : std_logic_vector(1 downto 0);
+        err_event       : in std_logic;
+        
         prop_seg        : in unsigned(7 downto 0);
         phase_seg1      : in unsigned(7 downto 0);
         phase_seg2      : in unsigned(7 downto 0);
 
         frame_tx_rdy    : out std_logic;    -- frame ready flag
+        err_frame       : out std_logic;
         err_ack         : out std_logic;    -- error ack flag
         state_can       : in std_logic_vector(1 downto 0);  -- can node state
         bus_line        : inout std_logic;  -- bus line
@@ -47,7 +50,8 @@ entity top_level_tx is
 end top_level_tx;
 
 architecture arch_top_level_tx of top_level_tx is
-
+    
+    signal sv_frm_build_in  : std_logic_vector(82 downto 0);
     signal sv_frm_build_out : std_logic_vector(107 downto 0);
     signal sv_frm_arb_out   : std_logic_vector(107 downto 0);
     signal sv_frm_stuf_out  : std_logic_vector(159 downto 0);
@@ -76,16 +80,26 @@ begin
     bus_rx_norm <= '1' when (bus_line = 'Z' or bus_line = 'H') else bus_line;
 
     -- lost arbitration if arbiter says next is RX ("01") while we were trying to tx
-    lost_arbitration <= '1' when (sl_frm_tx_rdy = '1' and sl_bus_busy = '1' and state_next_arb = "01") else '0';
-
-    -- Frame builder TX
+    lost_arbitration <= '1' when (sl_frm_tx_rdy = '1' and sl_bus_busy = '1' and state_next_arb = "01") and state_can /= "11" else '0';
+    
+    -- driver ERR
+    u_driver_err : entity work.driver_err
+        port map (
+            frame_tx_fifo   => frame_tx_fifo,
+            err_event       => err_event,
+            frame_tx        => sv_frm_build_in
+        );
+        
+    -- Frame builder TX/ERR
     u_builder_tx : entity work.builder_tx
         port map (
             clock        => clock,
             reset        => reset,
-            frame_tx_in  => frame_tx_in,
+            frame_tx_in  => sv_frm_build_in,
             tx_request   => tx_request,
             state_can    => state_can,
+            err_status   => err_status,
+            err_event    => err_event,
             frame_tx     => sv_frm_build_out,
             frame_tx_rdy => sl_frm_tx_rdy
         );
@@ -114,6 +128,8 @@ begin
         port map (
             frame_in        => sv_frm_arb_out,
             arbitration     => sl_arbitration,
+            state_can       => state_can,
+            err_event       => err_event,
             frame_stuff_out => sv_frm_stuf_out,
             frame_stuff_len => sv_frm_stuf_len,
             valid           => sl_valid
@@ -151,6 +167,7 @@ begin
             bit_in    => sl_bit_serial,
             state_can => state_can,
             ack_slot  => ack_in,
+            bus_off   => bus_off,
             bit_out   => bus_line
         );
 
@@ -168,6 +185,7 @@ begin
             id_rx      => sv_id_rx,
             ack_bit    => sl_ack_bit,
             frame_rdy  => sl_bus_frame_rdy,
+            err_frame  => err_frame,
             err_ack    => err_ack
         );
 

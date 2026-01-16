@@ -30,7 +30,9 @@ entity builder_tx is
         frame_tx_in     : in std_logic_vector(82 downto 0);     -- data to transmit
         tx_request      : in std_logic;     -- tx request flag
         state_can       : in std_logic_vector(1 downto 0);      -- can node state
-
+        err_status      : in std_logic_vector(1 downto 0);
+        err_event       : in std_logic;
+        
         frame_tx        : out std_logic_vector(107 downto 0);   -- complete frame to transmit
         frame_tx_rdy    : out std_logic     -- frame ready flag
     );
@@ -54,38 +56,57 @@ begin
             sv_frame_tx  <= (others => '0');
 
         elsif rising_edge(clock) then
-
-            case state is
-                when IDLE =>
-                    if state_can = "00" and tx_request = '1' then
-                        frame_tx_rdy <= '0';
-                        sv_frame_tx(107 downto 25) <= frame_tx_in;
-                        dividend := frame_tx_in & "000000000000000";
-                        state <= BUILD;
-                    end if;
-
-                when BUILD =>
-                    for i in 97 downto 15 loop
-                        if dividend(i) = '1' then
-                            dividend(i downto i-15) := dividend(i downto i-15) xor POLY;
+            
+            -- NO error
+            if err_event = '0' then
+                case state is
+                    when IDLE =>
+                        sv_frame_tx <= (others => '1');
+                        if state_can = "00" and tx_request = '1' then
+                            frame_tx_rdy <= '0';
+                            sv_frame_tx(107 downto 25) <= frame_tx_in;
+                            dividend := frame_tx_in & "000000000000000";
+                            state <= BUILD;
                         end if;
-                    end loop;
-                    crc_reg := dividend(14 downto 0);
 
-                    sv_frame_tx(24 downto 10) <= crc_reg;
-                    sv_frame_tx(9)            <= '1';
-                    sv_frame_tx(8 downto 7)   <= "11";
-                    sv_frame_tx(6 downto 0)   <= "1111111";
-                    state <= DONE;
+                    when BUILD =>
+                        for i in 97 downto 15 loop
+                            if dividend(i) = '1' then
+                                dividend(i downto i-15) := dividend(i downto i-15) xor POLY;
+                            end if;
+                        end loop;
+                        crc_reg := dividend(14 downto 0);
 
-                when DONE =>
-                    frame_tx     <= sv_frame_tx;
-                    frame_tx_rdy <= '1';
-                    state        <= IDLE;
-            end case;
+                        sv_frame_tx(24 downto 10) <= crc_reg;
+                        sv_frame_tx(9)            <= '1';
+                        sv_frame_tx(8 downto 7)   <= "11";
+                        sv_frame_tx(6 downto 0)   <= "1110111";
+                        state <= DONE;
+
+                    when DONE =>
+                        frame_tx     <= sv_frame_tx;
+                        frame_tx_rdy <= '1';
+                        state        <= IDLE;
+                end case;
+        
+            -- error
+            else
+                -- ERROR ACTIVE
+                if err_status = "00" then
+                    frame_tx(106 downto 101) <= "000000";
+                    frame_tx(100 downto 0)   <= (others => '1');
+                    frame_tx_rdy   <= '1';
+                elsif err_status = "01" then
+                    frame_tx(106 downto 101) <= "111111";
+                    frame_tx(100 downto 0)   <= (others => '1');
+                    frame_tx_rdy   <= '1';
+                end if;
+                
+            end if;        
         end if;
     end process;
 end architecture;
+
 
 
 
