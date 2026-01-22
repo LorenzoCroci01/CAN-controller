@@ -73,14 +73,13 @@ begin
             
             crc_field <= frame_in(24 downto 10);
             
-            if frame_rdy = '1' then
             case state is
 
                 when IDLE =>
                     err_crc     <= '0';
                     valid_frame <= '0';
 
-                    --if frame_rdy = '1' then
+                    if frame_rdy = '1' then
                         frame_out <= (others => '0');
 
                         -- dividend = (SOF + ID + CTRL + DLC + DATA) & 15 zero padding
@@ -94,7 +93,7 @@ begin
                         ram_addrID <= unsigned(frame_in(106 downto 99));
 
                         state   <= CRC_CHECK;
-                    --end if;
+                    end if;
                     
                 when CRC_CHECK =>      
                     -- compute CRC bit by bit 
@@ -134,8 +133,7 @@ begin
                     state <= IDLE;
             end case;
         end if;
-        end if;
+
     end process;
 end architecture;
-
 

@@ -28,7 +28,7 @@ entity top_level_tx is
         reset           : in std_logic;     -- async reset
         frame_tx_fifo   : in std_logic_vector(82 downto 0); -- data to transmit
         tx_request      : in std_logic;     -- tx request flag
-        ack_in          : in std_logic;     -- ack in bit
+        ack_in        : in std_logic;     -- ack in bit
         bus_off         : in std_logic;     -- bus off flag
         err_status      : std_logic_vector(1 downto 0);
         err_event       : in std_logic;
@@ -36,10 +36,11 @@ entity top_level_tx is
         prop_seg        : in unsigned(7 downto 0);
         phase_seg1      : in unsigned(7 downto 0);
         phase_seg2      : in unsigned(7 downto 0);
-
+        
+        retry_tx        : out std_logic;
         frame_tx_rdy    : out std_logic;    -- frame ready flag
-        err_frame       : out std_logic;
-        err_ack         : out std_logic;    -- error ack flag
+        err_ack         : out std_logic;    -- ack error flag
+        err_format      : out std_logic;    -- format error flag
         state_can       : in std_logic_vector(1 downto 0);  -- can node state
         bus_line        : inout std_logic;  -- bus line
         end_tx          : out std_logic;    -- end of transmition
@@ -63,6 +64,7 @@ architecture arch_top_level_tx of top_level_tx is
     signal sl_sample_tick   : std_logic;
     signal sl_bit_serial    : std_logic;
     signal bus_rx_norm      : std_logic;
+    signal sl_retry_tx      : std_logic;
 
     signal state_next_arb   : std_logic_vector(1 downto 0);
 
@@ -74,13 +76,13 @@ architecture arch_top_level_tx of top_level_tx is
     signal sl_id_bit_valid  : std_logic;
 
 begin
-    frame_tx_rdy <= sl_frm_tx_rdy;
+    frame_tx_rdy    <= sl_frm_tx_rdy;
     
     -- Treat released bus as recessive '1'
     bus_rx_norm <= '1' when (bus_line = 'Z' or bus_line = 'H') else bus_line;
 
     -- lost arbitration if arbiter says next is RX ("01") while we were trying to tx
-    lost_arbitration <= '1' when (sl_frm_tx_rdy = '1' and sl_bus_busy = '1' and state_next_arb = "01") and state_can /= "11" else '0';
+    lost_arbitration <= '1' when (sl_frm_tx_rdy = '1' and sl_bus_busy = '1' and state_next_arb = "01" and state_can /= "11" and sl_retry_tx = '0') else '0';
     
     -- driver ERR
     u_driver_err : entity work.driver_err
@@ -129,7 +131,6 @@ begin
             frame_in        => sv_frm_arb_out,
             arbitration     => sl_arbitration,
             state_can       => state_can,
-            err_event       => err_event,
             frame_stuff_out => sv_frm_stuf_out,
             frame_stuff_len => sv_frm_stuf_len,
             valid           => sl_valid
@@ -157,6 +158,7 @@ begin
             frame_ser_in    => sv_frm_stuf_out,
             frame_ser_len   => sv_frm_stuf_len,
             state_can       => state_can,
+            retry_tx        => sl_retry_tx,
             bit_serial_out  => sl_bit_serial,
             end_tx          => end_tx
         );
@@ -177,16 +179,16 @@ begin
             clock      => clock,
             reset      => reset,
             rx_in      => bus_rx_norm,
+            ack_in     => ack_in,
             prop_seg   => prop_seg,
             phase_seg1 => phase_seg1,
             phase_seg2 => phase_seg2,
             id_bit_valid => sl_id_bit_valid,
             busy       => sl_bus_busy,
             id_rx      => sv_id_rx,
-            ack_bit    => sl_ack_bit,
             frame_rdy  => sl_bus_frame_rdy,
-            err_frame  => err_frame,
-            err_ack    => err_ack
+            err_ack    => err_ack,
+            err_format => err_format
         );
 
 

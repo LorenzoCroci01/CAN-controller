@@ -56,7 +56,7 @@ begin
             sv_frame_tx  <= (others => '0');
 
         elsif rising_edge(clock) then
-            
+        
             -- NO error
             if err_event = '0' then
                 case state is
@@ -80,7 +80,7 @@ begin
                         sv_frame_tx(24 downto 10) <= crc_reg;
                         sv_frame_tx(9)            <= '1';
                         sv_frame_tx(8 downto 7)   <= "11";
-                        sv_frame_tx(6 downto 0)   <= "1110111";
+                        sv_frame_tx(6 downto 0)   <= "1111111";
                         state <= DONE;
 
                     when DONE =>
@@ -93,12 +93,12 @@ begin
             else
                 -- ERROR ACTIVE
                 if err_status = "00" then
-                    frame_tx(106 downto 101) <= "000000";
-                    frame_tx(100 downto 0)   <= (others => '1');
+                    frame_tx(107 downto 102) <= "000000";
+                    frame_tx(101 downto 0)   <= (others => '1');
                     frame_tx_rdy   <= '1';
                 elsif err_status = "01" then
-                    frame_tx(106 downto 101) <= "111111";
-                    frame_tx(100 downto 0)   <= (others => '1');
+                    frame_tx(107 downto 102) <= "111111";
+                    frame_tx(101 downto 0)   <= (others => '1');
                     frame_tx_rdy   <= '1';
                 end if;
                 

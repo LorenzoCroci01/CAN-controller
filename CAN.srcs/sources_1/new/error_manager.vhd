@@ -35,6 +35,7 @@ entity error_manager is
         
         -- error flags
         err_frame   : in std_logic;
+        err_bit     : in std_logic;
         err_format  : in std_logic;
         err_crc     : in std_logic;
         err_ack     : in std_logic;
@@ -42,6 +43,7 @@ entity error_manager is
         -- node status ( 00=ACTIVE, 01=PASSIVE, 10=BUS OFF ) 
         err_status  : out std_logic_vector(1 downto 0);
         bus_off     : out std_logic;
+        gen_errTx   : out std_logic;
         err_event   : out std_logic
         
     );
@@ -54,10 +56,12 @@ architecture arch_error_manager of error_manager is
     signal sl_last_err_ack     : std_logic;
     signal sl_last_err_frame   : std_logic;
     signal sl_last_err_format  : std_logic;
+    signal sl_last_err_bit     : std_logic;
     signal sl_last_err_crc     : std_logic;
     
     signal sl_err_event_rx     : std_logic;
     signal sl_err_event_tx     : std_logic;
+    
 begin
 
     process(clock,reset)
@@ -65,36 +69,54 @@ begin
         variable rise_err_frame     : std_logic;
         variable rise_err_format    : std_logic;
         variable rise_err_crc       : std_logic;
+        variable rise_err_bit       : std_logic;
     begin
         if reset = '1' then
             err_status      <= "00";    -- ERROR ACTIVE default
             err_event       <= '0';
+            gen_errTx       <= '0';
             TEC             <= (others => '0');
             REC             <= (others => '0');
-            sl_last_err_ack    <= '1';
-            sl_last_err_frame  <= '1';
-            sl_last_err_format <= '1';
-            sl_last_err_crc    <= '1';
+            sl_last_err_ack    <= '0';
+            sl_last_err_frame  <= '0';
+            sl_last_err_format <= '0';
+            sl_last_err_bit    <= '0';
+            sl_last_err_crc    <= '0';
             sl_err_event_rx <= '0';
             sl_err_event_tx <= '0';
             bus_off         <= '0';
             
         elsif rising_edge(clock) then
+            
             -- edge detect error signals
             rise_err_ack        := err_ack and not sl_last_err_ack;
             rise_err_frame      := err_frame and not sl_last_err_frame;
             rise_err_format     := err_format and not sl_last_err_format;
+            rise_err_bit        := err_bit and not sl_last_err_bit;
             rise_err_crc        := err_crc and not sl_last_err_crc;
             
-            sl_last_err_ack    <= err_ack;
-            sl_last_err_frame  <= err_frame;
-            sl_last_err_format <= err_format;
-            sl_last_err_crc    <= err_crc;
+            sl_last_err_ack     <= err_ack;
+            sl_last_err_frame   <= err_frame;
+            sl_last_err_format  <= err_format;
+            sl_last_err_bit     <= err_bit;
+            sl_last_err_crc     <= err_crc;
+       
             
             if sl_err_event_rx = '1' or sl_err_event_tx = '1' then
                 err_event   <= '1';
             else
                 err_event   <= '0';
+            end if;
+            
+            if state_can /= "11" then
+                err_event   <= '0';
+            end if;
+            
+            -- end of error frame transmition
+            if (state_can = "11") and (end_tx = '1') then
+                err_event <= '0';
+                sl_err_event_rx <= '0';
+                sl_err_event_tx <= '0';
             end if;
             
             -- node in RECEIVING status
@@ -105,11 +127,16 @@ begin
                     end if;
                 else
                     -- 6 received equal bit, error frame format, error crc
-                    if rise_err_ack = '1' or rise_err_format = '1' or rise_err_crc = '1' then
+                    if rise_err_crc = '1' then
                         sl_err_event_rx   <= '1';
                         if REC < "1111111" then
                             REC <= REC + 1;
                         end if; 
+                    elsif rise_err_frame = '1' then
+                        sl_err_event_rx   <= '1';
+                        if REC < "1111111" then
+                            REC <= REC + 1;
+                        end if;
                     end if;
                 end if;
             
@@ -121,8 +148,9 @@ begin
                     end if;
                 else    
                     -- ack didn't receive
-                    if rise_err_ack = '1' then
-                        sl_err_event_tx   <= '1';
+                    if rise_err_ack = '1' or rise_err_format = '1' then
+                        sl_err_event_tx     <= '1';
+                        gen_errTx        <= '1';
                         if TEC < "11111111" then
                             TEC <= TEC + 8;
                         end if;
@@ -131,10 +159,10 @@ begin
             
             -- node in IDLE status
             elsif state_can = "00" then
-                 sl_err_event_tx    <= '0';
-                 sl_err_event_rx    <= '0';   
+                sl_err_event_tx    <= '0';
+                sl_err_event_rx    <= '0';   
             end if;
-        end if;
+        end if;       
     end process;
     
     -- process error node status   

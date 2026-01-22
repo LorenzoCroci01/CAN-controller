@@ -28,6 +28,7 @@ entity deserializerTX is
         clock           : in std_logic;     -- main clock
         reset           : in std_logic;     -- async reset
         destuff_bit     : in std_logic;     -- destuffed bit input
+        ack_in          : in std_logic;     -- ack slot flag
         bit_valid       : in std_logic;     -- valid bit flag
         sample_tick     : in std_logic;     -- sample tick pulse
         state_can       : in std_logic_vector(1 downto 0);      -- can bus state
@@ -36,7 +37,8 @@ entity deserializerTX is
         busy            : out std_logic;    -- busy bus
         id_rx           : out std_logic_vector(10 downto 0);    -- id frame on can bus
         frame_rdy       : out std_logic;    -- frame ready flag
-        err_ack         : out std_logic     -- error ack flag
+        err_ack         : out std_logic;    -- ack error flag
+        err_format      : out std_logic     -- format error flag
     ); 
 end entity;
 
@@ -54,9 +56,14 @@ architecture arch_deserializerTX of deserializerTX is
 
     signal sv_id_rx     : std_logic_vector(10 downto 0) := (others => '0');
     signal sl_ack_in    : std_logic;
+    
+    signal sl_err_format    : std_logic;
+    signal sl_err_ack       : std_logic;
 
 begin
-    id_rx   <= sv_id_rx;
+    id_rx       <= sv_id_rx;
+    err_format  <= sl_err_format;
+    err_ack     <= sl_err_ack;
 
     proc_deserializerTX : process(clock, reset)
     begin
@@ -66,10 +73,11 @@ begin
             sv_dlc      <= (others => '0');
             s_data_len  <= (others => '0');
             sv_id_rx    <= (others => '1');
-            err_ack     <= '0';
-            frame_rdy   <= '0';
-            busy        <= '0';
-            id_bit_valid <= '0';
+            sl_err_ack      <= '0';
+            sl_err_format   <= '0';
+            frame_rdy       <= '0';
+            busy            <= '0';
+            id_bit_valid    <= '0';
 
         elsif rising_edge(clock) then
             
@@ -81,8 +89,9 @@ begin
                 when IDLE =>
                     -- wait SOF (dominant 0)
                     if bit_valid = '1' and destuff_bit = '0' then
-                        busy        <= '1';
-                        err_ack     <= '0';
+                        busy            <= '1';
+                        sl_err_ack      <= '0';
+                        sl_err_format   <= '0';
                         sv_id_rx    <= (others => '1');
                         sv_dlc      <= (others => '0');
                         s_bit_count <= (others => '0');
@@ -156,20 +165,24 @@ begin
 
                 when CRC_DELIM =>
                     if sample_tick = '1' then
+                        if destuff_bit = '0' then
+                            sl_err_format   <= '1';
+                            state   <= IDLE;
+                        end if;  
                         state <= ACK;
                     end if;
 
                 when ACK =>
-                    if destuff_bit = '1' then
-                        err_ack <= '1';
-                    else
-                        err_ack <= '0';
-                    end if; 
-                    if sample_tick = '1' then
+                    if sample_tick = '1' then 
                         state <= ACK_DELIM;
                     end if;
                     
-                when ACK_DELIM =>       
+                when ACK_DELIM => 
+                    if destuff_bit = '1' then
+                        sl_err_ack <= '0';
+                    else
+                        sl_err_ack <= '1';
+                    end if;      
                     if sample_tick = '1' then
                         state <= EOF;
                     end if;
@@ -177,6 +190,10 @@ begin
                 when EOF =>
                     if sample_tick = '1' then
                         s_bit_count <= s_bit_count + 1;
+                        if destuff_bit = '0' then
+                            sl_err_format   <= '1';
+                            state   <= IDLE;
+                        end if;  
                         if s_bit_count = to_unsigned(6, 7) then
                             s_bit_count <= (others => '0');
                             state <= DELIM;
@@ -186,6 +203,10 @@ begin
                 when DELIM =>
                     if sample_tick = '1' then
                         s_bit_count <= s_bit_count + 1;
+                        if destuff_bit = '0' then
+                            sl_err_format   <= '1';
+                            state   <= DONE;
+                        end if;  
                         if s_bit_count = to_unsigned(2, 7) then
                             s_bit_count <= (others => '0');
                             state <= DONE;
@@ -193,7 +214,8 @@ begin
                     end if;
                     
                 when DONE =>
-                    err_ack   <= '0';
+                    sl_err_ack   <= '0';
+                    sl_err_format   <= '0';
                     busy      <= '0';
                     frame_rdy <= '1';
                     --sv_id_rx    <= (others => '1');

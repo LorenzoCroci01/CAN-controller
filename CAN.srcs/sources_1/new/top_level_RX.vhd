@@ -32,6 +32,8 @@ entity top_level_RX is
         lost_arbitration : in std_logic;
         id_rx_in         : in std_logic_vector(10 downto 0);
         id_len       : in integer range 0 to 10;
+        
+        state_can    : in std_logic_vector(1 downto 0);
 
         -- input to CAN RX module (BTU config)
         prop_seg     : in unsigned(7 downto 0);
@@ -47,10 +49,9 @@ entity top_level_RX is
         -- output from CAN RX module
         ack_slot     : out std_logic;   -- ack slot flag
         err_frame    : out std_logic;   -- error frame flag
-        err_format   : out std_logic;   -- error frame format flag
 
-        -- expose RX state to node
-        state_can_rx_out : out std_logic_vector(1 downto 0);
+        -- start receiving signal
+        start_rx     : out std_logic;
 
         -- output from fsm_rx
         err_crc      : out std_logic;                       -- CRC error flag
@@ -90,15 +91,15 @@ begin
             lost_arbitration => lost_arbitration,
             id_rx_in    => id_rx_in,
             id_len      => id_len,
+            state_can   => state_can,
             prop_seg    => prop_seg,
             phase_seg1  => phase_seg1,
             phase_seg2  => phase_seg2,
             frame       => sv_frame_in,
-            ack_slot    => sl_ack_slot,
+            ack_slot    => ack_slot,
             frame_rdy   => sl_frame_rdy,
-            state_can   => sv_state_can,
             err_frame   => err_frame,
-            err_format  => err_format
+            start_rx    => start_rx
         );
 
     -- FSM RX (CRC + ID filter via RAM)
@@ -130,8 +131,7 @@ begin
             ram_rdy => ram_rdy
         );
 
-    ack_slot        <= sl_ack_slot;
-    state_can_rx_out <= sv_state_can;
+    --ack_slot        <= sl_ack_slot;
+    --state_can_rx_out <= sv_state_can;
 
 end architecture;
-

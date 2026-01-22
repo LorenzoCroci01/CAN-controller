@@ -35,12 +35,13 @@ entity deserializer is
         lost_arbitration : in std_logic;
         id_rx_in         : in std_logic_vector(10 downto 0);
         id_len           : in integer range 0 to 10;
+        err_frame_in     : in std_logic;
 
         frame            : out std_logic_vector(107 downto 0);
         ack_slot         : out std_logic;
-        err_format       : out std_logic;
         frame_rdy        : out std_logic;
-        next_state_can   : out std_logic_vector(1 downto 0)
+        err_frame_out    : out std_logic;
+        start_rx         : out std_logic
     ); 
 end entity;
 
@@ -61,13 +62,15 @@ architecture arch_deserializer of deserializer is
     signal sv_first_pt   : std_logic_vector(18 downto 0) := (others => '0');    -- SOF+ID+CTRL+DLC
     signal sv_data_field : std_logic_vector(63 downto 0) := (others => '0');    -- DATA
     signal sv_last_pt    : std_logic_vector(24 downto 0) := (others => '0');    -- CRC+ACK+EOF
-    signal sl_err_format : std_logic;
     
+    signal sl_last_lost_arb : std_logic;
+    signal sl_last_destuff  : std_logic;
 begin
 
-    err_format  <= sl_err_format;
 
     proc_deserializer : process(clock, reset)
+        variable rise_lost_arb  : std_logic;
+        variable fall_destuff   : std_logic;
     begin
         if reset = '1' then
             state          <= IDLE;
@@ -80,24 +83,32 @@ begin
             sv_last_pt     <= (others => '0');
 
             ack_slot       <= '0';
-            sl_err_format     <= '0';
             frame_rdy      <= '0';
             frame          <= (others => '0');
-            next_state_can <= "00";
+            sl_last_lost_arb    <= '0';
+            sl_last_destuff     <= '1';
+            start_rx        <= '0';
 
         elsif rising_edge(clock) then
             frame_rdy  <= '0';
-            ack_slot   <= '0';
-            sl_err_format <= '0';
-
-            if state = IDLE then
-                next_state_can <= "00";
+            
+            rise_lost_arb       := lost_arbitration and not sl_last_lost_arb;
+            fall_destuff        := not destuff_bit and sl_last_destuff;
+            sl_last_lost_arb    <= lost_arbitration;
+            sl_last_destuff     <= destuff_bit;
+            
+            if state_can = "11" then
+                state  <= IDLE;
+            end if;
+            
+            if state /= IDLE and state /= CRC_DELIM and state /= ACK and state /= ACK_DELIM and state /= EOF then
+                err_frame_out   <= err_frame_in;
             else
-                next_state_can <= "01";
+                err_frame_out   <= '0';
             end if;
 
             -- FSM ON only in RX or while TX but lost_arbitration asserted
-            if (state_can = "01") or (lost_arbitration = '1') then
+            --if (state_can = "01" or state_can = "00") or (rise_lost_arb = '1') then
 
                 case state is
 
@@ -110,21 +121,23 @@ begin
                         s_data_len    <= (others => '0');
                         s_bit_count   <= (others => '0');
                         
-                        
-                        -- arbitration lost
-                        if lost_arbitration = '1' then
-                            if bit_valid = '1' then
-                                s_bit_count <= to_unsigned(id_len + 1, 7);
-                                sv_first_pt(id_len+2 downto 0) <= '0' & id_rx_in(id_len downto 0) & destuff_bit;
-
-                                state <= ID;
-                            end if;
-
                         -- RX: wait valid SOF
-                        elsif bit_valid = '1' and destuff_bit = '0' then
+                        if fall_destuff = '1' and state_can = "00" then
                             sv_first_pt <= sv_first_pt(17 downto 0) & destuff_bit; -- SOF
                             s_bit_count <= (others => '0');
+                            start_rx  <= '1';
                             state <= ID;
+                        
+                        -- arbitration lost    
+                        elsif rise_lost_arb = '1' and state_can /= "00" then
+                            s_bit_count <= to_unsigned(id_len+1, 7);
+                            sv_first_pt(id_len downto 0) <= '0' & id_rx_in(id_len-1 downto 0);
+                            start_rx  <= '1';
+                            state <= ID; 
+           
+                        else
+                            state   <= IDLE;
+                            start_rx  <= '0';
                         end if;
 
                     -- ID (11 bits)
@@ -132,7 +145,7 @@ begin
                         if bit_valid = '1' then
                             sv_first_pt <= sv_first_pt(17 downto 0) & destuff_bit;
 
-                            if s_bit_count = to_unsigned(9, 7) then
+                            if s_bit_count = to_unsigned(10, 7) then
                                 s_bit_count <= (others => '0');
                                 state <= CTRL;
                             else
@@ -210,29 +223,21 @@ begin
                     -- CRC_DELIM (no destuffed)
                     when CRC_DELIM =>
                         if sample_tick = '1' then
+                            ack_slot    <= '1';
                             sv_last_pt <= sv_last_pt(23 downto 0) & destuff_bit;
                             state <= ACK;
                         end if;
 
                     -- ACK slot (no destuffed)
                     when ACK =>
-                        ack_slot <= '1';
                         if sample_tick = '1' then
+                            ack_slot    <= '0';
                             sv_last_pt <= sv_last_pt(23 downto 0) & destuff_bit;
-                                
-                            -- check crc delim bit = 1
-                            if destuff_bit = '0' then
-                                --state <= IDLE;
-                                sl_err_format <= '1';
-                            end if;
-                                
                             state <= ACK_DELIM;  
                         end if;
 
-
                     -- ACK delimiter (no destuffed)
                     when ACK_DELIM =>
-                        ack_slot <= '0';
                         if sample_tick = '1' then
                             sv_last_pt <= sv_last_pt(23 downto 0) & destuff_bit;
                             state <= EOF;
@@ -242,12 +247,6 @@ begin
                     when EOF =>
                         if sample_tick = '1' then
                             sv_last_pt <= sv_last_pt(23 downto 0) & destuff_bit;
-                            
-                            -- check ack delim bit and eof bits = 1
-                            if destuff_bit = '0' then
-                                --state <= IDLE;
-                                sl_err_format <= '1';
-                            end if;
 
                             if s_bit_count = to_unsigned(6, 7) then
                                 s_bit_count <= (others => '0');
@@ -263,36 +262,25 @@ begin
                             if s_bit_count = to_unsigned(2, 7) then
                                 s_bit_count <= (others => '0');
                                 state <= DONE;
-                                
-                            elsif s_bit_count = to_unsigned(0, 7) then
-                                s_bit_count <= s_bit_count + 1;
-                                if destuff_bit = '0' then
-                                    --state <= IDLE;
-                                    sl_err_format <= '1';
-                                end if;
                             else
                                 s_bit_count <= s_bit_count + 1;
                             end if;
                         end if;
 
                     when DONE =>
-                        frame     <= sv_first_pt & sv_data_field & sv_last_pt;
-                        --frame_rdy <= '1';
-                        state     <= IDLE;
-                        if sl_err_format = '1' then
-                            frame_rdy <= '0';
-                        else
-                            frame_rdy <= '1';
-                        end if;
+                        frame       <= sv_first_pt & sv_data_field & sv_last_pt;
+                        frame_rdy   <= '1';
+                        ack_slot    <= '0';
+                        state <= IDLE;
 
                     when others =>
                         state <= IDLE;
 
                 end case;
 
-            elsif state_can = "11" then
-                sl_err_format <= '1';
+            if state_can = "11" then
                 frame_rdy <= '0';
+                state   <= IDLE;
             end if;
         end if;
     end process;

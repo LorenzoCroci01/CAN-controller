@@ -48,7 +48,7 @@ end can_node_top;
 architecture arch_can_node_top of can_node_top is
 
     -- NODE STATE: 00 IDLE, 01 RX, 10 TX, 11 ERROR
-    signal state_can_node     : std_logic_vector(1 downto 0) := "00";
+    signal state_can_node     : std_logic_vector(1 downto 0);
 
     -- TX
     signal sl_frame_tx_rdy    : std_logic;
@@ -58,14 +58,13 @@ architecture arch_can_node_top of can_node_top is
     signal sv_id_rx           : std_logic_vector(10 downto 0);
     signal s_id_len           : integer range 0 to 10;
     signal tx_bus_line        : std_logic;
+    signal sl_last_end_tx     : std_logic;
+    signal sl_last_lost_arb   : std_logic;
 
     -- RX
     signal sl_ack_slot        : std_logic;
-    signal sl_err_frame       : std_logic;
-    signal sl_err_crc         : std_logic;
-    signal sl_err_format      : std_logic;
     signal sl_valid_frame     : std_logic;
-    signal state_can_rx_out   : std_logic_vector(1 downto 0);
+    signal sl_start_rx        : std_logic;
     signal sl_ram_rdy         : std_logic;
     signal sl_rx_enable       : std_logic;
 
@@ -73,23 +72,39 @@ architecture arch_can_node_top of can_node_top is
     signal sv_err_status      : std_logic_vector(1 downto 0);
     signal sl_err_event       : std_logic;
     signal sl_bus_off         : std_logic;
+    signal sl_err_frame       : std_logic;
+    signal sl_err_crc         : std_logic;
+    signal sl_err_format      : std_logic;
+    signal sl_err_bit         : std_logic;
+    signal sl_gen_errTx       : std_logic;
+    
     
 begin
 
     -- node state manager
     process(clock, reset)
+        variable rise_end_tx    : std_logic;
+        variable rise_lost_arb  : std_logic;
     begin
         if reset = '1' then
-            state_can_node <= "00";
+            state_can_node      <= "00";
+            sl_last_end_tx      <= '0';
+            sl_last_lost_arb    <= '0';
         elsif rising_edge(clock) then
+        
+            rise_end_tx     := sl_end_tx and not sl_last_end_tx;
+            rise_lost_arb   := sl_lost_arb and not sl_last_lost_arb;
+            
+            sl_last_lost_arb    <= sl_lost_arb;
+            sl_last_end_tx      <= sl_end_tx;
             
                 case state_can_node is
 
                 when "00" => -- IDLE
                     sl_rx_enable <= '1';
-                    if (state_can_rx_out = "01") then
+                    if sl_start_rx = '1' then
                         state_can_node <= "01"; -- RX started
-                    elsif (tx_request = '1') then
+                    elsif tx_request = '1' then
                         state_can_node <= "10"; -- start TX
                     else
                         state_can_node <= "00";
@@ -97,11 +112,11 @@ begin
 
                 when "01" => -- RX
                     sl_rx_enable <= '1';
-                    if sl_err_crc = '1' or sl_err_format = '1' then
+                    if sl_err_crc = '1' or sl_err_frame = '1' then
                         state_can_node <= "11"; -- ERROR
-                    elsif sl_valid_frame = '1' then
+                    elsif sl_lost_arb = '0' and sl_valid_frame = '1' then
                         state_can_node <= "00"; -- RX ended
-                    elsif sl_err_frame = '1' then
+                    elsif sl_lost_arb = '1' and sl_valid_frame = '1' then
                         state_can_node <= "10";
                     else
                         state_can_node <= "01";
@@ -109,21 +124,28 @@ begin
 
                 when "10" => -- TX
                     sl_rx_enable <= '0';
-                    if sl_err_ack = '1' then
+                    if sl_err_ack = '1' or sl_err_format = '1' or sl_err_bit = '1' then
                         state_can_node <= "11"; -- ERROR
                     elsif sl_end_tx = '1' then
                         state_can_node <= "00"; -- end TX -> IDLE
-                    elsif sl_lost_arb = '1' then
+                    elsif rise_lost_arb = '1' then
                         state_can_node <= "01"; -- lost arbitration -> RX
                     else
                         state_can_node <= "10";
                     end if;
 
-                when others => -- "11" ERROR
+                when "11" => -- "11" ERROR
                     sl_rx_enable <= '0';
-                    if sl_end_tx = '1' then
+                    if rise_end_tx = '1' and sl_gen_errTx = '1' then
+                        state_can_node  <= "10";
+                    elsif sl_err_frame = '1' and sl_gen_errTx = '0' then
                         state_can_node  <= "00";
+                    else
+                        state_can_node  <= "11";
                     end if;
+                    
+                when others =>
+                    state_can_node  <= "00";
 
             end case;
         end if;
@@ -145,8 +167,8 @@ begin
             phase_seg1       => phase_seg1,
             phase_seg2       => phase_seg2,
             frame_tx_rdy     => sl_frame_tx_rdy,
-            err_frame        => sl_err_frame,
             err_ack          => sl_err_ack,
+            err_format       => sl_err_format,
             state_can        => state_can_node,
             bus_line         => bus_line,
             end_tx           => sl_end_tx,
@@ -156,7 +178,6 @@ begin
         );
         
         
-
     -- RX module
     u_rx_module : entity work.top_level_rx
         port map (
@@ -167,6 +188,7 @@ begin
             lost_arbitration => sl_lost_arb,
             id_rx_in         => sv_id_rx,
             id_len           => s_id_len,
+            state_can        => state_can_node,
             prop_seg         => prop_seg,
             phase_seg1       => phase_seg1,
             phase_seg2       => phase_seg2,
@@ -175,9 +197,8 @@ begin
             ram_dinID        => ram_dinID,
             ram_rdy          => sl_ram_rdy,
             ack_slot         => sl_ack_slot,
-            err_frame        => open,
-            err_format       => sl_err_format,
-            state_can_rx_out => state_can_rx_out,
+            err_frame        => sl_err_frame,
+            start_rx         => sl_start_rx,
             err_crc          => sl_err_crc,
             valid_frame      => sl_valid_frame,
             frame_out        => frame_rx_out
@@ -191,12 +212,14 @@ begin
             state_can       => state_can_node,
             end_tx          => sl_end_tx,
             valid_frm_rx    => sl_valid_frame,
-            err_frame       => '0',
+            err_frame       => sl_err_frame,
+            err_bit         => sl_err_bit,
             err_format      => sl_err_format,
             err_crc         => sl_err_crc,
             err_ack         => sl_err_ack,
             err_status      => sv_err_status,
             bus_off         => sl_bus_off,
+            gen_errTx       => sl_gen_errTx,
             err_event       => sl_err_event
         );
 

@@ -27,7 +27,6 @@ entity bit_stuffer is
         frame_in         : in std_logic_vector(107 downto 0);
         arbitration      : in std_logic;
         state_can        : in std_logic_vector(1 downto 0);
-        err_event        : in std_logic;
         
         frame_stuff_out  : out std_logic_vector(159 downto 0);
         frame_stuff_len  : out unsigned(7 downto 0);
@@ -45,8 +44,9 @@ begin
         variable b        : std_logic;
         variable stuff_b  : std_logic;
         variable used_bits: integer;
-    begin
-        if err_event = '0' then
+    begin    
+    
+        if state_can = "10" or state_can = "01" then
             tmp          := (others => '0');
             wr           := 159;
             valid        <= '0';
@@ -54,7 +54,7 @@ begin
             frame_stuff_out <= (others => '1');
 
 
-            if arbitration = '1' then
+            --if arbitration = '1' then
                 -- first bit
                 b := frame_in(107);
                 tmp(wr) := b;
@@ -96,12 +96,12 @@ begin
                 frame_stuff_out <= tmp;
                 frame_stuff_len <= to_unsigned(used_bits, 8);
                 valid <= '1';
-            end if;
+            --end if;
         
-        else
-            frame_stuff_out(159 downto 154)  <= frame_in(106 downto 101);
+        elsif state_can = "11" then
+            frame_stuff_out(159 downto 154)  <= frame_in(107 downto 102);
             frame_stuff_out(153 downto 0)    <= (others => '1');
-            frame_stuff_len <= to_unsigned(6, 8);
+            frame_stuff_len <= to_unsigned(14, 8);
             valid           <= '1';
         end if;                    
             

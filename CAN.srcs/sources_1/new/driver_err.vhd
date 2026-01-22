@@ -39,6 +39,7 @@ architecture arch_driver_err of driver_err is
 begin
     process(err_event, frame_tx_fifo)
     begin
+        
         if err_event = '0' then
             frame_tx    <= frame_tx_fifo;
         else
