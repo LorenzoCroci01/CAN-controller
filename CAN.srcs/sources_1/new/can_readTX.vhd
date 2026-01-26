@@ -27,7 +27,7 @@ entity can_readTX is
         clock       : in  std_logic;    -- main clock
         reset       : in  std_logic;    -- async reset
         rx_in       : in  std_logic;    -- rx async bit input
-        ack_in      : in std_logic;    -- ack bit flag
+        --ack_slot    : in std_logic;    -- ack bit flag
 
         prop_seg    : in  unsigned(7 downto 0);
         phase_seg1  : in  unsigned(7 downto 0);
@@ -37,6 +37,7 @@ entity can_readTX is
         busy        : out std_logic;    -- busy bus
         id_rx       : out std_logic_vector(10 downto 0);    -- id frame on bus
         frame_rdy   : out std_logic;    -- frame ready flag
+        err_stuff   : out std_logic;    -- stuffing error flag
         err_ack     : out std_logic;    -- ack error flag
         err_format  : out std_logic     -- format error flag
     );
@@ -53,9 +54,11 @@ architecture arch_can_readTX of can_readTX is
     signal sl_bit_out       : std_logic;
     signal sl_bit_valid     : std_logic;
     signal sl_frame_rdy     : std_logic;
+    signal sl_err_stuff     : std_logic;
 begin
 
     frame_rdy   <= sl_frame_rdy;
+    err_stuff   <= sl_err_stuff;
 
     -- Sync FF
     u_ff : entity work.FF
@@ -89,6 +92,7 @@ begin
             state_can    => state_can_r,
             bit_out      => sl_bit_out,
             bit_valid    => sl_bit_valid,
+            err_stuff    => sl_err_stuff,
             err_frame    => open,
             edge_det     => sl_edge_det
         );
@@ -99,7 +103,8 @@ begin
             clock        => clock,
             reset        => reset,
             destuff_bit  => sl_bit_out,
-            ack_in       => ack_in,
+            err_stuff_in => sl_err_stuff,
+            --ack_slot   => ack_slot,
             bit_valid    => sl_bit_valid,
             sample_tick  => sl_sample_tick,
             state_can    => state_can_r,
@@ -107,6 +112,7 @@ begin
             busy         => busy,
             id_rx        => id_rx,
             frame_rdy    => sl_frame_rdy,
+            err_stuff_out  => err_stuff,
             err_ack      => err_ack,
             err_format   => err_format
         );

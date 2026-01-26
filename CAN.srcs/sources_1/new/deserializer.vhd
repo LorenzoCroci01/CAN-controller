@@ -35,12 +35,10 @@ entity deserializer is
         lost_arbitration : in std_logic;
         id_rx_in         : in std_logic_vector(10 downto 0);
         id_len           : in integer range 0 to 10;
-        err_frame_in     : in std_logic;
 
         frame            : out std_logic_vector(107 downto 0);
         ack_slot         : out std_logic;
         frame_rdy        : out std_logic;
-        err_frame_out    : out std_logic;
         start_rx         : out std_logic
     ); 
 end entity;
@@ -99,12 +97,6 @@ begin
             
             if state_can = "11" then
                 state  <= IDLE;
-            end if;
-            
-            if state /= IDLE and state /= CRC_DELIM and state /= ACK and state /= ACK_DELIM and state /= EOF then
-                err_frame_out   <= err_frame_in;
-            else
-                err_frame_out   <= '0';
             end if;
 
             -- FSM ON only in RX or while TX but lost_arbitration asserted
@@ -229,9 +221,9 @@ begin
                         end if;
 
                     -- ACK slot (no destuffed)
-                    when ACK =>
+                    when ACK =>                 
                         if sample_tick = '1' then
-                            ack_slot    <= '0';
+                             ack_slot    <= '0';
                             sv_last_pt <= sv_last_pt(23 downto 0) & destuff_bit;
                             state <= ACK_DELIM;  
                         end if;
@@ -243,7 +235,7 @@ begin
                             state <= EOF;
                     end if;
 
-                    -- EOF (7 bits)
+                    -- EOF (7 bits no destuffed)
                     when EOF =>
                         if sample_tick = '1' then
                             sv_last_pt <= sv_last_pt(23 downto 0) & destuff_bit;
@@ -256,10 +248,10 @@ begin
                             end if;
                         end if;
 
-                    -- DELIM (3 bits intermission)
+                    -- DELIM (5 bits intermission)
                     when DELIM =>
                         if sample_tick = '1' then
-                            if s_bit_count = to_unsigned(2, 7) then
+                            if s_bit_count = to_unsigned(4, 7) then
                                 s_bit_count <= (others => '0');
                                 state <= DONE;
                             else

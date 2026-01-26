@@ -34,40 +34,48 @@ entity Destuffing is
         -- output 
         bit_out     : out std_logic; -- output bit to deserializer 
         bit_valid   : out std_logic; -- bit valid flag 
-        err_frame   : out std_logic; -- error frame flag 
-        edge_det    : out std_logic -- edge detected 
+        err_stuff   : out std_logic; -- stuffing error flag
+        err_frame   : out std_logic; -- error frame seen
+        edge_det    : out std_logic  -- edge detected 
     ); 
 end Destuffing; 
 
 architecture arch_Destuffing of Destuffing is 
     signal last_bit     : std_logic; 
     signal same_count   : unsigned(2 downto 0); 
+    signal dom_count    : unsigned(2 downto 0);
     signal skip_next    : std_logic; 
     signal bit_out_o    : std_logic; 
     signal bit_valid_o  : std_logic; 
+    signal err_stuff_o  : std_logic; 
     signal err_frame_o  : std_logic; 
     signal edge_det_o   : std_logic; 
 begin 
     bit_out     <= bit_out_o; 
     bit_valid   <= bit_valid_o; 
+    err_stuff   <= err_stuff_o; 
     err_frame   <= err_frame_o; 
     edge_det    <= edge_det_o; 
     
-    process(clock, reset) 
+    process(clock, reset)
+        variable next_dom   : unsigned(2 downto 0); 
     begin 
         if reset = '1' then 
             last_bit    <= '1'; 
-            same_count  <= (others => '0'); 
+            same_count  <= (others => '0');
+            dom_count   <= (others => '0'); 
             skip_next   <= '0'; 
             bit_out_o   <= '1'; 
             bit_valid_o <= '0'; 
-            err_frame_o <= '0'; 
+            err_stuff_o <= '0'; 
+            err_frame_o <= '0';
             edge_det_o  <= '0'; 
             
         elsif rising_edge(clock) then 
             bit_valid_o <= '0'; 
             edge_det_o  <= '0'; 
-            err_frame_o <= '0'; 
+            err_stuff_o <= '0'; 
+            err_frame_o <= '0';
             
             if sample_tick = '1' then 
                 -- edge detection for hard sync 
@@ -75,19 +83,37 @@ begin
                     edge_det_o <= '1'; 
                 end if; 
                 
-                -- skip stuffed 
+                -- Error flag detected (6 dominant bits)
+                if rx_in_sync = '0' then
+                    if dom_count < "110" then
+                        next_dom    := dom_count + 1;
+                    else
+                        next_dom    := dom_count;
+                    end if;
+                else
+                    next_dom    := (others => '0');
+                end if;
+                
+                if (dom_count = "101") and (rx_in_sync = '0') then
+                    err_frame_o <= '1';
+                end if;
+                
+                dom_count   <= next_dom;
+                
+                -- Stuffing logic 
                 if skip_next = '1' then 
-                    if rx_in_sync = last_bit then 
-                        bit_valid_o <= '1'; 
-                        bit_out_o <= rx_in_sync; 
-                        skip_next <= '0'; 
-                        err_frame_o <= '1'; 
-                        same_count <= "000"; 
-                    else 
-                        bit_valid_o <= '0'; 
-                        skip_next <= '0'; 
-                        same_count <= "000"; 
-                    end if; 
+                    if rx_in_sync = last_bit then
+                        -- stuffing error
+                        bit_valid_o <= '0';
+                        err_stuff_o <= '1';
+                    else
+                        -- stuffed bit
+                        bit_valid_o <= '0';
+                        err_stuff_o <= '0';
+                    end if;
+
+                    skip_next  <= '0';
+                    same_count <= (others => '0');
                     
                 else 
                     -- valid bit 
@@ -97,8 +123,7 @@ begin
                     if rx_in_sync = last_bit then 
                         same_count <= same_count + 1; 
                         
-                        -- 4 bit seen, the next one is the 5th 
-                        if same_count = "100" then 
+                         if same_count = "100" then 
                             skip_next <= '1'; 
                         end if; 
                     else 

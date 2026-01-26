@@ -34,11 +34,11 @@ entity error_manager is
         valid_frm_rx    : in std_logic; -- end of receiving
         
         -- error flags
-        err_frame   : in std_logic;
-        err_bit     : in std_logic;
-        err_format  : in std_logic;
-        err_crc     : in std_logic;
-        err_ack     : in std_logic;
+        err_frame   : in std_logic;     -- error frame detected
+        err_stuff   : in std_logic;     -- stuffing error
+        err_format  : in std_logic;     -- format error
+        err_crc     : in std_logic;     -- crc error
+        err_ack     : in std_logic;     -- ack error
         
         -- node status ( 00=ACTIVE, 01=PASSIVE, 10=BUS OFF ) 
         err_status  : out std_logic_vector(1 downto 0);
@@ -56,7 +56,7 @@ architecture arch_error_manager of error_manager is
     signal sl_last_err_ack     : std_logic;
     signal sl_last_err_frame   : std_logic;
     signal sl_last_err_format  : std_logic;
-    signal sl_last_err_bit     : std_logic;
+    signal sl_last_err_stuff     : std_logic;
     signal sl_last_err_crc     : std_logic;
     
     signal sl_err_event_rx     : std_logic;
@@ -69,7 +69,7 @@ begin
         variable rise_err_frame     : std_logic;
         variable rise_err_format    : std_logic;
         variable rise_err_crc       : std_logic;
-        variable rise_err_bit       : std_logic;
+        variable rise_err_stuff       : std_logic;
     begin
         if reset = '1' then
             err_status      <= "00";    -- ERROR ACTIVE default
@@ -80,7 +80,7 @@ begin
             sl_last_err_ack    <= '0';
             sl_last_err_frame  <= '0';
             sl_last_err_format <= '0';
-            sl_last_err_bit    <= '0';
+            sl_last_err_stuff  <= '0';
             sl_last_err_crc    <= '0';
             sl_err_event_rx <= '0';
             sl_err_event_tx <= '0';
@@ -92,13 +92,13 @@ begin
             rise_err_ack        := err_ack and not sl_last_err_ack;
             rise_err_frame      := err_frame and not sl_last_err_frame;
             rise_err_format     := err_format and not sl_last_err_format;
-            rise_err_bit        := err_bit and not sl_last_err_bit;
+            rise_err_stuff      := err_stuff and not sl_last_err_stuff;
             rise_err_crc        := err_crc and not sl_last_err_crc;
             
             sl_last_err_ack     <= err_ack;
             sl_last_err_frame   <= err_frame;
             sl_last_err_format  <= err_format;
-            sl_last_err_bit     <= err_bit;
+            sl_last_err_stuff   <= err_stuff;
             sl_last_err_crc     <= err_crc;
        
             
@@ -147,10 +147,10 @@ begin
                         TEC <= TEC - 8;
                     end if;
                 else    
-                    -- ack didn't receive
-                    if rise_err_ack = '1' or rise_err_format = '1' then
+                    -- ack error or format error or stuffing error
+                    if rise_err_ack = '1' or rise_err_format = '1' or rise_err_stuff = '1' then
                         sl_err_event_tx     <= '1';
-                        gen_errTx        <= '1';
+                        gen_errTx           <= '1';
                         if TEC < "11111111" then
                             TEC <= TEC + 8;
                         end if;
@@ -162,12 +162,8 @@ begin
                 sl_err_event_tx    <= '0';
                 sl_err_event_rx    <= '0';   
             end if;
-        end if;       
-    end process;
-    
-    -- process error node status   
-    process(TEC, REC)
-    begin
+        end if;  
+        
         if TEC = to_unsigned(255, 8) then
             err_status  <= "10";    -- BUS OFF
             bus_off     <= '1';
@@ -177,7 +173,7 @@ begin
         else
             err_status  <= "00";    -- ERROR ACTIVE
             bus_off     <= '0';
-        end if;
+        end if;     
     end process;
             
 end architecture;

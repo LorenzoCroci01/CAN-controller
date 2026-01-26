@@ -41,9 +41,9 @@ entity CAN_RX_module is
         frame         : out std_logic_vector(107 downto 0);     -- deserialized frame output
         ack_slot      : out std_logic;      -- ack slot flag
         frame_rdy     : out std_logic;      -- frame ready flag
-        err_frame     : out std_logic;     -- error stuffed flag
+        err_frame     : out std_logic;      -- error frame detected flag
 
-        start_rx      : out std_logic
+        start_rx      : out std_logic       -- start receiving
     );
 end CAN_RX_module;
 
@@ -65,8 +65,9 @@ architecture arch_CAN_RX_module of CAN_RX_module is
 
 begin
     -- outputs
-    --state_can     <= state_can_r;
-    frame_rdy     <= sl_frame_rdy;
+    -- state_can     <= state_can_r;
+    frame_rdy   <= sl_frame_rdy;
+    err_frame   <= sl_err_frame;    
 
     -- can state manager
     --process(clock, reset)
@@ -117,6 +118,7 @@ begin
             state_can    => state_can,
             bit_out      => sl_bit_out,
             bit_valid    => sl_bit_valid,
+            err_stuff    => open,
             err_frame    => sl_err_frame,
             edge_det     => sl_edge_det
         );
@@ -133,11 +135,9 @@ begin
             lost_arbitration => lost_arbitration,
             id_rx_in       => id_rx_in,
             id_len         => id_len,
-            err_frame_in   => sl_err_frame,
             frame          => frame,
             ack_slot       => ack_slot,
             frame_rdy      => sl_frame_rdy,
-            err_frame_out  => err_frame,
             start_rx       => start_rx
         );
 

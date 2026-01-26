@@ -28,7 +28,7 @@ entity top_level_tx is
         reset           : in std_logic;     -- async reset
         frame_tx_fifo   : in std_logic_vector(82 downto 0); -- data to transmit
         tx_request      : in std_logic;     -- tx request flag
-        ack_in        : in std_logic;     -- ack in bit
+        ack_slot        : in std_logic;     -- ack in bit
         bus_off         : in std_logic;     -- bus off flag
         err_status      : std_logic_vector(1 downto 0);
         err_event       : in std_logic;
@@ -37,15 +37,16 @@ entity top_level_tx is
         phase_seg1      : in unsigned(7 downto 0);
         phase_seg2      : in unsigned(7 downto 0);
         
-        retry_tx        : out std_logic;
+        --retry_tx        : out std_logic;
         frame_tx_rdy    : out std_logic;    -- frame ready flag
+        err_stuff       : out std_logic;    -- stuffing error flag
         err_ack         : out std_logic;    -- ack error flag
         err_format      : out std_logic;    -- format error flag
         state_can       : in std_logic_vector(1 downto 0);  -- can node state
         bus_line        : inout std_logic;  -- bus line
         end_tx          : out std_logic;    -- end of transmition
-        lost_arbitration : out std_logic;   -- inform node controller
-        id_rx_out        : out std_logic_vector(10 downto 0);
+        lost_arb        : out std_logic;   -- inform node controller 
+        id_rx_out       : out std_logic_vector(10 downto 0);
         id_len          : out integer range 0 to 10
     );
 end top_level_tx;
@@ -64,7 +65,8 @@ architecture arch_top_level_tx of top_level_tx is
     signal sl_sample_tick   : std_logic;
     signal sl_bit_serial    : std_logic;
     signal bus_rx_norm      : std_logic;
-    signal sl_retry_tx      : std_logic;
+    --signal sl_retry_tx      : std_logic;
+    signal sl_lost_arb      : std_logic;
 
     signal state_next_arb   : std_logic_vector(1 downto 0);
 
@@ -76,13 +78,12 @@ architecture arch_top_level_tx of top_level_tx is
     signal sl_id_bit_valid  : std_logic;
 
 begin
-    frame_tx_rdy    <= sl_frm_tx_rdy;
+    frame_tx_rdy        <= sl_frm_tx_rdy;
+    --retry_tx            <= sl_retry_tx;
     
     -- Treat released bus as recessive '1'
     bus_rx_norm <= '1' when (bus_line = 'Z' or bus_line = 'H') else bus_line;
-
-    -- lost arbitration if arbiter says next is RX ("01") while we were trying to tx
-    lost_arbitration <= '1' when (sl_frm_tx_rdy = '1' and sl_bus_busy = '1' and state_next_arb = "01" and state_can /= "11" and sl_retry_tx = '0') else '0';
+    
     
     -- driver ERR
     u_driver_err : entity work.driver_err
@@ -119,6 +120,7 @@ begin
             id_rx        => sv_id_rx,
             id_bit_valid => sl_id_bit_valid,
             frame_tx_out => sv_frm_arb_out,
+            lost_arb     => lost_arb,
             arbitration  => sl_arbitration,
             state_next   => state_next_arb,
             id_rx_out    => id_rx_out,
@@ -158,7 +160,6 @@ begin
             frame_ser_in    => sv_frm_stuf_out,
             frame_ser_len   => sv_frm_stuf_len,
             state_can       => state_can,
-            retry_tx        => sl_retry_tx,
             bit_serial_out  => sl_bit_serial,
             end_tx          => end_tx
         );
@@ -168,7 +169,7 @@ begin
         port map (
             bit_in    => sl_bit_serial,
             state_can => state_can,
-            ack_slot  => ack_in,
+            ack_slot  => ack_slot,
             bus_off   => bus_off,
             bit_out   => bus_line
         );
@@ -176,19 +177,20 @@ begin
     -- BUS reader TX
     u_can_readTX : entity work.can_readTX
         port map (
-            clock      => clock,
-            reset      => reset,
-            rx_in      => bus_rx_norm,
-            ack_in     => ack_in,
-            prop_seg   => prop_seg,
-            phase_seg1 => phase_seg1,
-            phase_seg2 => phase_seg2,
-            id_bit_valid => sl_id_bit_valid,
-            busy       => sl_bus_busy,
-            id_rx      => sv_id_rx,
-            frame_rdy  => sl_bus_frame_rdy,
-            err_ack    => err_ack,
-            err_format => err_format
+            clock           => clock,
+            reset           => reset,
+            rx_in           => bus_rx_norm,
+            --ack_slot      => ack_slot,
+            prop_seg        => prop_seg,
+            phase_seg1      => phase_seg1,
+            phase_seg2      => phase_seg2,
+            id_bit_valid    => sl_id_bit_valid,
+            busy            => sl_bus_busy,
+            id_rx           => sv_id_rx,
+            frame_rdy       => sl_bus_frame_rdy,
+            err_stuff       => err_stuff,
+            err_ack         => err_ack,
+            err_format      => err_format
         );
 
 

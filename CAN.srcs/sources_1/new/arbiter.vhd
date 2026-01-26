@@ -37,6 +37,7 @@ entity arbiter is
         id_bit_valid    : in std_logic;     -- id bit valid flag
 
         frame_tx_out    : out std_logic_vector(107 downto 0);   -- output frame to transmit
+        lost_arb        : out std_logic;
         arbitration     : out std_logic;                    -- 1=win
         state_next      : out std_logic_vector(1 downto 0); -- 10 TX, 01 RX, 00 IDLE
         id_rx_out       : out std_logic_vector(10 downto 0);
@@ -57,6 +58,7 @@ architecture arch_arbiter of arbiter is
     
 begin
     
+    lost_arb    <= sl_lost;
     process(clock, reset)
         variable rise_txrdy : std_logic;
         variable rise_busy  : std_logic;

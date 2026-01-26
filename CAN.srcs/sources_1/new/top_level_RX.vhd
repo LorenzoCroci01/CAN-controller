@@ -49,6 +49,7 @@ entity top_level_RX is
         -- output from CAN RX module
         ack_slot     : out std_logic;   -- ack slot flag
         err_frame    : out std_logic;   -- error frame flag
+        frame_rdy    : out std_logic;
 
         -- start receiving signal
         start_rx     : out std_logic;
@@ -77,7 +78,9 @@ architecture arch_top_level_RX of top_level_RX is
     signal ram_we_int       : std_logic;
 
 begin
-
+    
+    frame_rdy   <= sl_frame_rdy;
+    
     -- RX input normalization
     rx_in_norm <= '1' when (rx_in = 'Z' or rx_in = 'H') else rx_in;
 
