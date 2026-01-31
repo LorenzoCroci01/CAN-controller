@@ -1,5 +1,5 @@
-INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/croci/CAN/CAN.srcs/sources_1/new/builder_tx.vhd" into library xil_defaultlib
-INFO: [VRFC 10-3107] analyzing entity 'builder_tx'
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/croci/CAN/CAN.srcs/sources_1/new/arbiter.vhd" into library xil_defaultlib
+INFO: [VRFC 10-3107] analyzing entity 'arbiter'
 INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/croci/CAN/CAN.srcs/sources_1/new/top_level_tx.vhd" into library xil_defaultlib
 INFO: [VRFC 10-3107] analyzing entity 'top_level_tx'
 INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/croci/CAN/CAN.srcs/sources_1/new/can_node_top.vhd" into library xil_defaultlib

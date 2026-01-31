@@ -31,7 +31,9 @@ entity can_node_top is
         prop_seg    : in unsigned(7 downto 0);  
         phase_seg1  : in unsigned(7 downto 0);
         phase_seg2  : in unsigned(7 downto 0);
-
+        
+        pop_fifo_rx  : in std_logic;    -- read fifo rx data
+        --push_fifo_tx : in std_logic;    -- write fifo tx data
         frame_rx_out : out std_logic_vector(107 downto 0);  -- complete deserialized frame rx 
 
         frame_tx_in  : in std_logic_vector(82 downto 0);    -- data to transmit
@@ -61,6 +63,8 @@ architecture arch_can_node_top of can_node_top is
     signal sl_last_end_tx     : std_logic;
     signal sl_last_lost_arb   : std_logic;
     signal sl_last_frame_rdy  : std_logic;
+    signal sl_state_next_arb  : std_logic_vector(1 downto 0);
+    signal sl_frame_tx_in     : std_logic_vector(82 downto 0);
 
     -- RX
     signal sl_ack_slot        : std_logic;
@@ -70,6 +74,7 @@ architecture arch_can_node_top of can_node_top is
     signal sl_rx_enable       : std_logic;
     signal sl_frame_rdy       : std_logic;
     signal sl_retry_tx        : std_logic;
+    signal sl_frame_rx_out    : std_logic_vector(107 downto 0);
 
     -- ERROR MANAGER
     signal sv_err_status      : std_logic_vector(1 downto 0);
@@ -106,7 +111,7 @@ begin
             sl_last_end_tx      <= sl_end_tx;
             sl_last_frame_rdy   <= sl_frame_rdy;
             
-            if rise_lost_arb = '1' then
+            if rise_lost_arb = '1' and state_can_node = "10" then
                 sl_retry_tx <= '1';
             elsif rise_frame_rdy = '1' then
                 sl_retry_tx <= '0';
@@ -130,7 +135,7 @@ begin
                         state_can_node <= "11"; -- ERROR
                     elsif sl_frame_rdy = '1' and sl_retry_tx = '0' then
                         state_can_node <= "00"; -- RX ended -> IDLE
-                    elsif sl_frame_rdy = '1' and sl_retry_tx = '1' then
+                    elsif rise_frame_rdy = '1' and sl_retry_tx = '1' then
                         state_can_node <= "10"; -- Retry TX
                     else
                         state_can_node <= "01";
@@ -180,12 +185,12 @@ begin
             prop_seg         => prop_seg,
             phase_seg1       => phase_seg1,
             phase_seg2       => phase_seg2,
-            --retry_tx         => sl_retry_tx,
             frame_tx_rdy     => sl_frame_tx_rdy,
             err_stuff        => sl_err_stuff,
             err_ack          => sl_err_ack,
             err_format       => sl_err_format,
             state_can        => state_can_node,
+            state_next_arb   => sl_state_next_arb,
             bus_line         => bus_line,
             end_tx           => sl_end_tx,
             lost_arb         => sl_lost_arb,
@@ -218,7 +223,7 @@ begin
             start_rx         => sl_start_rx,
             err_crc          => sl_err_crc,
             valid_frame      => sl_valid_frame,
-            frame_out        => frame_rx_out
+            frame_out        => sl_frame_rx_out
         );
         
         -- Error manager
@@ -239,7 +244,24 @@ begin
             gen_errTx       => sl_gen_errTx,
             err_event       => sl_err_event
         );
+        
+        
+        u_fifo_rx : entity work.fifo
+        generic map (
+            DEPTH      => 16,
+            WIDTH      => 108,
+            ADDR_WIDTH => 4
+        )
+        port map (
+            clock     => clock,
+            reset     => reset,
+            frame_in  => sl_frame_rx_out,
+            push      => sl_valid_frame,
+            pop       => pop_fifo_rx,
+            frame_out => frame_rx_out
+        );
 
+            
     ram_rdy <= sl_ram_rdy;
 
 end architecture;

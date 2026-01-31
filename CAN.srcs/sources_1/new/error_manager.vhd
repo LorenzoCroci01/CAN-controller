@@ -69,7 +69,7 @@ begin
         variable rise_err_frame     : std_logic;
         variable rise_err_format    : std_logic;
         variable rise_err_crc       : std_logic;
-        variable rise_err_stuff       : std_logic;
+        variable rise_err_stuff     : std_logic;
     begin
         if reset = '1' then
             err_status      <= "00";    -- ERROR ACTIVE default
@@ -100,7 +100,6 @@ begin
             sl_last_err_format  <= err_format;
             sl_last_err_stuff   <= err_stuff;
             sl_last_err_crc     <= err_crc;
-       
             
             if sl_err_event_rx = '1' or sl_err_event_tx = '1' then
                 err_event   <= '1';

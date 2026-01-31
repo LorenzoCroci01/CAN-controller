@@ -37,12 +37,14 @@ entity top_level_tx is
         phase_seg1      : in unsigned(7 downto 0);
         phase_seg2      : in unsigned(7 downto 0);
         
-        --retry_tx        : out std_logic;
         frame_tx_rdy    : out std_logic;    -- frame ready flag
+        
         err_stuff       : out std_logic;    -- stuffing error flag
         err_ack         : out std_logic;    -- ack error flag
         err_format      : out std_logic;    -- format error flag
+        
         state_can       : in std_logic_vector(1 downto 0);  -- can node state
+        state_next_arb  : out std_logic_vector(1 downto 0);
         bus_line        : inout std_logic;  -- bus line
         end_tx          : out std_logic;    -- end of transmition
         lost_arb        : out std_logic;   -- inform node controller 
@@ -65,10 +67,8 @@ architecture arch_top_level_tx of top_level_tx is
     signal sl_sample_tick   : std_logic;
     signal sl_bit_serial    : std_logic;
     signal bus_rx_norm      : std_logic;
-    --signal sl_retry_tx      : std_logic;
     signal sl_lost_arb      : std_logic;
-
-    signal state_next_arb   : std_logic_vector(1 downto 0);
+    signal sl_sof_bit       : std_logic;
 
     -- bus sniff
     signal sv_id_rx         : std_logic_vector(10 downto 0);
@@ -79,11 +79,9 @@ architecture arch_top_level_tx of top_level_tx is
 
 begin
     frame_tx_rdy        <= sl_frm_tx_rdy;
-    --retry_tx            <= sl_retry_tx;
     
     -- Treat released bus as recessive '1'
     bus_rx_norm <= '1' when (bus_line = 'Z' or bus_line = 'H') else bus_line;
-    
     
     -- driver ERR
     u_driver_err : entity work.driver_err
@@ -112,17 +110,19 @@ begin
         port map (
             clock        => clock,
             reset        => reset,
+            sample_tick  => sl_sample_tick,
             state_can    => state_can,
             frame_tx_rdy => sl_frm_tx_rdy,
             bus_busy     => sl_bus_busy,
             frame_tx     => sv_frm_build_out,
             id_tx        => sv_frm_build_out(106 downto 96),
             id_rx        => sv_id_rx,
+            sof_bit      => sl_sof_bit,
             id_bit_valid => sl_id_bit_valid,
             frame_tx_out => sv_frm_arb_out,
+            state_next   => state_next_arb,
             lost_arb     => lost_arb,
             arbitration  => sl_arbitration,
-            state_next   => state_next_arb,
             id_rx_out    => id_rx_out,
             id_len       => id_len
         );
@@ -180,10 +180,10 @@ begin
             clock           => clock,
             reset           => reset,
             rx_in           => bus_rx_norm,
-            --ack_slot      => ack_slot,
             prop_seg        => prop_seg,
             phase_seg1      => phase_seg1,
             phase_seg2      => phase_seg2,
+            sof_bit         => sl_sof_bit,
             id_bit_valid    => sl_id_bit_valid,
             busy            => sl_bus_busy,
             id_rx           => sv_id_rx,
@@ -191,7 +191,7 @@ begin
             err_stuff       => err_stuff,
             err_ack         => err_ack,
             err_format      => err_format
-        );
+        );  
 
 
 end architecture;

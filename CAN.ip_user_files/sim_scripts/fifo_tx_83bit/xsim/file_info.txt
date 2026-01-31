@@ -1,2 +1,0 @@
-fifo_tx_83bit_sim_netlist.vhdl,vhdl,xil_defaultlib,../../../../CAN.gen/sources_1/ip/fifo_tx_83bit/fifo_tx_83bit_sim_netlist.vhdl,incdir="../../../../../../../Xilinx/2025.1/Vivado/data/rsb/busdef"
-glbl.v,Verilog,xil_defaultlib,glbl.v

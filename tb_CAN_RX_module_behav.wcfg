@@ -5,73 +5,154 @@
    <db_ref_list>
       <db_ref path="tb_can_bus1_behav.wdb" id="1">
          <top_modules>
-            <top_module name="glbl" />
             <top_module name="tb_can_bus1" />
          </top_modules>
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="0.000000 us"></ZoomStartTime>
-      <ZoomEndTime time="3.407792 us"></ZoomEndTime>
-      <Cursor1Time time="1.280000 us"></Cursor1Time>
+      <ZoomStartTime time="27,575.833 ns"></ZoomStartTime>
+      <ZoomEndTime time="30,220.834 ns"></ZoomEndTime>
+      <Cursor1Time time="29,780.000 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="146"></NameColumnWidth>
-      <ValueColumnWidth column_width="72"></ValueColumnWidth>
+      <NameColumnWidth column_width="107"></NameColumnWidth>
+      <ValueColumnWidth column_width="101"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="23" />
+   <WVObjectSize size="40" />
    <wvobject fp_name="/tb_can_bus1/node_A/bus_line" type="logic">
       <obj_property name="ElementShortName">bus_line</obj_property>
       <obj_property name="ObjectShortName">bus_line</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_can_bus1/node_A/u_tx_module/u_can_readTX/u_deserializerTX/destuff_bit" type="logic">
-      <obj_property name="ElementShortName">destuff_bit</obj_property>
-      <obj_property name="ObjectShortName">destuff_bit</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_can_bus1/node_B/u_rx_module/u_can_rx_module/u_deserial/destuff_bit" type="logic">
       <obj_property name="ElementShortName">destuff_bit</obj_property>
       <obj_property name="ObjectShortName">destuff_bit</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_can_bus1/node_A/u_error_manager/err_stuff" type="logic">
-      <obj_property name="ElementShortName">err_stuff</obj_property>
-      <obj_property name="ObjectShortName">err_stuff</obj_property>
+   <wvobject fp_name="/tb_can_bus1/node_A/u_tx_module/u_driver_tx/bit_out" type="logic">
+      <obj_property name="ElementShortName">bit_out</obj_property>
+      <obj_property name="ObjectShortName">bit_out</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_can_bus1/node_A/u_rx_module/u_can_rx_module/u_destuff/bit_valid" type="logic">
-      <obj_property name="ElementShortName">bit_valid</obj_property>
-      <obj_property name="ObjectShortName">bit_valid</obj_property>
+   <wvobject fp_name="/tb_can_bus1/node_A/u_tx_module/u_can_readTX/u_ff/rx_in_sync" type="logic">
+      <obj_property name="ElementShortName">rx_in_sync</obj_property>
+      <obj_property name="ObjectShortName">rx_in_sync</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_can_bus1/node_A/u_rx_module/u_can_rx_module/u_destuff/err_frame" type="logic">
-      <obj_property name="ElementShortName">err_frame</obj_property>
-      <obj_property name="ObjectShortName">err_frame</obj_property>
+   <wvobject fp_name="/tb_can_bus1/node_A/u_tx_module/u_can_readTX/u_deserializerTX/state" type="other">
+      <obj_property name="ElementShortName">state</obj_property>
+      <obj_property name="ObjectShortName">state</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_can_bus1/node_A/state_can_node" type="array">
-      <obj_property name="ElementShortName">state_can_node[1:0]</obj_property>
-      <obj_property name="ObjectShortName">state_can_node[1:0]</obj_property>
+   <wvobject fp_name="/tb_can_bus1/node_A/u_tx_module/u_can_readTX/u_deserializerTX/destuff_bit" type="logic">
+      <obj_property name="ElementShortName">destuff_bit</obj_property>
+      <obj_property name="ObjectShortName">destuff_bit</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_can_bus1/node_B/u_tx_module/u_arbiter/sof_bit" type="logic">
+      <obj_property name="ElementShortName">sof_bit</obj_property>
+      <obj_property name="ObjectShortName">sof_bit</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_can_bus1/node_A/u_tx_module/u_can_readTX/u_deserializerTX/id_bit_valid" type="logic">
+      <obj_property name="ElementShortName">id_bit_valid</obj_property>
+      <obj_property name="ObjectShortName">id_bit_valid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_can_bus1/node_A/u_tx_module/u_can_readTX/u_btu/sample_tick" type="logic">
+      <obj_property name="ElementShortName">sample_tick</obj_property>
+      <obj_property name="ObjectShortName">sample_tick</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_can_bus1/node_A/u_tx_module/u_arbiter/state" type="other">
+      <obj_property name="ElementShortName">state</obj_property>
+      <obj_property name="ObjectShortName">state</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_can_bus1/node_B/u_tx_module/u_arbiter/state" type="other">
+      <obj_property name="ElementShortName">state</obj_property>
+      <obj_property name="ObjectShortName">state</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_can_bus1/node_C/u_tx_module/u_arbiter/state" type="other">
+      <obj_property name="ElementShortName">state</obj_property>
+      <obj_property name="ObjectShortName">state</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_can_bus1/node_B/u_tx_module/u_arbiter/bus_busy" type="logic">
+      <obj_property name="ElementShortName">bus_busy</obj_property>
+      <obj_property name="ObjectShortName">bus_busy</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_can_bus1/node_C/u_tx_module/u_arbiter/bit_idx" type="other">
+      <obj_property name="ElementShortName">bit_idx</obj_property>
+      <obj_property name="ObjectShortName">bit_idx</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_can_bus1/node_A/sl_lost_arb" type="logic">
+      <obj_property name="ElementShortName">sl_lost_arb</obj_property>
+      <obj_property name="ObjectShortName">sl_lost_arb</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_can_bus1/node_B/sl_lost_arb" type="logic">
+      <obj_property name="ElementShortName">sl_lost_arb</obj_property>
+      <obj_property name="ObjectShortName">sl_lost_arb</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_can_bus1/node_C/u_tx_module/u_arbiter/sl_lost" type="logic">
+      <obj_property name="ElementShortName">sl_lost</obj_property>
+      <obj_property name="ObjectShortName">sl_lost</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_can_bus1/node_A/u_tx_module/u_serializer/bit_cnt" type="array">
       <obj_property name="ElementShortName">bit_cnt[7:0]</obj_property>
       <obj_property name="ObjectShortName">bit_cnt[7:0]</obj_property>
-      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_can_bus1/node_B/u_tx_module/u_serializer/bit_cnt" type="array">
       <obj_property name="ElementShortName">bit_cnt[7:0]</obj_property>
       <obj_property name="ObjectShortName">bit_cnt[7:0]</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_can_bus1/node_A/u_rx_module/u_fsm_rx/frame_in" type="array">
-      <obj_property name="ElementShortName">frame_in[107:0]</obj_property>
-      <obj_property name="ObjectShortName">frame_in[107:0]</obj_property>
+   <wvobject fp_name="/tb_can_bus1/node_C/u_tx_module/u_serializer/bit_cnt" type="array">
+      <obj_property name="ElementShortName">bit_cnt[7:0]</obj_property>
+      <obj_property name="ObjectShortName">bit_cnt[7:0]</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_can_bus1/node_A/u_rx_module/u_fsm_rx/frame_out" type="array">
-      <obj_property name="ElementShortName">frame_out[107:0]</obj_property>
-      <obj_property name="ObjectShortName">frame_out[107:0]</obj_property>
+   <wvobject fp_name="/tb_can_bus1/node_A/state_can_node" type="array">
+      <obj_property name="ElementShortName">state_can_node[1:0]</obj_property>
+      <obj_property name="ObjectShortName">state_can_node[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_can_bus1/node_A/u_tx_module/u_arbiter/id_tx" type="array">
+      <obj_property name="ElementShortName">id_tx[10:0]</obj_property>
+      <obj_property name="ObjectShortName">id_tx[10:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_can_bus1/node_A/u_tx_module/u_arbiter/id_rx" type="array">
+      <obj_property name="ElementShortName">id_rx[10:0]</obj_property>
+      <obj_property name="ObjectShortName">id_rx[10:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_can_bus1/node_B/state_can_node" type="array">
       <obj_property name="ElementShortName">state_can_node[1:0]</obj_property>
       <obj_property name="ObjectShortName">state_can_node[1:0]</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_can_bus1/node_B/sl_err_frame" type="logic">
-      <obj_property name="ElementShortName">sl_err_frame</obj_property>
-      <obj_property name="ObjectShortName">sl_err_frame</obj_property>
+   <wvobject fp_name="/tb_can_bus1/node_B/u_tx_module/u_arbiter/id_tx" type="array">
+      <obj_property name="ElementShortName">id_tx[10:0]</obj_property>
+      <obj_property name="ObjectShortName">id_tx[10:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_can_bus1/node_B/u_tx_module/u_arbiter/id_rx" type="array">
+      <obj_property name="ElementShortName">id_rx[10:0]</obj_property>
+      <obj_property name="ObjectShortName">id_rx[10:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_can_bus1/node_C/state_can_node" type="array">
+      <obj_property name="ElementShortName">state_can_node[1:0]</obj_property>
+      <obj_property name="ObjectShortName">state_can_node[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_can_bus1/node_C/u_tx_module/u_arbiter/id_tx" type="array">
+      <obj_property name="ElementShortName">id_tx[10:0]</obj_property>
+      <obj_property name="ObjectShortName">id_tx[10:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_can_bus1/node_C/u_tx_module/u_arbiter/id_rx" type="array">
+      <obj_property name="ElementShortName">id_rx[10:0]</obj_property>
+      <obj_property name="ObjectShortName">id_rx[10:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_can_bus1/node_A/u_tx_module/u_arbiter/lost_arb" type="logic">
+      <obj_property name="ElementShortName">lost_arb</obj_property>
+      <obj_property name="ObjectShortName">lost_arb</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_can_bus1/node_A/u_rx_module/u_fsm_rx/frame_in" type="array">
+      <obj_property name="ElementShortName">frame_in[107:0]</obj_property>
+      <obj_property name="ObjectShortName">frame_in[107:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_can_bus1/node_A/u_rx_module/u_fsm_rx/frame_out" type="array">
+      <obj_property name="ElementShortName">frame_out[107:0]</obj_property>
+      <obj_property name="ObjectShortName">frame_out[107:0]</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_can_bus1/node_B/sl_lost_arb" type="logic">
       <obj_property name="ElementShortName">sl_lost_arb</obj_property>
@@ -81,17 +162,10 @@
       <obj_property name="ElementShortName">sl_frame_rdy</obj_property>
       <obj_property name="ObjectShortName">sl_frame_rdy</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_can_bus1/node_B/u_tx_module/sl_bus_busy" type="logic">
-      <obj_property name="ElementShortName">sl_bus_busy</obj_property>
-      <obj_property name="ObjectShortName">sl_bus_busy</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_can_bus1/node_B/sl_retry_tx" type="logic">
-      <obj_property name="ElementShortName">sl_retry_tx</obj_property>
-      <obj_property name="ObjectShortName">sl_retry_tx</obj_property>
-   </wvobject>
    <wvobject fp_name="/tb_can_bus1/node_B/u_rx_module/u_fsm_rx/frame_in" type="array">
       <obj_property name="ElementShortName">frame_in[107:0]</obj_property>
       <obj_property name="ObjectShortName">frame_in[107:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_can_bus1/node_B/u_rx_module/u_fsm_rx/frame_out" type="array">
       <obj_property name="ElementShortName">frame_out[107:0]</obj_property>
