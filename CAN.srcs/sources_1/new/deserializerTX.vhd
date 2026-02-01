@@ -103,7 +103,7 @@ begin
                     if bit_valid = '1' and destuff_bit = '0' then
                         sof_bit      <= '1';
                         busy         <= '1';
-                        sv_id_rx    <= sv_id_rx(9 downto 0) & destuff_bit;
+                        --sv_id_rx    <= sv_id_rx(9 downto 0) & destuff_bit;
                         state       <= ID;
                     end if;
 

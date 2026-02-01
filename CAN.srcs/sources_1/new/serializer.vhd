@@ -107,6 +107,7 @@ begin
                 end if;
             elsif state_can = "01" then
                 bit_cnt <= (others => '0');
+                bit_serial_out <= '1';
             end if;
         end if;
     end process;
