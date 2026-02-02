@@ -10,15 +10,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="27,575.833 ns"></ZoomStartTime>
-      <ZoomEndTime time="30,220.834 ns"></ZoomEndTime>
-      <Cursor1Time time="29,780.000 ns"></Cursor1Time>
+      <ZoomStartTime time="0.000000 us"></ZoomStartTime>
+      <ZoomEndTime time="21.547361 us"></ZoomEndTime>
+      <Cursor1Time time="5.030000 us"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="107"></NameColumnWidth>
-      <ValueColumnWidth column_width="101"></ValueColumnWidth>
+      <NameColumnWidth column_width="137"></NameColumnWidth>
+      <ValueColumnWidth column_width="72"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="40" />
+   <WVObjectSize size="43" />
    <wvobject fp_name="/tb_can_bus1/node_A/bus_line" type="logic">
       <obj_property name="ElementShortName">bus_line</obj_property>
       <obj_property name="ObjectShortName">bus_line</obj_property>
@@ -43,6 +43,22 @@
       <obj_property name="ElementShortName">destuff_bit</obj_property>
       <obj_property name="ObjectShortName">destuff_bit</obj_property>
    </wvobject>
+   <wvobject fp_name="/tb_can_bus1/node_A/u_tx_module/u_can_readTX/u_btu/sample_tick" type="logic">
+      <obj_property name="ElementShortName">sample_tick</obj_property>
+      <obj_property name="ObjectShortName">sample_tick</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_can_bus1/node_C/u_fifo_tx/sl_empty" type="logic">
+      <obj_property name="ElementShortName">sl_empty</obj_property>
+      <obj_property name="ObjectShortName">sl_empty</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_can_bus1/node_A/u_fifo_tx/tx_request" type="logic">
+      <obj_property name="ElementShortName">tx_request</obj_property>
+      <obj_property name="ObjectShortName">tx_request</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_can_bus1/node_A/sl_bus_busy" type="logic">
+      <obj_property name="ElementShortName">sl_bus_busy</obj_property>
+      <obj_property name="ObjectShortName">sl_bus_busy</obj_property>
+   </wvobject>
    <wvobject fp_name="/tb_can_bus1/node_B/u_tx_module/u_arbiter/sof_bit" type="logic">
       <obj_property name="ElementShortName">sof_bit</obj_property>
       <obj_property name="ObjectShortName">sof_bit</obj_property>
@@ -50,10 +66,6 @@
    <wvobject fp_name="/tb_can_bus1/node_A/u_tx_module/u_can_readTX/u_deserializerTX/id_bit_valid" type="logic">
       <obj_property name="ElementShortName">id_bit_valid</obj_property>
       <obj_property name="ObjectShortName">id_bit_valid</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_can_bus1/node_A/u_tx_module/u_can_readTX/u_btu/sample_tick" type="logic">
-      <obj_property name="ElementShortName">sample_tick</obj_property>
-      <obj_property name="ObjectShortName">sample_tick</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_can_bus1/node_A/u_tx_module/u_arbiter/state" type="other">
       <obj_property name="ElementShortName">state</obj_property>

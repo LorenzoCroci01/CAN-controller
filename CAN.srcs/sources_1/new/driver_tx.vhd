@@ -52,7 +52,6 @@ begin
             elsif (state_can = "01" and ack_slot = '1') then
                 bit_out <= '0';
             end if;
-        
         else
             bit_out <= 'Z';
         end if;  

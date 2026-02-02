@@ -1,14 +1,14 @@
 ----------------------------------------------------------------------------------
--- Company:             Università Politecnica delle Marche
--- Engineer:            Lorenzo Croci
+-- Company: 
+-- Engineer: 
 -- 
--- Create Date:         17.12.2025 12:45:24
+-- Create Date: 02.02.2026 10:08:15
 -- Design Name: 
--- Module Name:         tb_can_bus1 - tb
--- Project Name:        CAN
+-- Module Name: tb_can_bus2 - sim2
+-- Project Name: 
 -- Target Devices: 
 -- Tool Versions: 
--- Description:         testbench CAN bus communication
+-- Description: 
 -- 
 -- Dependencies: 
 -- 
@@ -32,14 +32,9 @@ architecture sim of tb_can_bus1 is
     signal clock  : std_logic := '0';
 
     -- resets
-    signal reset_a : std_logic := '1';
-    signal reset_b : std_logic := '1';
-    signal reset_c : std_logic := '1';
-
-    -- config mode (NEW)
-    signal cfg_mode_a : std_logic := '1';
-    signal cfg_mode_b : std_logic := '1';
-    signal cfg_mode_c : std_logic := '1';
+    signal reset_a  : std_logic := '1';
+    signal reset_b  : std_logic := '1';
+    signal reset_c  : std_logic := '1';
 
     -- shared CAN bus (pull-up)
     signal bus_line : std_logic := 'H';
@@ -49,7 +44,7 @@ architecture sim of tb_can_bus1 is
     signal phase_seg1 : unsigned(7 downto 0) := to_unsigned(2, 8);
     signal phase_seg2 : unsigned(7 downto 0) := to_unsigned(2, 8);
 
-    -- RX pop
+    -- RX pop (se vuoi leggere dalle FIFO RX)
     signal pop_fifo_rx_a : std_logic := '0';
     signal pop_fifo_rx_b : std_logic := '0';
     signal pop_fifo_rx_c : std_logic := '0';
@@ -59,7 +54,7 @@ architecture sim of tb_can_bus1 is
     signal push_fifo_tx_b : std_logic := '0';
     signal push_fifo_tx_c : std_logic := '0';
 
-    -- TX input data (written into internal TX FIFO)
+    -- TX frames input (scritti nella FIFO TX)
     signal frame_tx_in_a : std_logic_vector(82 downto 0) := (others => '0');
     signal frame_tx_in_b : std_logic_vector(82 downto 0) := (others => '0');
     signal frame_tx_in_c : std_logic_vector(82 downto 0) := (others => '0');
@@ -69,44 +64,41 @@ architecture sim of tb_can_bus1 is
     signal frame_rx_out_b : std_logic_vector(107 downto 0);
     signal frame_rx_out_c : std_logic_vector(107 downto 0);
 
-    -- RAM ports A
-    signal we_memID_a   : std_logic := '0';
-    signal ram_addrID_a : unsigned(7 downto 0) := (others => '0');
-    signal ram_dinID_a  : std_logic_vector(7 downto 0) := (others => '0');
-    signal ram_rdy_a    : std_logic;
+    -- NODE A RAM ports
+    signal we_memID_a    : std_logic := '0';
+    signal ram_addrID_a  : unsigned(7 downto 0) := (others => '0');
+    signal ram_dinID_a   : std_logic_vector(7 downto 0) := (others => '0');
+    signal ram_rdy_a     : std_logic;
 
-    -- RAM ports B
-    signal we_memID_b   : std_logic := '0';
-    signal ram_addrID_b : unsigned(7 downto 0) := (others => '0');
-    signal ram_dinID_b  : std_logic_vector(7 downto 0) := (others => '0');
-    signal ram_rdy_b    : std_logic;
+    -- NODE B RAM ports
+    signal we_memID_b    : std_logic := '0';
+    signal ram_addrID_b  : unsigned(7 downto 0) := (others => '0');
+    signal ram_dinID_b   : std_logic_vector(7 downto 0) := (others => '0');
+    signal ram_rdy_b     : std_logic;
 
-    -- RAM ports C
-    signal we_memID_c   : std_logic := '0';
-    signal ram_addrID_c : unsigned(7 downto 0) := (others => '0');
-    signal ram_dinID_c  : std_logic_vector(7 downto 0) := (others => '0');
-    signal ram_rdy_c    : std_logic;
+    -- NODE C RAM ports
+    signal we_memID_c    : std_logic := '0';
+    signal ram_addrID_c  : unsigned(7 downto 0) := (others => '0');
+    signal ram_dinID_c   : std_logic_vector(7 downto 0) := (others => '0');
+    signal ram_rdy_c     : std_logic;
 
-    -- Three frames with different IDs to force arbitration
+    --------------------------------------------------------------------
+    -- Frames (diversi ID per arbitraggio)
+    --------------------------------------------------------------------
 
-    constant FRAME_1 : std_logic_vector(82 downto 0) :=
+    -- frame node A: ID = 0x093 (occhio: commento prima diceva 0x049 ma la stringa sembra 0x093)
+    constant FRAME_A : std_logic_vector(82 downto 0) :=
         "0000100100110000010" &
         "0000000000000000000000000000000000000000000000001010010100111100";
 
-    constant FRAME_2 : std_logic_vector(82 downto 0) :=
+    -- frame node B: ID = 0x0F3
+    constant FRAME_B : std_logic_vector(82 downto 0) :=
         "0000111100110000010" &
         "0000000000000000000000000000000000000000000000001010010100111100";
 
-    constant FRAME_3 : std_logic_vector(82 downto 0) :=
+    -- frame node C: ID = 0x193
+    constant FRAME_C : std_logic_vector(82 downto 0) :=
         "0001100100110000010" &
-        "0000000000000000000000000000000000000000000000001010010100111100";
-        
-    constant FRAME_4 : std_logic_vector(82 downto 0) :=
-        "0011101100110000010" &
-        "0000000000000000000000000000000000000000000000001010010100111100";
-        
-    constant FRAME_5 : std_logic_vector(82 downto 0) :=
-        "0001111111110000010" &
         "0000000000000000000000000000000000000000000000001010010100111100";
 
 begin
@@ -119,7 +111,6 @@ begin
         port map (
             clock        => clock,
             reset        => reset_a,
-            cfg_mode     => cfg_mode_a,
             bus_line     => bus_line,
             prop_seg     => prop_seg,
             phase_seg1   => phase_seg1,
@@ -139,7 +130,6 @@ begin
         port map (
             clock        => clock,
             reset        => reset_b,
-            cfg_mode     => cfg_mode_b,
             bus_line     => bus_line,
             prop_seg     => prop_seg,
             phase_seg1   => phase_seg1,
@@ -159,7 +149,6 @@ begin
         port map (
             clock        => clock,
             reset        => reset_c,
-            cfg_mode     => cfg_mode_c,
             bus_line     => bus_line,
             prop_seg     => prop_seg,
             phase_seg1   => phase_seg1,
@@ -207,96 +196,95 @@ begin
             wait until rising_edge(clock);
         end procedure;
 
-        procedure tx_fifo_push_a(f : std_logic_vector(82 downto 0)) is
+        procedure fifo_tx_push_a(f : std_logic_vector(82 downto 0)) is
         begin
-            frame_tx_in_a  <= f;
-            push_fifo_tx_a <= '1';
+            frame_tx_in_a   <= f;
+            push_fifo_tx_a  <= '1';
             wait until rising_edge(clock);
-            push_fifo_tx_a <= '0';
+            push_fifo_tx_a  <= '0';
             wait until rising_edge(clock);
         end procedure;
 
-        procedure tx_fifo_push_b(f : std_logic_vector(82 downto 0)) is
+        procedure fifo_tx_push_b(f : std_logic_vector(82 downto 0)) is
         begin
-            frame_tx_in_b  <= f;
-            push_fifo_tx_b <= '1';
+            frame_tx_in_b   <= f;
+            push_fifo_tx_b  <= '1';
             wait until rising_edge(clock);
-            push_fifo_tx_b <= '0';
+            push_fifo_tx_b  <= '0';
             wait until rising_edge(clock);
         end procedure;
 
-        procedure tx_fifo_push_c(f : std_logic_vector(82 downto 0)) is
+        procedure fifo_tx_push_c(f : std_logic_vector(82 downto 0)) is
         begin
-            frame_tx_in_c  <= f;
-            push_fifo_tx_c <= '1';
+            frame_tx_in_c   <= f;
+            push_fifo_tx_c  <= '1';
             wait until rising_edge(clock);
-            push_fifo_tx_c <= '0';
+            push_fifo_tx_c  <= '0';
             wait until rising_edge(clock);
-        end procedure;
-
-        procedure pop_all_rx_once is
-        begin
-            pop_fifo_rx_a <= '1';
-            pop_fifo_rx_b <= '1';
-            pop_fifo_rx_c <= '1';
-            wait until rising_edge(clock);
-            pop_fifo_rx_a <= '0';
-            pop_fifo_rx_b <= '0';
-            pop_fifo_rx_c <= '0';
         end procedure;
 
     begin
-
-        cfg_mode_a <= '1';
-        cfg_mode_b <= '1';
-        cfg_mode_c <= '1';
-
-        reset_a <= '1'; reset_b <= '1'; reset_c <= '1';
+        -- reset
+        reset_a <= '1';
+        reset_b <= '1';
+        reset_c <= '1';
         wait for 50 ns;
 
-        reset_a <= '0'; reset_b <= '0'; reset_c <= '0';
+        reset_a <= '0';
+        reset_b <= '0';
+        reset_c <= '0';
         wait for 50 ns;
 
         -- wait RAM ready
         wait until (ram_rdy_a = '1' and ram_rdy_b = '1' and ram_rdy_c = '1');
 
-        -- Program filters
-        ram_write_a(x"12", "00001000"); -- es: 0x093
-        ram_write_a(x"34", "00000100"); -- es: 0x19b
+        ----------------------------------------------------------------
+        -- Program RX filter RAM (copiato dal tuo TB, corretto per A/B/C)
+        ----------------------------------------------------------------
 
-        ram_write_b(x"12", "00001000"); -- es: 0x093
-        ram_write_b(x"1e", "00001000"); -- es: 0x0f3
+        -- Program node A filter RAM (scegli tu cosa accetta A)
+        ram_write_a(x"13", "00001000"); -- 0x09b
+        ram_write_a(x"34", "00000100"); -- 0x19b
+        ram_write_a(x"12", "00001000"); -- 0x093
+        ram_write_a(x"24", "00001000"); -- 0x0a3
 
-        ram_write_c(x"34", "00000100"); -- es: 0x19b
-        ram_write_c(x"1e", "00001000"); -- es: 0x0f3
+        -- Program node B filter RAM
+        ram_write_b(x"13", "00001000"); -- 0x09b
+        ram_write_b(x"34", "00000100"); -- 0x19b
+        ram_write_b(x"12", "00001000"); -- 0x093
+        ram_write_b(x"1e", "00001000"); -- 0x0f3
 
-
-        tx_fifo_push_a(FRAME_1);
-        tx_fifo_push_b(FRAME_3);
-        tx_fifo_push_c(FRAME_5);
+        -- Program node C filter RAM (esempio)
+        ram_write_c(x"34", "00000100"); -- 0x19b
+        ram_write_c(x"12", "00001000"); -- 0x093
+        ram_write_c(x"1e", "00001000"); -- 0x0f3
+        ram_write_c(x"24", "00001000"); -- 0x0a3
 
         wait for 200 ns;
 
         ----------------------------------------------------------------
-        -- RUN MODE: abilita trasmissioni
+        -- Push dei 3 frame nelle FIFO TX (uno per nodo) e poi stop
         ----------------------------------------------------------------
-        cfg_mode_a <= '0';
-        cfg_mode_b <= '0';
-        cfg_mode_c <= '0';
+        fifo_tx_push_a(FRAME_A);
+        fifo_tx_push_b(FRAME_B);
+        fifo_tx_push_c(FRAME_C);
 
-        ----------------------------------------------------------------
-        -- Lascia andare
-        ----------------------------------------------------------------
-        wait for 100 us;
+        -- ora lascia fare a loro
+        wait for 50 us;
 
-        -- opzionale: pop RX per vedere se qualcosa è arrivato
-        pop_all_rx_once;
+        -- opzionale: pop RX per vedere cosa hanno ricevuto
+        pop_fifo_rx_a <= '1';
+        pop_fifo_rx_b <= '1';
+        pop_fifo_rx_c <= '1';
+        wait until rising_edge(clock);
+        pop_fifo_rx_a <= '0';
+        pop_fifo_rx_b <= '0';
+        pop_fifo_rx_c <= '0';
 
-        wait for 100 us;
+        wait for 50 us;
+
         wait;
     end process;
 
 end architecture;
-
-
 

@@ -39,7 +39,9 @@ entity fifo is
 
         -- read side
         pop         : in  std_logic;
-        frame_out   : out std_logic_vector(WIDTH-1 downto 0)
+        frame_out   : out std_logic_vector(WIDTH-1 downto 0);
+        
+        empty       : out std_logic
     );
 end entity;
 
@@ -47,8 +49,11 @@ architecture arch_fifo of fifo is
     type mem_t is array (0 to DEPTH-1) of std_logic_vector(WIDTH-1 downto 0);
     signal mem : mem_t;
 
-    signal wr_ptr : unsigned(ADDR_WIDTH-1 downto 0) := (others => '0');
-    signal rd_ptr : unsigned(ADDR_WIDTH-1 downto 0) := (others => '0');
+    signal wr_ptr   : unsigned(ADDR_WIDTH-1 downto 0) := (others => '0');
+    signal rd_ptr   : unsigned(ADDR_WIDTH-1 downto 0) := (others => '0');
+    
+    --signal do_wr    : std_logic;
+    --signal do_rd    : std_logic;
     
     signal sl_empty : std_logic;
     signal sl_full  : std_logic;
@@ -57,14 +62,20 @@ architecture arch_fifo of fifo is
 
     signal frame_out_r : std_logic_vector(WIDTH-1 downto 0) := (others => '0');
 begin
-    frame_out <= frame_out_r;
+    frame_out   <= frame_out_r;
+    empty       <= sl_empty;
 
     sl_empty <= '1' when count = 0 else '0';
     sl_full  <= '1' when count = to_unsigned(DEPTH, count'length) else '0';
-
+    
+    --tx_request <= '1' when sl_empty = '0' else '0';
+    
+    --do_wr   <= '1' when push = '1' and sl_full = '0' else '0';
+    --do_rd   <= '1' when pop = '1' and sl_empty = '0' else '0';
+    
     process(clock, reset)
-        variable do_wr : std_logic;
-        variable do_rd : std_logic;
+    variable do_wr  : std_logic;
+    variable do_rd  : std_logic;
     begin
         if reset = '1' then
             wr_ptr      <= (others => '0');
@@ -73,20 +84,19 @@ begin
             frame_out_r <= (others => '0');
 
         elsif rising_edge(clock) then
-            -- write enable
+        
             if push = '1' and sl_full = '0' then
-                do_wr := '1';
+                do_wr   := '1';
             else
-                do_wr := '0';
+                do_wr   := '0';
             end if;
             
-            -- read enable
             if pop = '1' and sl_empty = '0' then
-                do_rd := '1';
+                do_rd   := '1';
             else
-                do_rd := '0';
+                do_rd   := '0';
             end if;
-
+            
             -- WRITE
             if do_wr = '1' then
                 mem(to_integer(wr_ptr)) <= frame_in;

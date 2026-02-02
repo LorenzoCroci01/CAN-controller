@@ -46,6 +46,7 @@ entity top_level_tx is
         state_can       : in std_logic_vector(1 downto 0);  -- can node state
         state_next_arb  : out std_logic_vector(1 downto 0);
         bus_line        : inout std_logic;  -- bus line
+        bus_busy        : out std_logic;
         end_tx          : out std_logic;    -- end of transmition
         lost_arb        : out std_logic;   -- inform node controller 
         id_rx_out       : out std_logic_vector(10 downto 0);
@@ -79,6 +80,7 @@ architecture arch_top_level_tx of top_level_tx is
 
 begin
     frame_tx_rdy        <= sl_frm_tx_rdy;
+    bus_busy            <= sl_bus_busy;
     
     -- Treat released bus as recessive '1'
     bus_rx_norm <= '1' when (bus_line = 'Z' or bus_line = 'H') else bus_line;

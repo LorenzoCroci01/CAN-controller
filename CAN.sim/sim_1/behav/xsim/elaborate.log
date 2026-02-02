@@ -31,6 +31,7 @@ Compiling architecture behavioral of entity xil_defaultlib.mem_filterID [mem_fil
 Compiling architecture arch_top_level_rx of entity xil_defaultlib.top_level_RX [top_level_rx_default]
 Compiling architecture arch_error_manager of entity xil_defaultlib.error_manager [error_manager_default]
 Compiling architecture arch_fifo of entity xil_defaultlib.fifo [fifo_default]
+Compiling architecture arch_fifo of entity xil_defaultlib.fifo [\fifo(width=83)\]
 Compiling architecture arch_can_node_top of entity xil_defaultlib.can_node_top [can_node_top_default]
 Compiling architecture sim of entity xil_defaultlib.tb_can_bus1
 Built simulation snapshot tb_can_bus1_behav
