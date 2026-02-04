@@ -10,9 +10,9 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="46,751.683 ns"></ZoomStartTime>
-      <ZoomEndTime time="48,249.664 ns"></ZoomEndTime>
-      <Cursor1Time time="48,000.000 ns"></Cursor1Time>
+      <ZoomStartTime time="45,995.337 ns"></ZoomStartTime>
+      <ZoomEndTime time="47,493.318 ns"></ZoomEndTime>
+      <Cursor1Time time="46,245.000 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="192"></NameColumnWidth>
@@ -139,25 +139,17 @@
       <obj_property name="ElementShortName">pop</obj_property>
       <obj_property name="ObjectShortName">pop</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_can_bus1/node_A/u_tx_module/u_serializer/shadow_valid" type="logic">
-      <obj_property name="ElementShortName">shadow_valid</obj_property>
-      <obj_property name="ObjectShortName">shadow_valid</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_can_bus1/node_A/u_tx_module/u_serializer/frame_ser_in" type="array">
-      <obj_property name="ElementShortName">frame_ser_in[159:0]</obj_property>
-      <obj_property name="ObjectShortName">frame_ser_in[159:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_can_bus1/node_A/u_tx_module/u_serializer/shadow_frame" type="array">
-      <obj_property name="ElementShortName">shadow_frame[159:0]</obj_property>
-      <obj_property name="ObjectShortName">shadow_frame[159:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_can_bus1/node_A/u_tx_module/u_serializer/sel_frame" type="array">
-      <obj_property name="ElementShortName">sel_frame[159:0]</obj_property>
-      <obj_property name="ObjectShortName">sel_frame[159:0]</obj_property>
-   </wvobject>
    <wvobject fp_name="/tb_can_bus1/node_A/state_can_node" type="array">
       <obj_property name="ElementShortName">state_can_node[1:0]</obj_property>
       <obj_property name="ObjectShortName">state_can_node[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_can_bus1/node_A/u_fifo_rx/mem" type="array">
+      <obj_property name="ElementShortName">mem[0:15][107:0]</obj_property>
+      <obj_property name="ObjectShortName">mem[0:15][107:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_can_bus1/pop_fifo_rx_a" type="logic">
+      <obj_property name="ElementShortName">pop_fifo_rx_a</obj_property>
+      <obj_property name="ObjectShortName">pop_fifo_rx_a</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_can_bus1/node_A/u_tx_module/u_arbiter/id_tx" type="array">
       <obj_property name="ElementShortName">id_tx[10:0]</obj_property>
@@ -173,6 +165,10 @@
       <obj_property name="ElementShortName">state_can_node[1:0]</obj_property>
       <obj_property name="ObjectShortName">state_can_node[1:0]</obj_property>
    </wvobject>
+   <wvobject fp_name="/tb_can_bus1/node_B/u_fifo_rx/mem" type="array">
+      <obj_property name="ElementShortName">mem[0:15][107:0]</obj_property>
+      <obj_property name="ObjectShortName">mem[0:15][107:0]</obj_property>
+   </wvobject>
    <wvobject fp_name="/tb_can_bus1/node_B/u_tx_module/u_arbiter/id_tx" type="array">
       <obj_property name="ElementShortName">id_tx[10:0]</obj_property>
       <obj_property name="ObjectShortName">id_tx[10:0]</obj_property>
@@ -186,6 +182,10 @@
    <wvobject fp_name="/tb_can_bus1/node_C/state_can_node" type="array">
       <obj_property name="ElementShortName">state_can_node[1:0]</obj_property>
       <obj_property name="ObjectShortName">state_can_node[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_can_bus1/node_C/u_fifo_rx/mem" type="array">
+      <obj_property name="ElementShortName">mem[0:15][107:0]</obj_property>
+      <obj_property name="ObjectShortName">mem[0:15][107:0]</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_can_bus1/node_C/u_tx_module/u_arbiter/id_tx" type="array">
       <obj_property name="ElementShortName">id_tx[10:0]</obj_property>

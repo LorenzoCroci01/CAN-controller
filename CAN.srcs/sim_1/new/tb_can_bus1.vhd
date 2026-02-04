@@ -88,23 +88,28 @@ architecture sim of tb_can_bus1 is
     signal ram_rdy_c    : std_logic;
 
     -- Three frames with different IDs to force arbitration
-
+    
+    -- ID frame 1: 0x093
     constant FRAME_1 : std_logic_vector(82 downto 0) :=
         "0000100100110000010" &
         "0000000000000000000000000000000000000000000000001010010100111100";
-
+    
+    -- ID frame 2: 0x0f3
     constant FRAME_2 : std_logic_vector(82 downto 0) :=
         "0000111100110000010" &
         "0000000000000000000000000000000000000000000000001010010100111100";
-
+    
+    -- ID frame 3: 0x193
     constant FRAME_3 : std_logic_vector(82 downto 0) :=
         "0001100100110000010" &
         "0000000000000000000000000000000000000000000000001010010100111100";
-        
+    
+    -- ID frame 4: 0x3b3
     constant FRAME_4 : std_logic_vector(82 downto 0) :=
         "0011101100110000010" &
         "0000000000000000000000000000000000000000000000001010010100111100";
-        
+    
+    -- ID frame 5: 0x1ff
     constant FRAME_5 : std_logic_vector(82 downto 0) :=
         "0001111111110000010" &
         "0000000000000000000000000000000000000000000000001010010100111100";
@@ -261,14 +266,17 @@ begin
         wait until (ram_rdy_a = '1' and ram_rdy_b = '1' and ram_rdy_c = '1');
 
         -- Program filters
-        ram_write_a(x"12", "00001000"); -- es: 0x093
-        ram_write_a(x"34", "00000100"); -- es: 0x19b
-
-        ram_write_b(x"12", "00001000"); -- es: 0x093
-        ram_write_b(x"1e", "00001000"); -- es: 0x0f3
-
-        ram_write_c(x"34", "00000100"); -- es: 0x19b
-        ram_write_c(x"1e", "00001000"); -- es: 0x0f3
+        -- NODE A
+        ram_write_a(x"32", "00001000"); -- 0x193
+        ram_write_a(x"3f", "10000000"); -- 0x1ff
+        
+        -- NODE B
+        ram_write_b(x"12", "00001000"); -- 0x093
+        ram_write_b(x"3f", "10000000"); -- 0x1ff
+        
+        -- NODE C
+        ram_write_c(x"1e", "00001000"); -- 0x0f3
+        ram_write_c(x"76", "00001000"); -- 0x3b3
 
         -- push frames into FIFOs TX
         tx_fifo_push_a(FRAME_1);
@@ -284,7 +292,7 @@ begin
         cfg_mode_b <= '0';
         cfg_mode_c <= '0';
 
-        wait for 100 us;
+        wait for 50 us;
 
         -- pop all frames FIFOs RX
         pop_all_rx_once;

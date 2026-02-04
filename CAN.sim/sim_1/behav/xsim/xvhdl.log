@@ -1,10 +1,2 @@
-INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/croci/CAN/CAN.srcs/sources_1/new/builder_tx.vhd" into library xil_defaultlib
-INFO: [VRFC 10-3107] analyzing entity 'builder_tx'
-INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/croci/CAN/CAN.srcs/sources_1/new/serializer.vhd" into library xil_defaultlib
-INFO: [VRFC 10-3107] analyzing entity 'serializer'
-INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/croci/CAN/CAN.srcs/sources_1/new/top_level_tx.vhd" into library xil_defaultlib
-INFO: [VRFC 10-3107] analyzing entity 'top_level_tx'
-INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/croci/CAN/CAN.srcs/sources_1/new/can_node_top.vhd" into library xil_defaultlib
-INFO: [VRFC 10-3107] analyzing entity 'can_node_top'
 INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/croci/CAN/CAN.srcs/sim_1/new/tb_can_bus1.vhd" into library xil_defaultlib
 INFO: [VRFC 10-3107] analyzing entity 'tb_can_bus1'
