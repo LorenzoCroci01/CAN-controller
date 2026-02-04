@@ -83,6 +83,7 @@ begin
             frame_rdy       <= '0';
             busy            <= '0';
             id_bit_valid    <= '0';
+            sof_bit         <= '0';
 
         elsif rising_edge(clock) then
             

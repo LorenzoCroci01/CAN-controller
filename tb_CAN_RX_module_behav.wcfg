@@ -10,15 +10,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="0.000000 us"></ZoomStartTime>
-      <ZoomEndTime time="21.547361 us"></ZoomEndTime>
-      <Cursor1Time time="5.030000 us"></Cursor1Time>
+      <ZoomStartTime time="46,751.683 ns"></ZoomStartTime>
+      <ZoomEndTime time="48,249.664 ns"></ZoomEndTime>
+      <Cursor1Time time="48,000.000 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="137"></NameColumnWidth>
-      <ValueColumnWidth column_width="72"></ValueColumnWidth>
+      <NameColumnWidth column_width="192"></NameColumnWidth>
+      <ValueColumnWidth column_width="100"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="43" />
+   <WVObjectSize size="54" />
    <wvobject fp_name="/tb_can_bus1/node_A/bus_line" type="logic">
       <obj_property name="ElementShortName">bus_line</obj_property>
       <obj_property name="ObjectShortName">bus_line</obj_property>
@@ -47,13 +47,13 @@
       <obj_property name="ElementShortName">sample_tick</obj_property>
       <obj_property name="ObjectShortName">sample_tick</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_can_bus1/node_C/u_fifo_tx/sl_empty" type="logic">
-      <obj_property name="ElementShortName">sl_empty</obj_property>
-      <obj_property name="ObjectShortName">sl_empty</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_can_bus1/node_A/u_fifo_tx/tx_request" type="logic">
+   <wvobject fp_name="/tb_can_bus1/node_A/u_tx_module/u_builder_tx/tx_request" type="logic">
       <obj_property name="ElementShortName">tx_request</obj_property>
       <obj_property name="ObjectShortName">tx_request</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_can_bus1/node_A/u_fifo_tx/sl_empty" type="logic">
+      <obj_property name="ElementShortName">sl_empty</obj_property>
+      <obj_property name="ObjectShortName">sl_empty</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_can_bus1/node_A/sl_bus_busy" type="logic">
       <obj_property name="ElementShortName">sl_bus_busy</obj_property>
@@ -107,9 +107,53 @@
       <obj_property name="ElementShortName">bit_cnt[7:0]</obj_property>
       <obj_property name="ObjectShortName">bit_cnt[7:0]</obj_property>
    </wvobject>
+   <wvobject fp_name="/tb_can_bus1/node_A/u_tx_module/u_serializer/bit_serial_out" type="logic">
+      <obj_property name="ElementShortName">bit_serial_out</obj_property>
+      <obj_property name="ObjectShortName">bit_serial_out</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_can_bus1/node_B/u_tx_module/u_serializer/bit_serial_out" type="logic">
+      <obj_property name="ElementShortName">bit_serial_out</obj_property>
+      <obj_property name="ObjectShortName">bit_serial_out</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_can_bus1/node_C/u_tx_module/u_serializer/bit_serial_out" type="logic">
+      <obj_property name="ElementShortName">bit_serial_out</obj_property>
+      <obj_property name="ObjectShortName">bit_serial_out</obj_property>
+   </wvobject>
    <wvobject fp_name="/tb_can_bus1/node_C/u_tx_module/u_serializer/bit_cnt" type="array">
       <obj_property name="ElementShortName">bit_cnt[7:0]</obj_property>
       <obj_property name="ObjectShortName">bit_cnt[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_can_bus1/node_A/cfg_mode" type="logic">
+      <obj_property name="ElementShortName">cfg_mode</obj_property>
+      <obj_property name="ObjectShortName">cfg_mode</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_can_bus1/node_A/sl_tx_request_lat" type="logic">
+      <obj_property name="ElementShortName">sl_tx_request_lat</obj_property>
+      <obj_property name="ObjectShortName">sl_tx_request_lat</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_can_bus1/node_A/u_tx_module/u_builder_tx/tx_request" type="logic">
+      <obj_property name="ElementShortName">tx_request</obj_property>
+      <obj_property name="ObjectShortName">tx_request</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_can_bus1/node_A/u_fifo_tx/pop" type="logic">
+      <obj_property name="ElementShortName">pop</obj_property>
+      <obj_property name="ObjectShortName">pop</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_can_bus1/node_A/u_tx_module/u_serializer/shadow_valid" type="logic">
+      <obj_property name="ElementShortName">shadow_valid</obj_property>
+      <obj_property name="ObjectShortName">shadow_valid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_can_bus1/node_A/u_tx_module/u_serializer/frame_ser_in" type="array">
+      <obj_property name="ElementShortName">frame_ser_in[159:0]</obj_property>
+      <obj_property name="ObjectShortName">frame_ser_in[159:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_can_bus1/node_A/u_tx_module/u_serializer/shadow_frame" type="array">
+      <obj_property name="ElementShortName">shadow_frame[159:0]</obj_property>
+      <obj_property name="ObjectShortName">shadow_frame[159:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_can_bus1/node_A/u_tx_module/u_serializer/sel_frame" type="array">
+      <obj_property name="ElementShortName">sel_frame[159:0]</obj_property>
+      <obj_property name="ObjectShortName">sel_frame[159:0]</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_can_bus1/node_A/state_can_node" type="array">
       <obj_property name="ElementShortName">state_can_node[1:0]</obj_property>

@@ -270,26 +270,23 @@ begin
         ram_write_c(x"34", "00000100"); -- es: 0x19b
         ram_write_c(x"1e", "00001000"); -- es: 0x0f3
 
-
+        -- push frames into FIFOs TX
         tx_fifo_push_a(FRAME_1);
+        tx_fifo_push_a(FRAME_2);
         tx_fifo_push_b(FRAME_3);
+        tx_fifo_push_b(FRAME_4);
         tx_fifo_push_c(FRAME_5);
 
         wait for 200 ns;
 
-        ----------------------------------------------------------------
-        -- RUN MODE: abilita trasmissioni
-        ----------------------------------------------------------------
+        -- enable transmition
         cfg_mode_a <= '0';
         cfg_mode_b <= '0';
         cfg_mode_c <= '0';
 
-        ----------------------------------------------------------------
-        -- Lascia andare
-        ----------------------------------------------------------------
         wait for 100 us;
 
-        -- opzionale: pop RX per vedere se qualcosa è arrivato
+        -- pop all frames FIFOs RX
         pop_all_rx_once;
 
         wait for 100 us;
