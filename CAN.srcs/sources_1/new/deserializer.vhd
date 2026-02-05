@@ -34,7 +34,7 @@ entity deserializer is
         state_can        : in std_logic_vector(1 downto 0);
         lost_arbitration : in std_logic;
         id_rx_in         : in std_logic_vector(10 downto 0);
-        id_len           : in integer range 0 to 10;
+        id_len           : in unsigned(3 downto 0);
 
         frame            : out std_logic_vector(107 downto 0);
         ack_slot         : out std_logic;
@@ -69,6 +69,7 @@ begin
     proc_deserializer : process(clock, reset)
         variable rise_lost_arb  : std_logic;
         variable fall_destuff   : std_logic;
+        variable id_len_i       : integer range 0 to 10;
     begin
         if reset = '1' then
             state          <= IDLE;
@@ -122,8 +123,9 @@ begin
                         
                         -- arbitration lost    
                         elsif rise_lost_arb = '1' and state_can /= "00" then
-                            s_bit_count <= to_unsigned(id_len+1, 7);
-                            sv_first_pt(id_len downto 0) <= '0' & id_rx_in(id_len-1 downto 0);
+                            id_len_i    :=  to_integer(id_len);
+                            s_bit_count <= to_unsigned(id_len_i+1, 7);
+                            sv_first_pt(id_len_i downto 0) <= '0' & id_rx_in(id_len_i-1 downto 0);
                             start_rx  <= '1';
                             state <= ID; 
            

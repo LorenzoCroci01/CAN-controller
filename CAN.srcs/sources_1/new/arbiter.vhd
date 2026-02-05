@@ -47,7 +47,7 @@ entity arbiter is
         lost_arb        : out std_logic;
         arbitration     : out std_logic;                    -- 1 = we are winning/tx allowed
         id_rx_out       : out std_logic_vector(10 downto 0);
-        id_len          : out integer range 0 to 10
+        id_len          : out unsigned(3 downto 0)
     );
 end arbiter;
 
@@ -57,7 +57,8 @@ architecture arch_arbiter of arbiter is
 
     signal sl_pending_tx    : std_logic;
     signal sl_lost          : std_logic;
-    signal bit_idx          : integer range 0 to 10;
+    signal bit_idx          : unsigned(3 downto 0);
+    signal id_tx_bit        : std_logic;
 
     signal last_tx_rdy  : std_logic;
 begin
@@ -70,13 +71,13 @@ begin
             state           <= S_IDLE;
             sl_pending_tx   <= '0';
             sl_lost         <= '0';
-            bit_idx         <= 10;
+            bit_idx         <= to_unsigned(10, 4);
 
             frame_tx_out <= (others => '1');
             arbitration  <= '0';
             state_next   <= "00";
             id_rx_out    <= (others => '1');
-            id_len       <= 0;
+            id_len       <= to_unsigned(0, 4);
 
             last_tx_rdy  <= '0';
 
@@ -85,7 +86,6 @@ begin
             last_tx_rdy <= frame_tx_rdy;
 
             -- default
-            frame_tx_out <= frame_tx;
             id_rx_out    <= id_rx;
 
             -- If error state abort arbiter internal sequencing
@@ -98,9 +98,10 @@ begin
             else
                 -- someone wants to transmitt
                 if rise_txrdy = '1' then
-                    sl_pending_tx  <= '1';
-                    sl_lost        <= '0';
-                    id_len         <= 0;
+                    frame_tx_out    <= frame_tx;
+                    sl_pending_tx   <= '1';
+                    sl_lost         <= '0';
+                    id_len          <= to_unsigned(0, 4);
                 end if;
 
                 case state is
@@ -137,37 +138,34 @@ begin
                         state_next   <= "10";
                         arbitration  <= '1';
                         sl_lost      <= '0';
-                        bit_idx      <= 10;
-                        id_len       <= 0;
+                        bit_idx      <= to_unsigned(10, 4);
+                        id_len       <= to_unsigned(0, 4);
 
                         -- from now arbitration can be active during ID field
                         state       <= S_ARB;
                         sl_pending_tx  <= '0';
 
                     when S_ARB =>
-                        -- During arbitration if we lose, switch to RX and retry later
                         state_next  <= "10";
                         arbitration <= '1';
 
                         if id_bit_valid = '1' then
-                            -- LOST condition
-                            if (id_tx(bit_idx) = '1') and (id_rx(0) = '0') then
+                            if (id_tx(to_integer(bit_idx)) = '1') and (id_rx(0) = '0') then
                                 sl_lost     <= '1';
                                 arbitration <= '0';
                                 state_next  <= "01";
-                                id_len      <= 10 - bit_idx;
+                                id_len      <= to_unsigned(10,4) - bit_idx;
                                 state       <= S_LOST;
-                                sl_pending_tx  <= '1';
+                                sl_pending_tx <= '1';
                             else
-                                -- still winning
                                 if bit_idx = 0 then
-                                    -- arbitration finished, keep TX for rest of frame
                                     state <= S_IDLE;
                                 else
                                     bit_idx <= bit_idx - 1;
                                 end if;
                             end if;
                         end if;
+
 
                     when S_LOST =>
                         arbitration <= '0';

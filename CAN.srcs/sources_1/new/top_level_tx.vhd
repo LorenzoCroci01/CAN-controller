@@ -50,7 +50,7 @@ entity top_level_tx is
         end_tx          : out std_logic;    -- end of transmition
         lost_arb        : out std_logic;   -- inform node controller 
         id_rx_out       : out std_logic_vector(10 downto 0);
-        id_len          : out integer range 0 to 10
+        id_len          : out unsigned(3 downto 0)
     );
 end top_level_tx;
 
@@ -132,8 +132,10 @@ begin
     -- Bit stuffer
     u_bit_stuffer : entity work.bit_stuffer
         port map (
+            clock           => clock,
+            reset           => reset,
+            sample_tick     => sl_sample_tick,
             frame_in        => sv_frm_arb_out,
-            arbitration     => sl_arbitration,
             state_can       => state_can,
             frame_stuff_out => sv_frm_stuf_out,
             frame_stuff_len => sv_frm_stuf_len,

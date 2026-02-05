@@ -59,7 +59,7 @@ architecture arch_can_node_top of can_node_top is
     signal sl_end_tx          : std_logic;
     signal sl_lost_arb        : std_logic;
     signal sv_id_rx           : std_logic_vector(10 downto 0);
-    signal s_id_len           : integer range 0 to 10;
+    signal s_id_len           : unsigned(3 downto 0);
     signal sl_bus_busy        : std_logic;
 
     signal sl_last_end_tx     : std_logic;

@@ -10,15 +10,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="45,995.337 ns"></ZoomStartTime>
-      <ZoomEndTime time="47,493.318 ns"></ZoomEndTime>
-      <Cursor1Time time="46,245.000 ns"></Cursor1Time>
+      <ZoomStartTime time="47,222.790 ns"></ZoomStartTime>
+      <ZoomEndTime time="52,146.418 ns"></ZoomEndTime>
+      <Cursor1Time time="49,000.000 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="192"></NameColumnWidth>
-      <ValueColumnWidth column_width="100"></ValueColumnWidth>
+      <ValueColumnWidth column_width="95"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="54" />
+   <WVObjectSize size="53" />
    <wvobject fp_name="/tb_can_bus1/node_A/bus_line" type="logic">
       <obj_property name="ElementShortName">bus_line</obj_property>
       <obj_property name="ObjectShortName">bus_line</obj_property>
@@ -146,10 +146,6 @@
    <wvobject fp_name="/tb_can_bus1/node_A/u_fifo_rx/mem" type="array">
       <obj_property name="ElementShortName">mem[0:15][107:0]</obj_property>
       <obj_property name="ObjectShortName">mem[0:15][107:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_can_bus1/pop_fifo_rx_a" type="logic">
-      <obj_property name="ElementShortName">pop_fifo_rx_a</obj_property>
-      <obj_property name="ObjectShortName">pop_fifo_rx_a</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_can_bus1/node_A/u_tx_module/u_arbiter/id_tx" type="array">
       <obj_property name="ElementShortName">id_tx[10:0]</obj_property>

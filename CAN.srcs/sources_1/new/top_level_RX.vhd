@@ -31,7 +31,7 @@ entity top_level_RX is
         rx_enable    : in std_logic;    -- rx enable flag
         lost_arbitration : in std_logic;
         id_rx_in         : in std_logic_vector(10 downto 0);
-        id_len       : in integer range 0 to 10;
+        id_len       : in unsigned(3 downto 0);
         
         state_can    : in std_logic_vector(1 downto 0);
 
