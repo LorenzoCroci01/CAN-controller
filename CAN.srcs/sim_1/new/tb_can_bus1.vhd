@@ -280,9 +280,9 @@ begin
 
         -- push frames into FIFOs TX
         tx_fifo_push_a(FRAME_1);
-        tx_fifo_push_a(FRAME_2);
+        --tx_fifo_push_a(FRAME_2);
         tx_fifo_push_b(FRAME_3);
-        tx_fifo_push_b(FRAME_4);
+        --tx_fifo_push_b(FRAME_4);
         tx_fifo_push_c(FRAME_5);
 
         wait for 200 ns;

@@ -94,16 +94,16 @@ begin
             case state is
 
                 when IDLE =>
-                    sv_id_rx    <= (others => '1');
-                    s_bit_count <= (others => '0');
+                    sv_id_rx        <= (others => '1');
+                    s_bit_count     <= (others => '0');
                     sl_err_ack      <= '0';
                     sl_err_format   <= '0';
-                    sv_dlc      <= (others => '0');
+                    sv_dlc          <= (others => '0');
                     
                     -- wait SOF (dominant 0)
                     if bit_valid = '1' and destuff_bit = '0' then
-                        sof_bit      <= '1';
-                        busy         <= '1';
+                        sof_bit     <= '1';
+                        busy        <= '1';
                         state       <= ID;
                     end if;
 

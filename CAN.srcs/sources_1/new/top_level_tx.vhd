@@ -50,7 +50,7 @@ entity top_level_tx is
         end_tx          : out std_logic;    -- end of transmition
         lost_arb        : out std_logic;   -- inform node controller 
         id_rx_out       : out std_logic_vector(10 downto 0);
-        id_len          : out unsigned(3 downto 0)
+        id_len          : out integer range 0 to 10
     );
 end top_level_tx;
 

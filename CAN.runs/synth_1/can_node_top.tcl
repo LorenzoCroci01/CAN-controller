@@ -95,10 +95,10 @@ read_vhdl -library xil_defaultlib {
   C:/Users/croci/CAN/CAN.srcs/sources_1/new/fifo.vhd
   C:/Users/croci/CAN/CAN.srcs/sources_1/new/error_manager.vhd
   C:/Users/croci/CAN/CAN.srcs/sources_1/new/can_node_top.vhd
-  C:/Users/croci/CAN/CAN.gen/sources_1/bd/CAN_controller/hdl/CAN_controller_wrapper.vhd
+  C:/Users/croci/CAN/CAN.gen/sources_1/bd/design_1/hdl/design_1_wrapper.vhd
 }
-add_files C:/Users/croci/CAN/CAN.srcs/sources_1/bd/CAN_controller/CAN_controller.bd
-set_property used_in_implementation false [get_files -all c:/Users/croci/CAN/CAN.gen/sources_1/bd/CAN_controller/CAN_controller_ooc.xdc]
+add_files C:/Users/croci/CAN/CAN.srcs/sources_1/bd/design_1/design_1.bd
+set_property used_in_implementation false [get_files -all c:/Users/croci/CAN/CAN.gen/sources_1/bd/design_1/design_1_ooc.xdc]
 
 OPTRACE "Adding files" END { }
 # Mark all dcp files as not used in implementation to prevent them from being
