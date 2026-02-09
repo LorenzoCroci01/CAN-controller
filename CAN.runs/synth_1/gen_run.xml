@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<GenRun Id="synth_1" LaunchPart="xc7a50tcpg236-1" LaunchTime="1770401835" LaunchIncrCheckpoint="$PSRCDIR/utils_1/imports/synth_1/Destuffing.dcp">
+<GenRun Id="synth_1" LaunchPart="xc7a50tcpg236-1" LaunchTime="1770671815" LaunchIncrCheckpoint="$PSRCDIR/utils_1/imports/synth_1/Destuffing.dcp">
+  <File Type="PA-TCL" Name="can_node_top.tcl"/>
   <File Type="REPORTS-TCL" Name="can_node_top_reports.tcl"/>
+  <File Type="RDS-RDS" Name="can_node_top.vds"/>
+  <File Type="RDS-PROPCONSTRS" Name="can_node_top_drc_synth.rpt"/>
   <File Type="RDS-UTIL" Name="can_node_top_utilization_synth.rpt"/>
   <File Type="RDS-UTIL-PB" Name="can_node_top_utilization_synth.pb"/>
-  <File Type="PA-TCL" Name="can_node_top.tcl"/>
-  <File Type="RDS-RDS" Name="can_node_top.vds"/>
   <File Type="RDS-DCP" Name="can_node_top.dcp"/>
+  <File Type="VDS-TIMINGSUMMARY" Name="can_node_top_timing_summary_synth.rpt"/>
+  <File Type="VDS-TIMING-PB" Name="can_node_top_timing_summary_synth.pb"/>
   <FileSet Name="sources" Type="DesignSrcs" RelSrcDir="$PSRCDIR/sources_1" RelGenDir="$PGENDIR/sources_1">
     <Filter Type="Srcs"/>
     <File Path="$PSRCDIR/sources_1/new/FF.vhd">
@@ -98,6 +101,12 @@
         <Attr Name="UsedIn" Val="simulation"/>
       </FileInfo>
     </File>
+    <File Path="$PSRCDIR/sources_1/new/serializer_stuff.vhd">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
     <File Path="$PSRCDIR/sources_1/new/arbiter.vhd">
       <FileInfo>
         <Attr Name="UsedIn" Val="synthesis"/>
@@ -131,12 +140,6 @@
     <File Path="$PPRDIR/../AppData/Roaming/Xilinx/ip_repo/component.xml">
       <FileInfo SFType="IPXACT"/>
     </File>
-    <File Path="$PGENDIR/sources_1/bd/design_1/hdl/design_1_wrapper.vhd">
-      <FileInfo>
-        <Attr Name="UsedIn" Val="synthesis"/>
-        <Attr Name="UsedIn" Val="simulation"/>
-      </FileInfo>
-    </File>
     <Config>
       <Option Name="DesignMode" Val="RTL"/>
       <Option Name="TopModule" Val="can_node_top"/>
@@ -166,5 +169,4 @@
     <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2025"/>
     <Step Id="synth_design"/>
   </Strategy>
-  <BlockFileSet Type="BlockSrcs" Name="design_1_can_node_top_0_0"/>
 </GenRun>

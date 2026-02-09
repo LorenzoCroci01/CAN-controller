@@ -2,14 +2,14 @@
 2020.2
 May 22 2025
 00:13:55
-C:/Users/croci/CAN/CAN.srcs/sim_1/new/tb_can_bus1.vhd,1770450812,vhdl,,,,tb_can_bus1,,,,,,,,
+C:/Users/croci/CAN/CAN.srcs/sim_1/new/tb_can_bus1.vhd,1770459770,vhdl,,,,tb_can_bus1,,,,,,,,
 C:/Users/croci/CAN/CAN.srcs/sources_1/new/BTU.vhd,1763562949,vhdl,C:/Users/croci/CAN/CAN.srcs/sources_1/new/CAN_RX_module.vhd;C:/Users/croci/CAN/CAN.srcs/sources_1/new/can_readTX.vhd;C:/Users/croci/CAN/CAN.srcs/sources_1/new/top_level_tx.vhd,,,btu,,,,,,,,
 C:/Users/croci/CAN/CAN.srcs/sources_1/new/CAN_RX_module.vhd,1770453239,vhdl,C:/Users/croci/CAN/CAN.srcs/sources_1/new/top_level_RX.vhd,,,can_rx_module,,,,,,,,
 C:/Users/croci/CAN/CAN.srcs/sources_1/new/Destuffing.vhd,1769426088,vhdl,C:/Users/croci/CAN/CAN.srcs/sources_1/new/CAN_RX_module.vhd;C:/Users/croci/CAN/CAN.srcs/sources_1/new/can_readTX.vhd,,,destuffing,,,,,,,,
 C:/Users/croci/CAN/CAN.srcs/sources_1/new/FF.vhd,1762612654,vhdl,C:/Users/croci/CAN/CAN.srcs/sources_1/new/CAN_RX_module.vhd;C:/Users/croci/CAN/CAN.srcs/sources_1/new/can_readTX.vhd,,,ff,,,,,,,,
 C:/Users/croci/CAN/CAN.srcs/sources_1/new/arbiter.vhd,1770454201,vhdl,C:/Users/croci/CAN/CAN.srcs/sources_1/new/top_level_tx.vhd,,,arbiter,,,,,,,,
-C:/Users/croci/CAN/CAN.srcs/sources_1/new/bit_stuffer.vhd,1770451395,vhdl,C:/Users/croci/CAN/CAN.srcs/sources_1/new/top_level_tx.vhd,,,bit_stuffer,,,,,,,,
-C:/Users/croci/CAN/CAN.srcs/sources_1/new/builder_tx.vhd,1770452598,vhdl,C:/Users/croci/CAN/CAN.srcs/sources_1/new/top_level_tx.vhd,,,builder_tx,,,,,,,,
+C:/Users/croci/CAN/CAN.srcs/sources_1/new/bit_stuffer.vhd,1770467106,vhdl,C:/Users/croci/CAN/CAN.srcs/sources_1/new/top_level_tx.vhd,,,bit_stuffer,,,,,,,,
+C:/Users/croci/CAN/CAN.srcs/sources_1/new/builder_tx.vhd,1770671145,vhdl,C:/Users/croci/CAN/CAN.srcs/sources_1/new/top_level_tx.vhd,,,builder_tx,,,,,,,,
 C:/Users/croci/CAN/CAN.srcs/sources_1/new/can_node_top.vhd,1770453239,vhdl,C:/Users/croci/CAN/CAN.srcs/sim_1/new/tb_can_bus1.vhd,,,can_node_top,,,,,,,,
 C:/Users/croci/CAN/CAN.srcs/sources_1/new/can_readTX.vhd,1769878928,vhdl,C:/Users/croci/CAN/CAN.srcs/sources_1/new/top_level_tx.vhd,,,can_readtx,,,,,,,,
 C:/Users/croci/CAN/CAN.srcs/sources_1/new/deserializer.vhd,1770453239,vhdl,C:/Users/croci/CAN/CAN.srcs/sources_1/new/CAN_RX_module.vhd,,,deserializer,,,,,,,,
@@ -20,6 +20,7 @@ C:/Users/croci/CAN/CAN.srcs/sources_1/new/error_manager.vhd,1769509683,vhdl,C:/U
 C:/Users/croci/CAN/CAN.srcs/sources_1/new/fifo.vhd,1770452507,vhdl,C:/Users/croci/CAN/CAN.srcs/sources_1/new/can_node_top.vhd,,,fifo,,,,,,,,
 C:/Users/croci/CAN/CAN.srcs/sources_1/new/fsm_rx.vhd,1768905787,vhdl,C:/Users/croci/CAN/CAN.srcs/sources_1/new/top_level_RX.vhd,,,fsm_rx,,,,,,,,
 C:/Users/croci/CAN/CAN.srcs/sources_1/new/mem_filterID.vhd,1763998474,vhdl,C:/Users/croci/CAN/CAN.srcs/sources_1/new/top_level_RX.vhd,,,mem_filterid,,,,,,,,
-C:/Users/croci/CAN/CAN.srcs/sources_1/new/serializer.vhd,1770452014,vhdl,C:/Users/croci/CAN/CAN.srcs/sources_1/new/top_level_tx.vhd,,,serializer,,,,,,,,
+C:/Users/croci/CAN/CAN.srcs/sources_1/new/serializer.vhd,1770650790,vhdl,C:/Users/croci/CAN/CAN.srcs/sources_1/new/top_level_tx.vhd,,,serializer,,,,,,,,
+C:/Users/croci/CAN/CAN.srcs/sources_1/new/serializer_stuff.vhd,1770670986,vhdl,C:/Users/croci/CAN/CAN.srcs/sources_1/new/top_level_tx.vhd,,,serializer_stuff,,,,,,,,
 C:/Users/croci/CAN/CAN.srcs/sources_1/new/top_level_RX.vhd,1770453239,vhdl,C:/Users/croci/CAN/CAN.srcs/sources_1/new/can_node_top.vhd,,,top_level_rx,,,,,,,,
 C:/Users/croci/CAN/CAN.srcs/sources_1/new/top_level_tx.vhd,1770453095,vhdl,C:/Users/croci/CAN/CAN.srcs/sources_1/new/can_node_top.vhd,,,top_level_tx,,,,,,,,

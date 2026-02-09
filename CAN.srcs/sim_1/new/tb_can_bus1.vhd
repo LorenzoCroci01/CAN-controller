@@ -36,7 +36,7 @@ architecture sim of tb_can_bus1 is
     signal reset_b : std_logic := '1';
     signal reset_c : std_logic := '1';
 
-    -- config mode (NEW)
+    -- config mode
     signal cfg_mode_a : std_logic := '1';
     signal cfg_mode_b : std_logic := '1';
     signal cfg_mode_c : std_logic := '1';
@@ -280,9 +280,9 @@ begin
 
         -- push frames into FIFOs TX
         tx_fifo_push_a(FRAME_1);
-        --tx_fifo_push_a(FRAME_2);
+        tx_fifo_push_a(FRAME_2);
         tx_fifo_push_b(FRAME_3);
-        --tx_fifo_push_b(FRAME_4);
+        tx_fifo_push_b(FRAME_4);
         tx_fifo_push_c(FRAME_5);
 
         wait for 200 ns;

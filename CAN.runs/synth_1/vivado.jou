@@ -3,8 +3,8 @@
 # SW Build 6140274 on Thu May 22 00:12:29 MDT 2025
 # IP Build 6138677 on Thu May 22 03:10:11 MDT 2025
 # SharedData Build 6139179 on Tue May 20 17:58:58 MDT 2025
-# Start of session at: Fri Feb  6 19:17:18 2026
-# Process ID         : 2112
+# Start of session at: Mon Feb  9 22:16:58 2026
+# Process ID         : 18604
 # Current directory  : C:/Users/croci/CAN/CAN.runs/synth_1
 # Command line       : vivado.exe -log can_node_top.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source can_node_top.tcl
 # Log file           : C:/Users/croci/CAN/CAN.runs/synth_1/can_node_top.vds
@@ -19,6 +19,6 @@
 # Host memory        : 16850 MB
 # Swap memory        : 1476 MB
 # Total Virtual      : 18326 MB
-# Available Virtual  : 10446 MB
+# Available Virtual  : 3635 MB
 #-----------------------------------------------------------
 source can_node_top.tcl -notrace

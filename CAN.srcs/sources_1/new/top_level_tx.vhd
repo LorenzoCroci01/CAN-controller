@@ -70,7 +70,7 @@ architecture arch_top_level_tx of top_level_tx is
     signal bus_rx_norm      : std_logic;
     signal sl_lost_arb      : std_logic;
     signal sl_sof_bit       : std_logic;
-
+  
     -- bus sniff
     signal sv_id_rx         : std_logic_vector(10 downto 0);
     signal sl_ack_bit       : std_logic;
@@ -81,6 +81,7 @@ architecture arch_top_level_tx of top_level_tx is
 begin
     frame_tx_rdy        <= sl_frm_tx_rdy;
     bus_busy            <= sl_bus_busy;
+    lost_arb            <= sl_lost_arb;
     
     -- Treat released bus as recessive '1'
     bus_rx_norm <= '1' when (bus_line = 'Z' or bus_line = 'H') else bus_line;
@@ -123,23 +124,23 @@ begin
             id_bit_valid => sl_id_bit_valid,
             frame_tx_out => sv_frm_arb_out,
             state_next   => state_next_arb,
-            lost_arb     => lost_arb,
+            lost_arb     => sl_lost_arb,
             arbitration  => sl_arbitration,
             id_rx_out    => id_rx_out,
             id_len       => id_len
         );
-
-    -- Bit stuffer
-    u_bit_stuffer : entity work.bit_stuffer
+        
+    -- Serializer and stuffer block
+    u_serial_stuff  : entity work.serializer_stuff
         port map (
             clock           => clock,
             reset           => reset,
             sample_tick     => sl_sample_tick,
             frame_in        => sv_frm_arb_out,
             state_can       => state_can,
-            frame_stuff_out => sv_frm_stuf_out,
-            frame_stuff_len => sv_frm_stuf_len,
-            valid           => sl_valid
+            lost_arb        => sl_lost_arb,
+            bit_serial_out  => sl_bit_serial,
+            end_tx          => end_tx
         );
 
     -- BTU TX
@@ -152,21 +153,7 @@ begin
             phase_seg1  => phase_seg1,
             phase_seg2  => phase_seg2,
             sample_tick => sl_sample_tick
-        );
-
-    -- Serializer
-    u_serializer : entity work.serializer
-        port map (
-            clock           => clock,
-            reset           => reset,
-            sample_tick     => sl_sample_tick,
-            valid_stuf_frm  => sl_valid,
-            frame_ser_in    => sv_frm_stuf_out,
-            frame_ser_len   => sv_frm_stuf_len,
-            state_can       => state_can,
-            bit_serial_out  => sl_bit_serial,
-            end_tx          => end_tx
-        );
+       );
 
     -- Driver TX
     u_driver_tx : entity work.driver_tx

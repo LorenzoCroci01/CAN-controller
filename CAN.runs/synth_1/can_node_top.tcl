@@ -63,7 +63,6 @@ create_project -in_memory -part xc7a50tcpg236-1
 set_param project.singleFileAddWarning.threshold 0
 set_param project.compositeFile.enableAutoGeneration 0
 set_param synth.vivado.isSynthRun true
-set_msg_config -source 4 -id {IP_Flow 19-2162} -severity warning -new_severity info
 set_property webtalk.parent_dir C:/Users/croci/CAN/CAN.cache/wt [current_project]
 set_property parent.project_path C:/Users/croci/CAN/CAN.xpr [current_project]
 set_property default_lib xil_defaultlib [current_project]
@@ -90,16 +89,13 @@ read_vhdl -library xil_defaultlib {
   C:/Users/croci/CAN/CAN.srcs/sources_1/new/driver_tx.vhd
   C:/Users/croci/CAN/CAN.srcs/sources_1/new/can_readTX.vhd
   C:/Users/croci/CAN/CAN.srcs/sources_1/new/bit_stuffer.vhd
+  C:/Users/croci/CAN/CAN.srcs/sources_1/new/serializer_stuff.vhd
   C:/Users/croci/CAN/CAN.srcs/sources_1/new/arbiter.vhd
   C:/Users/croci/CAN/CAN.srcs/sources_1/new/top_level_tx.vhd
   C:/Users/croci/CAN/CAN.srcs/sources_1/new/fifo.vhd
   C:/Users/croci/CAN/CAN.srcs/sources_1/new/error_manager.vhd
   C:/Users/croci/CAN/CAN.srcs/sources_1/new/can_node_top.vhd
-  C:/Users/croci/CAN/CAN.gen/sources_1/bd/design_1/hdl/design_1_wrapper.vhd
 }
-add_files C:/Users/croci/CAN/CAN.srcs/sources_1/bd/design_1/design_1.bd
-set_property used_in_implementation false [get_files -all c:/Users/croci/CAN/CAN.gen/sources_1/bd/design_1/design_1_ooc.xdc]
-
 OPTRACE "Adding files" END { }
 # Mark all dcp files as not used in implementation to prevent them from being
 # stitched into the results of this synthesis run. Any black boxes in the
@@ -109,8 +105,6 @@ OPTRACE "Adding files" END { }
 foreach dcp [get_files -quiet -all -filter file_type=="Design\ Checkpoint"] {
   set_property used_in_implementation false $dcp
 }
-read_xdc dont_touch.xdc
-set_property used_in_implementation false [get_files dont_touch.xdc]
 set_param ips.enableIPCacheLiteLoad 1
 
 read_checkpoint -auto_incremental -incremental C:/Users/croci/CAN/CAN.srcs/utils_1/imports/synth_1/Destuffing.dcp
