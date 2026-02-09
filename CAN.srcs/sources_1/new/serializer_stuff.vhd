@@ -18,93 +18,92 @@ entity serializer_stuff is
 end serializer_stuff;
 
 architecture rtl of serializer_stuff is
-    signal bit_idx        : unsigned(7 downto 0);
-    signal run_cnt        : unsigned(2 downto 0);
-    signal last_bit       : std_logic;
-    signal stuff_pending  : std_logic;
-    signal bit_reg        : std_logic;
+    signal s_bit_idx        : unsigned(7 downto 0);
+    signal s_run_cnt        : unsigned(2 downto 0);
+    signal sl_last_bit      : std_logic;
+    signal sl_stuff         : std_logic;
+    signal sl_bit_o    : std_logic;
     
-    signal prev_state     : std_logic_vector(1 downto 0);
+    signal sv_prev_state     : std_logic_vector(1 downto 0);
 begin
 
-    bit_serial_out <= bit_reg;
+    bit_serial_out <= sl_bit_o;
 
     process(clock, reset)
-        variable cur_bit : std_logic;
+        variable sl_curr_bit    : std_logic;
     begin
         if reset = '1' then
-            bit_idx       <= (others => '0');
-            run_cnt       <= (others => '0');
-            last_bit      <= '1';
-            stuff_pending <= '0';
-            bit_reg       <= '1';
-            end_tx        <= '0';
-            prev_state    <= "00";
+            s_bit_idx           <= (others => '0');
+            s_run_cnt           <= (others => '0');
+            sl_last_bit         <= '1';
+            sl_stuff            <= '0';
+            sl_bit_o            <= '1';
+            end_tx              <= '0';
+            sv_prev_state       <= "00";
 
         elsif rising_edge(clock) then
             end_tx <= '0';
 
-            -- transition state TX-ERROR
-            if (prev_state = "11" and state_can = "10") or (prev_state = "10" and state_can = "11") then
-                bit_idx       <= (others => '0');
-                run_cnt       <= (others => '0');   
+            if (sv_prev_state = "11" and state_can = "10") or (sv_prev_state = "10" and state_can = "11") then
+                s_bit_idx       <= (others => '0');
+                s_run_cnt       <= (others => '0');   
             end if;
-            prev_state <= state_can;   
+            sv_prev_state <= state_can;   
 
             if lost_arb = '1' then
-                bit_idx       <= (others => '0');
-                run_cnt       <= (others => '0');
-                last_bit      <= '1';
-                stuff_pending <= '0';
-                bit_reg       <= '1';
+                s_bit_idx       <= (others => '0');
+                s_run_cnt       <= (others => '0');
+                sl_last_bit     <= '1';
+                sl_stuff        <= '0';
+                sl_bit_o        <= '1';
 
             elsif state_can = "10" and sample_tick = '1' then
 
                 -- stuffed bit
-                if stuff_pending = '1' then
-                    bit_reg       <= not last_bit;
-                    last_bit      <= not last_bit;
-                    run_cnt       <= to_unsigned(1, 3);
-                    stuff_pending <= '0';
+                if sl_stuff = '1' then
+                    sl_bit_o        <= not sl_last_bit;
+                    sl_last_bit     <= not sl_last_bit;
+                    s_run_cnt       <= to_unsigned(1, 3);
+                    sl_stuff        <= '0';
 
                 -- normal bit
                 else
-                    cur_bit := frame_in(107 - to_integer(bit_idx));
-                    bit_reg <= cur_bit;
+                    sl_curr_bit := frame_in(107 - to_integer(s_bit_idx));
+                    sl_bit_o    <= sl_curr_bit;
 
-                    -- stuffing solo SOF..CRC
-                    if bit_idx <= 97 then
-                        if cur_bit = last_bit then
-                            run_cnt <= run_cnt + 1;
-                            if run_cnt = 4 then
-                                stuff_pending <= '1';
+                    -- stuffing on SOF..CRC
+                    if s_bit_idx <= 97 then
+                        if sl_curr_bit = sl_last_bit then
+                            s_run_cnt   <= s_run_cnt + 1;
+                            if s_run_cnt = 4 then
+                                sl_stuff    <= '1';
                             end if;
                         else
-                            run_cnt  <= to_unsigned(1, 3);
-                            last_bit <= cur_bit;
+                            s_run_cnt  <= to_unsigned(1, 3);
+                            sl_last_bit <= sl_curr_bit;
                         end if;
                     end if;
 
-                    if bit_idx = 107 then
-                        bit_idx       <= (others => '0');
-                        run_cnt       <= (others => '0');
-                        last_bit      <= '1';
-                        stuff_pending <= '0';
-                        end_tx        <= '1';
+                    if s_bit_idx = 107 then
+                        s_bit_idx       <= (others => '0');
+                        s_run_cnt       <= (others => '0');
+                        sl_last_bit     <= '1';
+                        sl_stuff        <= '0';
+                        end_tx          <= '1';
                     else
-                        bit_idx <= bit_idx + 1;
+                        s_bit_idx       <= s_bit_idx + 1;
                     end if;
                 end if;
 
             -- ERROR FRAME (14 bit, NO stuffing)
             elsif state_can = "11" and sample_tick = '1' then
-                bit_reg <= frame_in(107 - to_integer(bit_idx));
+                sl_bit_o    <= frame_in(107 - to_integer(s_bit_idx));
 
-                if bit_idx = 13 then
-                    bit_idx <= (others => '0');
+                if s_bit_idx = 13 then
+                    s_bit_idx <= (others => '0');
                     end_tx  <= '1';
                 else
-                    bit_idx <= bit_idx + 1;
+                    s_bit_idx <= s_bit_idx + 1;
                 end if;
             end if;
         end if;
