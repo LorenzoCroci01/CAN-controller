@@ -10,15 +10,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="45.925614 us"></ZoomStartTime>
-      <ZoomEndTime time="49.860374 us"></ZoomEndTime>
-      <Cursor1Time time="49.000000 us"></Cursor1Time>
+      <ZoomStartTime time="49.613010 us"></ZoomStartTime>
+      <ZoomEndTime time="57.277398 us"></ZoomEndTime>
+      <Cursor1Time time="56.000000 us"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="179"></NameColumnWidth>
-      <ValueColumnWidth column_width="108"></ValueColumnWidth>
+      <ValueColumnWidth column_width="98"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="52" />
+   <WVObjectSize size="55" />
    <wvobject fp_name="/tb_can_bus1/node_B/u_rx_module/u_can_rx_module/u_deserial/destuff_bit" type="logic">
       <obj_property name="ElementShortName">destuff_bit</obj_property>
       <obj_property name="ObjectShortName">destuff_bit</obj_property>
@@ -34,14 +34,6 @@
    <wvobject fp_name="/tb_can_bus1/node_A/u_tx_module/u_can_readTX/u_deserializerTX/state" type="other">
       <obj_property name="ElementShortName">state</obj_property>
       <obj_property name="ObjectShortName">state</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_can_bus1/node_A/u_tx_module/u_bit_stuffer/frame_in" type="array">
-      <obj_property name="ElementShortName">frame_in[107:0]</obj_property>
-      <obj_property name="ObjectShortName">frame_in[107:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_can_bus1/node_A/u_tx_module/u_serializer/frame_ser_in" type="array">
-      <obj_property name="ElementShortName">frame_ser_in[159:0]</obj_property>
-      <obj_property name="ObjectShortName">frame_ser_in[159:0]</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_can_bus1/node_A/u_tx_module/u_can_readTX/u_deserializerTX/destuff_bit" type="logic">
       <obj_property name="ElementShortName">destuff_bit</obj_property>
@@ -83,22 +75,6 @@
       <obj_property name="ElementShortName">bus_line</obj_property>
       <obj_property name="ObjectShortName">bus_line</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_can_bus1/node_A/u_tx_module/u_serializer/bit_cnt" type="array">
-      <obj_property name="ElementShortName">bit_cnt[7:0]</obj_property>
-      <obj_property name="ObjectShortName">bit_cnt[7:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_can_bus1/node_A/u_tx_module/u_serializer/bit_serial_out" type="logic">
-      <obj_property name="ElementShortName">bit_serial_out</obj_property>
-      <obj_property name="ObjectShortName">bit_serial_out</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_can_bus1/node_B/u_tx_module/u_serializer/bit_serial_out" type="logic">
-      <obj_property name="ElementShortName">bit_serial_out</obj_property>
-      <obj_property name="ObjectShortName">bit_serial_out</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_can_bus1/node_C/u_tx_module/u_serializer/bit_serial_out" type="logic">
-      <obj_property name="ElementShortName">bit_serial_out</obj_property>
-      <obj_property name="ObjectShortName">bit_serial_out</obj_property>
-   </wvobject>
    <wvobject fp_name="/tb_can_bus1/node_A/u_tx_module/u_arbiter/state" type="other">
       <obj_property name="ElementShortName">state</obj_property>
       <obj_property name="ObjectShortName">state</obj_property>
@@ -123,13 +99,49 @@
       <obj_property name="ElementShortName">sl_tx_request_lat</obj_property>
       <obj_property name="ObjectShortName">sl_tx_request_lat</obj_property>
    </wvobject>
+   <wvobject fp_name="/tb_can_bus1/node_A/u_tx_module/u_serial_stuff/bit_serial_out" type="logic">
+      <obj_property name="ElementShortName">bit_serial_out</obj_property>
+      <obj_property name="ObjectShortName">bit_serial_out</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_can_bus1/node_B/u_tx_module/u_serial_stuff/bit_serial_out" type="logic">
+      <obj_property name="ElementShortName">bit_serial_out</obj_property>
+      <obj_property name="ObjectShortName">bit_serial_out</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_can_bus1/node_C/u_tx_module/u_serial_stuff/bit_serial_out" type="logic">
+      <obj_property name="ElementShortName">bit_serial_out</obj_property>
+      <obj_property name="ObjectShortName">bit_serial_out</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_can_bus1/node_A/u_tx_module/u_serial_stuff/s_bit_idx" type="array">
+      <obj_property name="ElementShortName">s_bit_idx[7:0]</obj_property>
+      <obj_property name="ObjectShortName">s_bit_idx[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_can_bus1/node_B/u_tx_module/u_serial_stuff/s_bit_idx" type="array">
+      <obj_property name="ElementShortName">s_bit_idx[7:0]</obj_property>
+      <obj_property name="ObjectShortName">s_bit_idx[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_can_bus1/node_C/u_tx_module/u_serial_stuff/s_bit_idx" type="array">
+      <obj_property name="ElementShortName">s_bit_idx[7:0]</obj_property>
+      <obj_property name="ObjectShortName">s_bit_idx[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_can_bus1/node_A/u_error_manager/err_frame" type="logic">
+      <obj_property name="ElementShortName">err_frame</obj_property>
+      <obj_property name="ObjectShortName">err_frame</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_can_bus1/node_A/u_error_manager/gen_errTx" type="logic">
+      <obj_property name="ElementShortName">gen_errTx</obj_property>
+      <obj_property name="ObjectShortName">gen_errTx</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_can_bus1/node_B/u_error_manager/gen_errTx" type="logic">
+      <obj_property name="ElementShortName">gen_errTx</obj_property>
+      <obj_property name="ObjectShortName">gen_errTx</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_can_bus1/node_C/u_error_manager/gen_errTx" type="logic">
+      <obj_property name="ElementShortName">gen_errTx</obj_property>
+      <obj_property name="ObjectShortName">gen_errTx</obj_property>
+   </wvobject>
    <wvobject fp_name="/tb_can_bus1/node_A/u_tx_module/u_builder_tx/tx_request" type="logic">
       <obj_property name="ElementShortName">tx_request</obj_property>
       <obj_property name="ObjectShortName">tx_request</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb_can_bus1/node_A/u_tx_module/u_bit_stuffer/frame_in" type="array">
-      <obj_property name="ElementShortName">frame_in[107:0]</obj_property>
-      <obj_property name="ObjectShortName">frame_in[107:0]</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_can_bus1/node_A/u_fifo_tx/pop" type="logic">
       <obj_property name="ElementShortName">pop</obj_property>

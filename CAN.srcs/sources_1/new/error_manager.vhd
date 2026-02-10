@@ -61,8 +61,11 @@ architecture arch_error_manager of error_manager is
     
     signal sl_err_event_rx     : std_logic;
     signal sl_err_event_tx     : std_logic;
+    signal sl_gen_errTx        : std_logic;
     
 begin
+
+    gen_errTX   <= sl_gen_errTx;
 
     process(clock,reset)
         variable rise_err_ack       : std_logic;
@@ -74,7 +77,7 @@ begin
         if reset = '1' then
             err_status      <= "00";    -- ERROR ACTIVE default
             err_event       <= '0';
-            gen_errTx       <= '0';
+            sl_gen_errTx    <= '0';
             TEC             <= (others => '0');
             REC             <= (others => '0');
             sl_last_err_ack    <= '0';
@@ -125,7 +128,7 @@ begin
                         REC <= REC - 1;
                     end if;
                 else
-                    -- 6 received equal bit, error frame format, error crc
+                    -- 6 received equal bit, error crc
                     if rise_err_crc = '1' then
                         sl_err_event_rx   <= '1';
                         if REC < "1111111" then
@@ -133,6 +136,7 @@ begin
                         end if; 
                     elsif rise_err_frame = '1' then
                         sl_err_event_rx   <= '1';
+                        
                         if REC < "1111111" then
                             REC <= REC + 1;
                         end if;
@@ -141,6 +145,7 @@ begin
             
             -- node in TRANSMITTING status
             elsif state_can = "10" then
+                sl_gen_errTx       <= '0'; 
                 if end_tx = '1' and sl_err_event_tx = '0' then
                     if TEC > "00000000" then
                         TEC <= TEC - 8;
@@ -149,7 +154,8 @@ begin
                     -- ack error or format error or stuffing error
                     if rise_err_ack = '1' or rise_err_format = '1' or rise_err_stuff = '1' then
                         sl_err_event_tx     <= '1';
-                        gen_errTx           <= '1';
+                        sl_gen_errTx        <= '1';
+
                         if TEC < "11111111" then
                             TEC <= TEC + 8;
                         end if;
@@ -159,7 +165,8 @@ begin
             -- node in IDLE status
             elsif state_can = "00" then
                 sl_err_event_tx    <= '0';
-                sl_err_event_rx    <= '0';   
+                sl_err_event_rx    <= '0'; 
+                sl_gen_errTx       <= '0';  
             end if;
         end if;  
         

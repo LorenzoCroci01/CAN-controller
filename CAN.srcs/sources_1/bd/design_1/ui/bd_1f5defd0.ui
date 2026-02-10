@@ -1,0 +1,43 @@
+{
+   "ActiveEmotionalView":"Default View",
+   "Default View_ScaleFactor":"0.940217",
+   "Default View_TopLeft":"-367,2",
+   "ExpandedHierarchyInLayout":"",
+   "guistr":"# # String gsaved with Nlview 7.8.0 2024-04-26 e1825d835c VDI=44 GEI=38 GUI=JA:21.0
+#  -string -flagsOSRD
+preplace port port-id_bus_line_0 -pg 1 -lvl 2 -x 380 -y 150 -defaultsOSRD
+preplace port port-id_cfg_mode_0 -pg 1 -lvl 0 -x 0 -y 80 -defaultsOSRD
+preplace port port-id_clock_0 -pg 1 -lvl 0 -x 0 -y 20 -defaultsOSRD
+preplace port port-id_pop_fifo_rx_0 -pg 1 -lvl 0 -x 0 -y 200 -defaultsOSRD
+preplace port port-id_push_fifo_tx_0 -pg 1 -lvl 0 -x 0 -y 230 -defaultsOSRD
+preplace port port-id_ram_rdy_0 -pg 1 -lvl 2 -x 380 -y 210 -defaultsOSRD
+preplace port port-id_reset_0 -pg 1 -lvl 0 -x 0 -y 50 -defaultsOSRD
+preplace port port-id_we_memID_0 -pg 1 -lvl 0 -x 0 -y 290 -defaultsOSRD
+preplace portBus frame_rx_out_0 -pg 1 -lvl 2 -x 380 -y 180 -defaultsOSRD
+preplace portBus frame_tx_in_0 -pg 1 -lvl 0 -x 0 -y 260 -defaultsOSRD
+preplace portBus phase_seg1_0 -pg 1 -lvl 0 -x 0 -y 140 -defaultsOSRD
+preplace portBus phase_seg2_0 -pg 1 -lvl 0 -x 0 -y 170 -defaultsOSRD
+preplace portBus prop_seg_0 -pg 1 -lvl 0 -x 0 -y 110 -defaultsOSRD
+preplace portBus ram_addrID_0 -pg 1 -lvl 0 -x 0 -y 320 -defaultsOSRD
+preplace portBus ram_dinID_0 -pg 1 -lvl 0 -x 0 -y 350 -defaultsOSRD
+preplace inst can_node_0 -pg 1 -lvl 1 -x 210 -y 180 -defaultsOSRD
+preplace netloc Net 1 1 1 360J 150n
+preplace netloc cfg_mode_0_1 1 0 1 30J 80n
+preplace netloc clock_0_1 1 0 1 50J 20n
+preplace netloc can_node_0_frame_rx_out 1 1 1 NJ 180
+preplace netloc frame_tx_in_0_1 1 0 1 30J 230n
+preplace netloc phase_seg1_0_1 1 0 1 50J 140n
+preplace netloc phase_seg2_0_1 1 0 1 NJ 170
+preplace netloc pop_fifo_rx_0_1 1 0 1 20J 190n
+preplace netloc prop_seg_0_1 1 0 1 20J 110n
+preplace netloc push_fifo_tx_0_1 1 0 1 20J 210n
+preplace netloc ram_addrID_0_1 1 0 1 50J 270n
+preplace netloc ram_dinID_0_1 1 0 1 60J 290n
+preplace netloc can_node_0_ram_rdy 1 1 1 360J 200n
+preplace netloc reset_0_1 1 0 1 40J 50n
+preplace netloc we_memID_0_1 1 0 1 40J 250n
+levelinfo -pg 1 0 210 380
+pagesize -pg 1 -db -bbox -sgen -170 0 570 370
+"
+}
+

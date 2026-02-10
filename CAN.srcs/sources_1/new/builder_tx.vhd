@@ -86,7 +86,7 @@ begin
 
                         sv_frame_tx(24 downto 10) <= crc_reg;
                         sv_frame_tx(9)            <= '1';
-                        sv_frame_tx(8 downto 7)   <= "10";
+                        sv_frame_tx(8 downto 7)   <= "11";
                         sv_frame_tx(6 downto 0)   <= "1111111";
                         state <= DONE;
 

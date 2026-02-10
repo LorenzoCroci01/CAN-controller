@@ -45,9 +45,9 @@ begin
             end_tx <= '0';
             
             -- transation state TX-ERROR
-            if (sv_prev_state = "11" and state_can = "10") or (sv_prev_state = "10" and state_can = "11") then
+            if (sv_prev_state = "11" and state_can = "10") or (sv_prev_state = "10" and state_can = "11") or (sv_prev_state = "11" and state_can = "00") then
                 s_bit_idx       <= (others => '0');
-                s_run_cnt       <= (others => '0');   
+                s_run_cnt       <= (others => '1');   
             end if;
             sv_prev_state <= state_can;   
 
