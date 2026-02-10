@@ -43,7 +43,8 @@ begin
 
         elsif rising_edge(clock) then
             end_tx <= '0';
-
+            
+            -- transation state TX-ERROR
             if (sv_prev_state = "11" and state_can = "10") or (sv_prev_state = "10" and state_can = "11") then
                 s_bit_idx       <= (others => '0');
                 s_run_cnt       <= (others => '0');   
@@ -56,7 +57,8 @@ begin
                 sl_last_bit     <= '1';
                 sl_stuff        <= '0';
                 sl_bit_o        <= '1';
-
+            
+            -- DATA FRAME (108 bit)
             elsif state_can = "10" and sample_tick = '1' then
 
                 -- stuffed bit
@@ -71,7 +73,7 @@ begin
                     sl_curr_bit := frame_in(107 - to_integer(s_bit_idx));
                     sl_bit_o    <= sl_curr_bit;
 
-                    -- stuffing on SOF..CRC
+                    -- stuffing on SOF..CRC fields
                     if s_bit_idx <= 97 then
                         if sl_curr_bit = sl_last_bit then
                             s_run_cnt   <= s_run_cnt + 1;

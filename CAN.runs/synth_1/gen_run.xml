@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<GenRun Id="synth_1" LaunchPart="xc7a50tcpg236-1" LaunchTime="1770673040" LaunchIncrCheckpoint="$PSRCDIR/utils_1/imports/synth_1/Destuffing.dcp">
+<GenRun Id="synth_1" LaunchPart="xc7a50tcpg236-1" LaunchTime="1770675288" LaunchIncrCheckpoint="$PSRCDIR/utils_1/imports/synth_1/Destuffing.dcp">
   <File Type="PA-TCL" Name="can_node_top.tcl"/>
   <File Type="REPORTS-TCL" Name="can_node_top_reports.tcl"/>
   <File Type="RDS-RDS" Name="can_node_top.vds"/>
@@ -77,12 +77,6 @@
         <Attr Name="UsedIn" Val="simulation"/>
       </FileInfo>
     </File>
-    <File Path="$PSRCDIR/sources_1/new/serializer.vhd">
-      <FileInfo>
-        <Attr Name="UsedIn" Val="synthesis"/>
-        <Attr Name="UsedIn" Val="simulation"/>
-      </FileInfo>
-    </File>
     <File Path="$PSRCDIR/sources_1/new/driver_tx.vhd">
       <FileInfo>
         <Attr Name="UsedIn" Val="synthesis"/>
@@ -90,12 +84,6 @@
       </FileInfo>
     </File>
     <File Path="$PSRCDIR/sources_1/new/can_readTX.vhd">
-      <FileInfo>
-        <Attr Name="UsedIn" Val="synthesis"/>
-        <Attr Name="UsedIn" Val="simulation"/>
-      </FileInfo>
-    </File>
-    <File Path="$PSRCDIR/sources_1/new/bit_stuffer.vhd">
       <FileInfo>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="simulation"/>
