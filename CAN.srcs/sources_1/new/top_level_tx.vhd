@@ -84,7 +84,7 @@ begin
     lost_arb            <= sl_lost_arb;
     
     -- Treat released bus as recessive '1'
-    bus_rx_norm <= '1' when (bus_line = 'Z' or bus_line = 'H') else bus_line;
+    bus_rx_norm <= '1' when (bus_line = 'Z' or bus_line = '1') else bus_line;
     
     -- driver ERR
     u_driver_err : entity work.driver_err

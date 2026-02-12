@@ -41,7 +41,8 @@ entity fifo is
         pop         : in  std_logic;
         frame_out   : out std_logic_vector(WIDTH-1 downto 0);
         
-        empty       : out std_logic
+        empty       : out std_logic;
+        full        : out std_logic
     );
 end entity;
 
@@ -64,14 +65,11 @@ architecture arch_fifo of fifo is
 begin
     frame_out   <= frame_out_r;
     empty       <= sl_empty;
+    full        <= sl_full;
 
     sl_empty <= '1' when count = 0 else '0';
     sl_full  <= '1' when count = to_unsigned(DEPTH, count'length) else '0';
     
-    --tx_request <= '1' when sl_empty = '0' else '0';
-    
-    --do_wr   <= '1' when push = '1' and sl_full = '0' else '0';
-    --do_rd   <= '1' when pop = '1' and sl_empty = '0' else '0';
     
     process(clock, reset)
     variable do_wr  : std_logic;

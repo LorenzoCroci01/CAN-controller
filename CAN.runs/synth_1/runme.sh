@@ -41,4 +41,4 @@ EAStep()
      fi
 }
 
-EAStep vivado -log can_node_top.vds -m64 -product Vivado -mode batch -messageDb vivado.pb -notrace -source can_node_top.tcl
+EAStep vivado -log can_node_loopback.vds -m64 -product Vivado -mode batch -messageDb vivado.pb -notrace -source can_node_loopback.tcl

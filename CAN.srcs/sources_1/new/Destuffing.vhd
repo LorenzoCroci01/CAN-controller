@@ -54,7 +54,8 @@ begin
     bit_out     <= bit_out_o; 
     bit_valid   <= bit_valid_o; 
     err_stuff   <= err_stuff_o; 
-    err_frame   <= err_frame_o; 
+    err_frame   <= err_frame_o;
+    err_stuff   <= err_stuff_o; 
     edge_det    <= edge_det_o; 
     
     process(clock, reset)

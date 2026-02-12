@@ -44,8 +44,7 @@ architecture arch_builder_tx of builder_tx is
     type state_type is (IDLE, BUILD, DONE);
     signal state       : state_type := IDLE;
     signal sv_frame_tx : std_logic_vector(107 downto 0) := (others => '0');
-    
-    signal last_tx_req  : std_logic;
+  
 begin
     proc_builder_tx : process(clock, reset)
         variable dividend       : std_logic_vector(97 downto 0);
@@ -57,12 +56,11 @@ begin
             frame_tx     <= (others => '0');
             frame_tx_rdy <= '0';
             sv_frame_tx  <= (others => '0');
-            last_tx_req  <= '0';
 
         elsif rising_edge(clock) then
             
-            rise_tx_req := tx_request and not last_tx_req;
-            last_tx_req <= tx_request;
+            --rise_tx_req := tx_request and not last_tx_req;
+            --last_tx_req <= tx_request;
         
             -- NO error
             if err_event = '0' then

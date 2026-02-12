@@ -10,13 +10,13 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="49.613010 us"></ZoomStartTime>
-      <ZoomEndTime time="57.277398 us"></ZoomEndTime>
-      <Cursor1Time time="56.000000 us"></Cursor1Time>
+      <ZoomStartTime time="48.963953 us"></ZoomStartTime>
+      <ZoomEndTime time="59.807210 us"></ZoomEndTime>
+      <Cursor1Time time="58.000000 us"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="179"></NameColumnWidth>
-      <ValueColumnWidth column_width="98"></ValueColumnWidth>
+      <ValueColumnWidth column_width="93"></ValueColumnWidth>
    </column_width_setting>
    <WVObjectSize size="55" />
    <wvobject fp_name="/tb_can_bus1/node_B/u_rx_module/u_can_rx_module/u_deserial/destuff_bit" type="logic">

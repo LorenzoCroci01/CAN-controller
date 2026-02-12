@@ -24,7 +24,7 @@ eval( EAInclude(ISEJScriptLib) );
 
 
 ISEStep( "vivado",
-         "-log can_node_top.vds -m64 -product Vivado -mode batch -messageDb vivado.pb -notrace -source can_node_top.tcl" );
+         "-log can_node_loopback.vds -m64 -product Vivado -mode batch -messageDb vivado.pb -notrace -source can_node_loopback.tcl" );
 
 
 

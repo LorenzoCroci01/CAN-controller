@@ -34,12 +34,16 @@ entity can_node_top is
         prop_seg    : in unsigned(7 downto 0);
         phase_seg1  : in unsigned(7 downto 0);
         phase_seg2  : in unsigned(7 downto 0);
-
-        pop_fifo_rx   : in  std_logic;
-        push_fifo_tx  : in  std_logic;
-        frame_rx_out  : out std_logic_vector(107 downto 0);
-
-        frame_tx_in   : in  std_logic_vector(82 downto 0);
+        
+        -- FIFO RX interface
+        frame_rx_out    : out std_logic_vector(107 downto 0);
+        pop_fifo_rx     : in std_logic;
+        empty_fifo_rx   : out std_logic;
+        
+        -- FIFO TX interface
+        frame_tx_in     : in std_logic_vector(82 downto 0);
+        push_fifo_tx    : in std_logic;
+        full_fifo_tx    : out std_logic;
 
         we_memID     : in  std_logic;
         ram_addrID   : in  unsigned(7 downto 0);
@@ -121,7 +125,7 @@ begin
                    and (sl_pop_pending = '0')
                    and (sl_tx_request_lat = '0') then
                     sl_pop_tx      <= '1';   -- pulse
-                    sl_pop_pending <= '1';   -- data will be available next clock
+                    sl_pop_pending <= '1';   -- data available next clock
                 end if;
 
                 if sl_pop_pending = '1' then

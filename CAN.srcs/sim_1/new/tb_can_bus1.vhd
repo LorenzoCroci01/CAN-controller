@@ -45,9 +45,9 @@ architecture sim of tb_can_bus1 is
     signal bus_line : std_logic := 'H';
 
     -- bit timing
-    signal prop_seg   : unsigned(7 downto 0) := to_unsigned(2, 8);
-    signal phase_seg1 : unsigned(7 downto 0) := to_unsigned(2, 8);
-    signal phase_seg2 : unsigned(7 downto 0) := to_unsigned(2, 8);
+    signal prop_seg   : unsigned(7 downto 0) := to_unsigned(3, 8);
+    signal phase_seg1 : unsigned(7 downto 0) := to_unsigned(3, 8);
+    signal phase_seg2 : unsigned(7 downto 0) := to_unsigned(3, 8);
 
     -- RX pop
     signal pop_fifo_rx_a : std_logic := '0';

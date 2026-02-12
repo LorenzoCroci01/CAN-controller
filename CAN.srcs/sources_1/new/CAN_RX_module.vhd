@@ -58,7 +58,7 @@ architecture arch_CAN_RX_module of CAN_RX_module is
 
     signal sl_edge_det     : std_logic;
 
-    signal state_can_r     : std_logic_vector(1 downto 0); -- IDLE
+    --signal state_can_r     : std_logic_vector(1 downto 0); -- IDLE
 
     signal sl_err_frame    : std_logic;
     signal sl_frame_rdy    : std_logic;
