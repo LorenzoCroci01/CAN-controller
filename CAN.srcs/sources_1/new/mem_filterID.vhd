@@ -34,7 +34,7 @@ entity mem_filterID is
     );
 end mem_filterID;
 
-architecture Behavioral of mem_filterID is
+architecture rtl of mem_filterID is
 
     type ram_type is array (0 to 255) of std_logic_vector(7 downto 0);
     signal RAM : ram_type;
@@ -42,6 +42,8 @@ architecture Behavioral of mem_filterID is
     signal reset_index : unsigned(7 downto 0) := (others => '0');
     signal resetting   : std_logic := '0';
     signal reset_done  : std_logic := '0';
+
+    signal dout_reg    : std_logic_vector(7 downto 0);
 
 begin
 
@@ -51,34 +53,39 @@ begin
             resetting   <= '1';
             reset_done  <= '0';
             reset_index <= (others => '0');
+            dout_reg    <= (others => '0');
 
         elsif rising_edge(clock) then
+
             if resetting = '1' then
                 RAM(to_integer(reset_index)) <= (others => '0');
 
                 if reset_index = "11111111" then
-                    resetting  <= '0';   -- end of memory reset
-                    reset_done <= '1';   -- ram ready
+                    resetting  <= '0';
+                    reset_done <= '1';
                 else
                     reset_index <= reset_index + 1;
                 end if;
 
             else
                 reset_done <= '0';
-                -- write
+
+                -- WRITE
                 if we = '1' then
                     RAM(to_integer(addr)) <= din;
                 end if;
-            end if;
-        end if;
 
+                dout_reg   <= RAM(to_integer(addr));
+            end if;
+
+        end if;
     end process;
 
-    -- sync read
-    dout <= RAM(to_integer(addr));
+    dout    <= dout_reg;
     ram_rdy <= reset_done;
 
-end Behavioral;
+end architecture;
+
 
 
 

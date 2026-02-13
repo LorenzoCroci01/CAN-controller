@@ -1,0 +1,8 @@
++====================+===================+================================================================+
+| Launch Setup Clock | Launch Hold Clock | Pin                                                            |
++====================+===================+================================================================+
+| sys_clk            | sys_clk           | u_controller_can/u_tx_module/u_serial_stuff/sl_last_bit_reg/D  |
+| sys_clk            | sys_clk           | u_controller_can/u_tx_module/u_serial_stuff/sl_bit_o_reg/D     |
+| sys_clk            | sys_clk           | u_controller_can/u_tx_module/u_serial_stuff/s_bit_idx_reg[5]/D |
+| sys_clk            | sys_clk           | u_controller_can/u_rx_module/u_fsm_rx/dividend_reg_reg[42]/D   |
++--------------------+-------------------+----------------------------------------------------------------+

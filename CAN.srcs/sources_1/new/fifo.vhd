@@ -52,49 +52,47 @@ architecture arch_fifo of fifo is
 
     signal wr_ptr   : unsigned(ADDR_WIDTH-1 downto 0) := (others => '0');
     signal rd_ptr   : unsigned(ADDR_WIDTH-1 downto 0) := (others => '0');
-    
-    --signal do_wr    : std_logic;
-    --signal do_rd    : std_logic;
-    
+
     signal sl_empty : std_logic;
     signal sl_full  : std_logic;
 
     signal count  : unsigned(ADDR_WIDTH downto 0) := (others => '0');
 
-    signal frame_out_r : std_logic_vector(WIDTH-1 downto 0) := (others => '0');
+    signal frame_out_r     : std_logic_vector(WIDTH-1 downto 0) := (others => '0');
+    signal frame_out_r_o   : std_logic_vector(WIDTH-1 downto 0) := (others => '0');
+
 begin
-    frame_out   <= frame_out_r;
-    empty       <= sl_empty;
-    full        <= sl_full;
+
+    empty <= sl_empty;
+    full  <= sl_full;
 
     sl_empty <= '1' when count = 0 else '0';
     sl_full  <= '1' when count = to_unsigned(DEPTH, count'length) else '0';
-    
-    
+
     process(clock, reset)
-    variable do_wr  : std_logic;
-    variable do_rd  : std_logic;
+        variable do_wr : std_logic;
+        variable do_rd : std_logic;
     begin
         if reset = '1' then
-            wr_ptr      <= (others => '0');
-            rd_ptr      <= (others => '0');
-            count       <= (others => '0');
-            frame_out_r <= (others => '0');
+            wr_ptr          <= (others => '0');
+            rd_ptr          <= (others => '0');
+            count           <= (others => '0');
+            frame_out_r     <= (others => '0');
 
         elsif rising_edge(clock) then
-        
+
+            -- default
+            do_wr := '0';
+            do_rd := '0';
+
             if push = '1' and sl_full = '0' then
-                do_wr   := '1';
-            else
-                do_wr   := '0';
+                do_wr := '1';
             end if;
-            
+
             if pop = '1' and sl_empty = '0' then
-                do_rd   := '1';
-            else
-                do_rd   := '0';
+                do_rd := '1';
             end if;
-            
+
             -- WRITE
             if do_wr = '1' then
                 mem(to_integer(wr_ptr)) <= frame_in;
@@ -106,16 +104,19 @@ begin
                 frame_out_r <= mem(to_integer(rd_ptr));
                 rd_ptr <= rd_ptr + 1;
             end if;
+            
+            frame_out_r_o   <= frame_out_r;
 
             -- UPDATE COUNT
             if (do_wr = '1' and do_rd = '0') then
                 count <= count + 1;
             elsif (do_wr = '0' and do_rd = '1') then
                 count <= count - 1;
-            else
-                null;
             end if;
+
         end if;
     end process;
+
+    frame_out <= frame_out_r_o;
 
 end architecture;

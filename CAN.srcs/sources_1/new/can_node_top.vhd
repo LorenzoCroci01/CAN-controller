@@ -24,12 +24,14 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity can_node_top is
     Port (
-        clock       : in  std_logic;
-        reset       : in  std_logic;
+        clock       : in std_logic;
+        reset       : in std_logic;
 
-        cfg_mode    : in  std_logic;    -- configuration mode enable
+        cfg_mode    : in std_logic;    -- configuration mode enable
 
-        bus_line    : inout std_logic;
+        --bus_line    : inout std_logic;
+        rx_bit_in   : in std_logic;
+        tx_bit_out  : out std_logic;
 
         prop_seg    : in unsigned(7 downto 0);
         phase_seg1  : in unsigned(7 downto 0);
@@ -241,7 +243,7 @@ begin
             err_format       => sl_err_format,
             state_can        => state_can_node,
             state_next_arb   => sl_state_next_arb,
-            bus_line         => bus_line,
+            bus_line         => tx_bit_out,
             bus_busy         => sl_bus_busy,
             end_tx           => sl_end_tx,
             lost_arb         => sl_lost_arb,
@@ -254,7 +256,7 @@ begin
         port map (
             clock            => clock,
             reset            => reset,
-            rx_in            => bus_line,
+            rx_in            => rx_bit_in,
             rx_enable        => sl_rx_enable,
             lost_arbitration => sl_lost_arb,
             id_rx_in         => sv_id_rx,

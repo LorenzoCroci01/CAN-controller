@@ -45,7 +45,7 @@ entity top_level_tx is
         
         state_can       : in std_logic_vector(1 downto 0);  -- can node state
         state_next_arb  : out std_logic_vector(1 downto 0);
-        bus_line        : inout std_logic;  -- bus line
+        bus_line        : out std_logic;  -- bus line
         bus_busy        : out std_logic;
         end_tx          : out std_logic;    -- end of transmition
         lost_arb        : out std_logic;   -- inform node controller 
@@ -77,14 +77,15 @@ architecture arch_top_level_tx of top_level_tx is
     signal sl_bus_frame_rdy : std_logic;
     signal sl_bus_busy      : std_logic;
     signal sl_id_bit_valid  : std_logic;
-
+    signal sl_tx_bit_out    : std_logic;
 begin
     frame_tx_rdy        <= sl_frm_tx_rdy;
     bus_busy            <= sl_bus_busy;
     lost_arb            <= sl_lost_arb;
+    bus_line            <= sl_tx_bit_out;       
     
     -- Treat released bus as recessive '1'
-    bus_rx_norm <= '1' when (bus_line = 'Z' or bus_line = '1') else bus_line;
+    bus_rx_norm <= '1' when (sl_tx_bit_out = 'Z' or sl_tx_bit_out = '1') else sl_tx_bit_out;
     
     -- driver ERR
     u_driver_err : entity work.driver_err
