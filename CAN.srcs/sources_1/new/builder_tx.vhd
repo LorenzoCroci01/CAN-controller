@@ -32,6 +32,7 @@ entity builder_tx is
         state_can       : in std_logic_vector(1 downto 0);      -- can node state
         err_status      : in std_logic_vector(1 downto 0);
         err_event       : in std_logic;
+        bus_off         : in std_logic;
         
         frame_tx        : out std_logic_vector(107 downto 0);   -- complete frame to transmit
         frame_tx_rdy    : out std_logic     -- frame ready flag
@@ -61,7 +62,11 @@ begin
             
             --rise_tx_req := tx_request and not last_tx_req;
             --last_tx_req <= tx_request;
-        
+            
+            if bus_off = '1' then
+                frame_tx        <= (others => '1');
+                frame_tx_rdy    <= '0';
+            else
             -- NO error
             if err_event = '0' then
                 case state is
@@ -101,12 +106,9 @@ begin
                     frame_tx(107 downto 102) <= "000000";
                     frame_tx(101 downto 0)   <= (others => '1');
                     frame_tx_rdy   <= '1';
-                elsif err_status = "01" then
-                    frame_tx(107 downto 102) <= "111111";
-                    frame_tx(101 downto 0)   <= (others => '1');
-                    frame_tx_rdy   <= '1';
                 end if;
                 
+            end if;
             end if;        
         end if;
     end process;

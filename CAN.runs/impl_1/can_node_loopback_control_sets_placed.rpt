@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2025.1 (win64) Build 6140274 Thu May 22 00:12:29 MDT 2025
-| Date         : Fri Feb 13 16:13:28 2026
+| Date         : Tue May 12 14:46:50 2026
 | Host         : Croci running 64-bit major release  (build 9200)
 | Command      : report_control_sets -verbose -file can_node_loopback_control_sets_placed.rpt
 | Design       : can_node_loopback
@@ -23,11 +23,11 @@ Table of Contents
 +----------------------------------------------------------+-------+
 |                          Status                          | Count |
 +----------------------------------------------------------+-------+
-| Total control sets                                       |    33 |
-|    Minimum number of control sets                        |    33 |
+| Total control sets                                       |    36 |
+|    Minimum number of control sets                        |    36 |
 |    Addition due to synthesis replication                 |     0 |
 |    Addition due to physical synthesis replication        |     0 |
-| Unused register locations in slices containing registers |    95 |
+| Unused register locations in slices containing registers |   107 |
 +----------------------------------------------------------+-------+
 * Control sets can be merged at opt_design using control_set_merge or merge_equivalent_drivers
 ** Run report_qor_suggestions for automated merging and remapping suggestions
@@ -39,11 +39,11 @@ Table of Contents
 +--------------------+-------+
 |       Fanout       | Count |
 +--------------------+-------+
-| Total control sets |    33 |
-| >= 0 to < 4        |     0 |
-| >= 4 to < 6        |    10 |
-| >= 6 to < 8        |     2 |
-| >= 8 to < 10       |     4 |
+| Total control sets |    36 |
+| >= 0 to < 4        |     1 |
+| >= 4 to < 6        |    12 |
+| >= 6 to < 8        |     3 |
+| >= 8 to < 10       |     3 |
 | >= 10 to < 12      |     1 |
 | >= 12 to < 14      |     5 |
 | >= 14 to < 16      |     1 |
@@ -58,12 +58,12 @@ Table of Contents
 +--------------+-----------------------+------------------------+-----------------+--------------+
 | Clock Enable | Synchronous Set/Reset | Asynchronous Set/Reset | Total Registers | Total Slices |
 +--------------+-----------------------+------------------------+-----------------+--------------+
-| No           | No                    | No                     |               0 |            0 |
-| No           | No                    | Yes                    |             313 |          158 |
+| No           | No                    | No                     |               1 |            1 |
+| No           | No                    | Yes                    |             309 |          161 |
 | No           | Yes                   | No                     |               0 |            0 |
-| Yes          | No                    | No                     |              15 |           11 |
-| Yes          | No                    | Yes                    |             542 |          190 |
-| Yes          | Yes                   | No                     |              83 |           17 |
+| Yes          | No                    | No                     |              15 |           13 |
+| Yes          | No                    | Yes                    |             549 |          196 |
+| Yes          | Yes                   | No                     |              83 |           18 |
 +--------------+-----------------------+------------------------+-----------------+--------------+
 
 
@@ -73,39 +73,42 @@ Table of Contents
 +------------------+--------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------+------------------+----------------+--------------+
 |   Clock Signal   |                                        Enable Signal                                       |                                Set/Reset Signal                                | Slice Load Count | Bel Load Count | Bels / Slice |
 +------------------+--------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------+------------------+----------------+--------------+
-|  clock_IBUF_BUFG | u_controller_can/u_tx_module/u_can_readTX/u_deserializerTX/sv_dlc                          | reset_IBUF                                                                     |                1 |              4 |         4.00 |
-|  clock_IBUF_BUFG | u_controller_can/u_rx_module/u_can_rx_module/u_deserial/FSM_sequential_state[3]_i_1_n_0    | reset_IBUF                                                                     |                3 |              4 |         1.33 |
-|  clock_IBUF_BUFG | u_controller_can/u_tx_module/u_can_readTX/u_deserializerTX/FSM_sequential_state[3]_i_1_n_0 | reset_IBUF                                                                     |                2 |              4 |         2.00 |
+|  clock_IBUF_BUFG |                                                                                            |                                                                                |                1 |              1 |         1.00 |
 |  clock_IBUF_BUFG | u_controller_can/u_rx_module/u_can_rx_module/u_deserial/sv_dlc[3]_i_1_n_0                  | reset_IBUF                                                                     |                1 |              4 |         4.00 |
-|  clock_IBUF_BUFG | u_controller_can/u_tx_module/u_arbiter/id_len[3]_i_1_n_0                                   | reset_IBUF                                                                     |                2 |              4 |         2.00 |
 |  clock_IBUF_BUFG | u_controller_can/u_tx_module/u_arbiter/bit_idx[3]_i_1_n_0                                  | reset_IBUF                                                                     |                1 |              4 |         4.00 |
-|  clock_IBUF_BUFG | u_controller_can/u_fifo_tx/rd_ptr[1]_i_1_n_0                                               | reset_IBUF                                                                     |                1 |              4 |         4.00 |
+|  clock_IBUF_BUFG | u_controller_can/u_tx_module/u_serial_stuff/s_run_cnt[2]_i_1_n_0                           | reset_IBUF                                                                     |                2 |              4 |         2.00 |
+|  clock_IBUF_BUFG | u_controller_can/u_rx_module/u_can_rx_module/u_deserial/FSM_sequential_state[3]_i_1_n_0    | reset_IBUF                                                                     |                3 |              4 |         1.33 |
+|  clock_IBUF_BUFG | u_controller_can/u_tx_module/u_arbiter/id_len[3]_i_1_n_0                                   | reset_IBUF                                                                     |                2 |              4 |         2.00 |
+|  clock_IBUF_BUFG | u_controller_can/u_tx_module/u_can_readTX/u_deserializerTX/FSM_sequential_state[3]_i_1_n_0 | reset_IBUF                                                                     |                3 |              4 |         1.33 |
+|  clock_IBUF_BUFG | u_controller_can/u_fifo_tx/rd_ptr[1]_i_1_n_0                                               | reset_IBUF                                                                     |                2 |              4 |         2.00 |
 |  clock_IBUF_BUFG | u_controller_can/u_fifo_tx/p_9_out                                                         | reset_IBUF                                                                     |                1 |              4 |         4.00 |
+|  clock_IBUF_BUFG | u_controller_can/u_tx_module/u_can_readTX/u_deserializerTX/sv_dlc                          | reset_IBUF                                                                     |                1 |              4 |         4.00 |
 |  clock_IBUF_BUFG | u_controller_can/u_error_manager/TEC                                                       | reset_IBUF                                                                     |                2 |              5 |         2.50 |
-|  clock_IBUF_BUFG | u_controller_can/u_fifo_tx/count[4]_i_1_n_0                                                | reset_IBUF                                                                     |                3 |              5 |         1.67 |
+|  clock_IBUF_BUFG | u_controller_can/u_fifo_rx/p_9_out                                                         | reset_IBUF                                                                     |                1 |              5 |         5.00 |
+|  clock_IBUF_BUFG | u_controller_can/u_fifo_tx/count[4]_i_1_n_0                                                | reset_IBUF                                                                     |                4 |              5 |         1.25 |
+|  clock_IBUF_BUFG | u_controller_can/u_rx_module/u_can_rx_module/u_btu/sample_tick                             | reset_IBUF                                                                     |                2 |              6 |         3.00 |
 |  clock_IBUF_BUFG | u_controller_can/u_tx_module/u_can_readTX/u_deserializerTX/s_bit_count                     | reset_IBUF                                                                     |                3 |              7 |         2.33 |
-|  clock_IBUF_BUFG | u_controller_can/u_rx_module/u_can_rx_module/u_deserial/s_bit_count[6]_i_1_n_0             | reset_IBUF                                                                     |                5 |              7 |         1.40 |
-|  clock_IBUF_BUFG | u_controller_can/u_tx_module/u_serial_stuff/s_bit_idx[7]_i_1_n_0                           | reset_IBUF                                                                     |                3 |              8 |         2.67 |
-|  clock_IBUF_BUFG | u_controller_can/u_error_manager/sel                                                       | reset_IBUF                                                                     |                3 |              8 |         2.67 |
+|  clock_IBUF_BUFG | u_controller_can/u_rx_module/u_can_rx_module/u_deserial/s_bit_count[6]_i_1_n_0             | reset_IBUF                                                                     |                6 |              7 |         1.17 |
+|  clock_IBUF_BUFG | u_controller_can/u_tx_module/u_serial_stuff/s_bit_idx[7]_i_1_n_0                           | reset_IBUF                                                                     |                4 |              8 |         2.00 |
+|  clock_IBUF_BUFG | u_controller_can/u_rx_module/u_ram_filter/reset_index[7]_i_1_n_0                           | reset_IBUF                                                                     |                5 |              8 |         1.60 |
 |  clock_IBUF_BUFG | u_controller_can/u_rx_module/u_ram_filter/resetting_reg_inv_n_0                            | reset_IBUF                                                                     |                3 |              8 |         2.67 |
-|  clock_IBUF_BUFG | u_controller_can/u_rx_module/u_ram_filter/reset_index[7]_i_1_n_0                           | reset_IBUF                                                                     |                3 |              8 |         2.67 |
 |  clock_IBUF_BUFG | u_controller_can/u_tx_module/u_can_readTX/u_deserializerTX/sv_id_rx                        | reset_IBUF                                                                     |                3 |             11 |         3.67 |
 |  clock_IBUF_BUFG | u_controller_can/u_rx_module/u_ram_filter/RAM_reg_0_63_0_2_i_4_n_0                         |                                                                                |                3 |             12 |         4.00 |
 |  clock_IBUF_BUFG | u_controller_can/u_rx_module/u_ram_filter/RAM_reg_64_127_0_2_i_1_n_0                       |                                                                                |                3 |             12 |         4.00 |
 |  clock_IBUF_BUFG | u_controller_can/u_rx_module/u_ram_filter/RAM_reg_192_255_0_2_i_1_n_0                      |                                                                                |                3 |             12 |         4.00 |
 |  clock_IBUF_BUFG | u_controller_can/u_rx_module/u_ram_filter/RAM_reg_128_191_0_2_i_1_n_0                      |                                                                                |                3 |             12 |         4.00 |
 |  clock_IBUF_BUFG | u_controller_can/u_rx_module/u_fsm_rx/crc_cnt[6]_i_1_n_0                                   | reset_IBUF                                                                     |               10 |             13 |         1.30 |
-|  clock_IBUF_BUFG | u_controller_can/u_tx_module/u_builder_tx/dividend0                                        |                                                                                |               11 |             15 |         1.36 |
-|  clock_IBUF_BUFG | u_controller_can/u_tx_module/u_builder_tx/sv_frame_tx[24]_i_1_n_0                          | reset_IBUF                                                                     |               12 |             16 |         1.33 |
-|  clock_IBUF_BUFG | u_controller_can/u_rx_module/u_can_rx_module/u_deserial/sv_first_pt[18]_i_1_n_0            | reset_IBUF                                                                     |                6 |             19 |         3.17 |
-|  clock_IBUF_BUFG | u_controller_can/u_rx_module/u_can_rx_module/u_deserial/sv_last_pt[24]_i_1_n_0             | reset_IBUF                                                                     |                6 |             25 |         4.17 |
-|  clock_IBUF_BUFG | u_controller_can/u_rx_module/u_fsm_rx/crc_field                                            | reset_IBUF                                                                     |               11 |             26 |         2.36 |
-|  clock_IBUF_BUFG | u_controller_can/u_rx_module/u_can_rx_module/u_deserial/sv_data_field[63]_i_1_n_0          | reset_IBUF                                                                     |               19 |             64 |         3.37 |
-|  clock_IBUF_BUFG | u_controller_can/u_tx_module/u_builder_tx/dividend0                                        | u_controller_can/u_tx_module/u_builder_tx/proc_builder_tx.dividend[97]_i_1_n_0 |               17 |             83 |         4.88 |
-|  clock_IBUF_BUFG | u_controller_can/u_tx_module/u_builder_tx/sv_frame_tx[107]_i_1_n_0                         | reset_IBUF                                                                     |               19 |             83 |         4.37 |
-|  clock_IBUF_BUFG | u_controller_can/u_rx_module/u_can_rx_module/u_deserial/frame[107]_i_1_n_0                 | reset_IBUF                                                                     |               49 |             98 |         2.00 |
-|  clock_IBUF_BUFG | u_controller_can/u_tx_module/u_builder_tx/frame_tx[107]_i_1_n_0                            | reset_IBUF                                                                     |               18 |             99 |         5.50 |
-|  clock_IBUF_BUFG |                                                                                            | reset_IBUF                                                                     |              158 |            313 |         1.98 |
+|  clock_IBUF_BUFG | u_controller_can/u_tx_module/u_builder_tx/dividend0                                        |                                                                                |               13 |             15 |         1.15 |
+|  clock_IBUF_BUFG | u_controller_can/u_tx_module/u_builder_tx/sv_frame_tx[24]_i_1_n_0                          | reset_IBUF                                                                     |               13 |             16 |         1.23 |
+|  clock_IBUF_BUFG | u_controller_can/u_rx_module/u_can_rx_module/u_deserial/sv_first_pt[18]_i_1_n_0            | reset_IBUF                                                                     |                7 |             19 |         2.71 |
+|  clock_IBUF_BUFG | u_controller_can/u_rx_module/u_can_rx_module/u_deserial/sv_last_pt[24]_i_1_n_0             | reset_IBUF                                                                     |                5 |             25 |         5.00 |
+|  clock_IBUF_BUFG | u_controller_can/u_rx_module/u_fsm_rx/crc_field                                            | reset_IBUF                                                                     |               10 |             26 |         2.60 |
+|  clock_IBUF_BUFG | u_controller_can/u_rx_module/u_can_rx_module/u_deserial/sv_data_field[63]_i_1_n_0          | reset_IBUF                                                                     |               16 |             64 |         4.00 |
+|  clock_IBUF_BUFG | u_controller_can/u_tx_module/u_builder_tx/sv_frame_tx[107]_i_1_n_0                         | reset_IBUF                                                                     |               17 |             83 |         4.88 |
+|  clock_IBUF_BUFG | u_controller_can/u_tx_module/u_builder_tx/dividend0                                        | u_controller_can/u_tx_module/u_builder_tx/proc_builder_tx.dividend[97]_i_1_n_0 |               18 |             83 |         4.61 |
+|  clock_IBUF_BUFG | u_controller_can/u_rx_module/u_can_rx_module/u_deserial/frame[107]_i_1_n_0                 | reset_IBUF                                                                     |               53 |             98 |         1.85 |
+|  clock_IBUF_BUFG | u_controller_can/u_tx_module/u_builder_tx/frame_tx[107]_i_1_n_0                            | reset_IBUF                                                                     |               16 |             99 |         6.19 |
+|  clock_IBUF_BUFG |                                                                                            | reset_IBUF                                                                     |              161 |            309 |         1.92 |
 +------------------+--------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------+------------------+----------------+--------------+
 
 

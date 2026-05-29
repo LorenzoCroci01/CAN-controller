@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<GenRun Id="synth_1" LaunchPart="xc7a50tcpg236-1" LaunchTime="1770995515" LaunchIncrCheckpoint="$PSRCDIR/utils_1/imports/synth_1/Destuffing.dcp">
-  <File Type="PA-TCL" Name="can_node_loopback.tcl"/>
+<GenRun Id="synth_1" LaunchPart="xc7a50tcpg236-1" LaunchTime="1778587588" LaunchIncrCheckpoint="$PSRCDIR/utils_1/imports/synth_1/Destuffing.dcp">
   <File Type="REPORTS-TCL" Name="can_node_loopback_reports.tcl"/>
-  <File Type="RDS-RDS" Name="can_node_loopback.vds"/>
-  <File Type="RDS-PROPCONSTRS" Name="can_node_loopback_drc_synth.rpt"/>
   <File Type="RDS-UTIL" Name="can_node_loopback_utilization_synth.rpt"/>
   <File Type="RDS-UTIL-PB" Name="can_node_loopback_utilization_synth.pb"/>
+  <File Type="PA-TCL" Name="can_node_loopback.tcl"/>
+  <File Type="RDS-RDS" Name="can_node_loopback.vds"/>
   <File Type="RDS-DCP" Name="can_node_loopback.dcp"/>
-  <File Type="VDS-TIMINGSUMMARY" Name="can_node_loopback_timing_summary_synth.rpt"/>
-  <File Type="VDS-TIMING-PB" Name="can_node_loopback_timing_summary_synth.pb"/>
   <FileSet Name="sources" Type="DesignSrcs" RelSrcDir="$PSRCDIR/sources_1" RelGenDir="$PGENDIR/sources_1">
     <Filter Type="Srcs"/>
     <File Path="$PSRCDIR/sources_1/new/FF.vhd">

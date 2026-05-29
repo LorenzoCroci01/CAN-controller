@@ -28,7 +28,7 @@ entity top_level_RX is
         clock        : in std_logic;    -- main clock signal
         reset        : in std_logic;    -- async reset
         rx_in        : in std_logic;    -- rx async bit input
-        rx_enable    : in std_logic;    -- rx enable flag
+        --rx_enable    : in std_logic;    -- rx enable flag
         lost_arbitration : in std_logic;
         id_rx_in         : in std_logic_vector(10 downto 0);
         id_len       : in integer range 0 to 10;
@@ -36,15 +36,17 @@ entity top_level_RX is
         state_can    : in std_logic_vector(1 downto 0);
 
         -- input to CAN RX module (BTU config)
-        prop_seg     : in unsigned(7 downto 0);
-        phase_seg1   : in unsigned(7 downto 0);
-        phase_seg2   : in unsigned(7 downto 0);
+        prop_seg     : in unsigned(9 downto 0);
+        phase_seg1   : in unsigned(9 downto 0);
+        phase_seg2   : in unsigned(9 downto 0);
 
         -- config interface to block RAM filter ID
         we_memID     : in std_logic;                        -- write enable config
         ram_addrID   : in unsigned(7 downto 0);             -- address for config
         ram_dinID    : in std_logic_vector(7 downto 0);     -- data for config
         ram_rdy      : out std_logic;                       -- ram ready flag
+        
+        cfg_mode     : in std_logic;    -- configuration mode 
 
         -- output from CAN RX module
         ack_slot     : out std_logic;   -- ack slot flag
@@ -55,6 +57,7 @@ entity top_level_RX is
         start_rx     : out std_logic;
 
         -- output from fsm_rx
+        --end_crc      : out std_logic;
         err_crc      : out std_logic;                       -- CRC error flag
         valid_frame  : out std_logic;                       -- valid frame flag
         frame_out    : out std_logic_vector(107 downto 0)   -- output frame
@@ -82,7 +85,7 @@ begin
     frame_rdy   <= sl_frame_rdy;
     
     -- RX input normalization
-    rx_in_norm <= '1' when (rx_in = 'Z' or rx_in = 'H') else rx_in;
+    rx_in_norm <= '1' when rx_in = '1' else rx_in;
 
     -- CAN RX module
     u_can_rx_module : entity work.CAN_RX_module
@@ -90,7 +93,7 @@ begin
             clock       => clock,
             reset       => reset,
             rx_in       => rx_in_norm,
-            rx_enable   => rx_enable,
+            --rx_enable   => rx_enable,
             lost_arbitration => lost_arbitration,
             id_rx_in    => id_rx_in,
             id_len      => id_len,
@@ -127,6 +130,7 @@ begin
         port map (
             clock   => clock,
             reset   => reset,
+            cfg_mode => cfg_mode,
             we      => ram_we_int,
             addr    => ram_addrID_int,
             din     => ram_dinID,

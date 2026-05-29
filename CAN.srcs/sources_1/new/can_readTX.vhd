@@ -28,9 +28,9 @@ entity can_readTX is
         reset       : in  std_logic;    -- async reset
         rx_in       : in  std_logic;    -- rx async bit input
 
-        prop_seg    : in  unsigned(7 downto 0);
-        phase_seg1  : in  unsigned(7 downto 0);
-        phase_seg2  : in  unsigned(7 downto 0);
+        prop_seg    : in  unsigned(9 downto 0);
+        phase_seg1  : in  unsigned(9 downto 0);
+        phase_seg2  : in  unsigned(9 downto 0);
         
         sof_bit     : out std_logic;
         id_bit_valid : out std_logic;
@@ -58,7 +58,7 @@ architecture arch_can_readTX of can_readTX is
 begin
 
     frame_rdy   <= sl_frame_rdy;
-    err_stuff   <= sl_err_stuff;
+    --err_stuff   <= sl_err_stuff;
 
     -- Sync FF
     u_ff : entity work.FF

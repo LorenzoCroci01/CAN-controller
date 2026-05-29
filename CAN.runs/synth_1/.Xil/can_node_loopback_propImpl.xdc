@@ -89,3 +89,7 @@ set_property src_info {type:XDC file:1 line:81 export:INPUT save:INPUT read:READ
 set_property PACKAGE_PIN M2 [get_ports rx_bit_in]
 set_property src_info {type:XDC file:1 line:82 export:INPUT save:INPUT read:READ} [current_design]
 set_property PACKAGE_PIN M3 [get_ports tx_bit_out]
+set_property src_info {type:XDC file:1 line:83 export:INPUT save:INPUT read:READ} [current_design]
+set_property IOSTANDARD LVCMOS33 [get_ports rx_bit_in]
+set_property src_info {type:XDC file:1 line:84 export:INPUT save:INPUT read:READ} [current_design]
+set_property IOSTANDARD LVCMOS33 [get_ports tx_bit_out]

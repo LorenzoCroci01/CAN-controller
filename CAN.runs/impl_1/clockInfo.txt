@@ -1,8 +1,8 @@
 -------------------------------------
 | Tool Version : Vivado v.2025.1
-| Date         : Fri Feb 13 16:13:19 2026
+| Date         : Tue May 12 14:46:18 2026
 | Host         : Croci
-| Design       : design_1
+| Design       : checkpoint_can_node_loopback
 | Device       : xc7a50t-cpg236-1--
 -------------------------------------
 

@@ -26,6 +26,7 @@ entity mem_filterID is
     Port (
         clock   : in  std_logic;                           -- main clock
         reset   : in  std_logic;                           -- async reset (inizia il reset block RAM)
+        cfg_mode : in std_logic;                           -- configuration mode
         we      : in  std_logic;                           -- write enable
         addr    : in  unsigned(7 downto 0);                -- ram address
         din     : in  std_logic_vector(7 downto 0);        -- data input
@@ -71,10 +72,12 @@ begin
                 reset_done <= '0';
 
                 -- WRITE
-                if we = '1' then
-                    RAM(to_integer(addr)) <= din;
+                if cfg_mode = '1' then
+                    if we = '1' then
+                        RAM(to_integer(addr)) <= din;
+                    end if;
                 end if;
-
+                    
                 dout_reg   <= RAM(to_integer(addr));
             end if;
 

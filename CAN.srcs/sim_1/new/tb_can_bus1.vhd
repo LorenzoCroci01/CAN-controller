@@ -30,6 +30,9 @@ architecture sim of tb_can_bus1 is
 
     -- clock
     signal clock  : std_logic := '0';
+    signal clock_a  : std_logic;
+    signal clock_b  : std_logic;
+    signal clock_c  : std_logic;
 
     -- resets
     signal reset_a : std_logic := '1';
@@ -42,12 +45,12 @@ architecture sim of tb_can_bus1 is
     signal cfg_mode_c : std_logic := '1';
 
     -- shared CAN bus (pull-up)
-    signal bus_line : std_logic := 'H';
+    signal bus_line : std_logic;
 
     -- bit timing
-    signal prop_seg   : unsigned(7 downto 0) := to_unsigned(3, 8);
-    signal phase_seg1 : unsigned(7 downto 0) := to_unsigned(3, 8);
-    signal phase_seg2 : unsigned(7 downto 0) := to_unsigned(3, 8);
+    signal prop_seg   : unsigned(9 downto 0) := to_unsigned(2, 10);
+    signal phase_seg1 : unsigned(9 downto 0) := to_unsigned(2, 10);
+    signal phase_seg2 : unsigned(9 downto 0) := to_unsigned(2, 10);
 
     -- RX pop
     signal pop_fifo_rx_a : std_logic := '0';
@@ -118,7 +121,7 @@ begin
 
     -- 100 MHz clock
     clock <= not clock after 5 ns;
-
+    
     -- Node A
     node_A : entity work.can_node_top
         port map (

@@ -45,17 +45,18 @@ architecture arch_Destuffing of Destuffing is
     signal same_count   : unsigned(2 downto 0); 
     signal dom_count    : unsigned(2 downto 0);
     signal skip_next    : std_logic; 
+
     signal bit_out_o    : std_logic; 
     signal bit_valid_o  : std_logic; 
     signal err_stuff_o  : std_logic; 
     signal err_frame_o  : std_logic; 
     signal edge_det_o   : std_logic; 
 begin 
+
     bit_out     <= bit_out_o; 
     bit_valid   <= bit_valid_o; 
     err_stuff   <= err_stuff_o; 
     err_frame   <= err_frame_o;
-    err_stuff   <= err_stuff_o; 
     edge_det    <= edge_det_o; 
     
     process(clock, reset)
@@ -79,38 +80,41 @@ begin
             err_frame_o <= '0';
             
             if sample_tick = '1' then 
-                -- edge detection for hard sync 
+
+                -------------------------------------------------
+                -- EDGE DETECTION
+                -------------------------------------------------
                 if rx_in_sync /= last_bit then 
                     edge_det_o <= '1'; 
                 end if; 
                 
-                -- Error flag detected (6 dominant bits)
+                -------------------------------------------------
+                -- ERROR FRAME (corretto timing)
+                -------------------------------------------------
                 if rx_in_sync = '0' then
                     if dom_count < "110" then
-                        next_dom    := dom_count + 1;
+                        next_dom := dom_count + 1;
                     else
-                        next_dom    := dom_count;
+                        next_dom := dom_count;
                     end if;
                 else
-                    next_dom    := (others => '0');
+                    next_dom := (others => '0');
                 end if;
-                
-                if (dom_count = "101") and (rx_in_sync = '0') then
+
+                -- usa next_dom, NON dom_count
+                if next_dom = "110" then
                     err_frame_o <= '1';
                 end if;
                 
-                dom_count   <= next_dom;
+                dom_count <= next_dom;
                 
-                -- Stuffing logic 
+                -------------------------------------------------
+                -- DESTUFFING
+                -------------------------------------------------
                 if skip_next = '1' then 
+                    
                     if rx_in_sync = last_bit then
-                        -- stuffing error
-                        bit_valid_o <= '0';
                         err_stuff_o <= '1';
-                    else
-                        -- stuffed bit
-                        bit_valid_o <= '0';
-                        err_stuff_o <= '0';
                     end if;
 
                     skip_next  <= '0';
@@ -118,18 +122,19 @@ begin
                     
                 else 
                     -- valid bit 
-                    bit_out_o <= rx_in_sync; 
+                    bit_out_o   <= rx_in_sync; 
                     bit_valid_o <= '1'; 
-                    -- update counter 
+
                     if rx_in_sync = last_bit then 
                         same_count <= same_count + 1; 
                         
-                         if same_count = "100" then 
+                        if same_count = "100" then -- 5 uguali
                             skip_next <= '1'; 
                         end if; 
                     else 
                         same_count <= "001"; 
                     end if; 
+
                     last_bit <= rx_in_sync; 
                 end if; 
             end if; 

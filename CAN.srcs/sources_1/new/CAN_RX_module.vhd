@@ -27,16 +27,16 @@ entity CAN_RX_module is
         clock         : in  std_logic;      -- main clock
         reset         : in  std_logic;      -- async reset
         rx_in         : in  std_logic;      -- rx async bit input
-        rx_enable     : in std_logic;       -- rx enable flag
+        --rx_enable     : in std_logic;       -- rx enable flag
         lost_arbitration : in std_logic;
         id_rx_in      : in std_logic_vector(10 downto 0);
         id_len        : in integer range 0 to 10;
         
         state_can     : in std_logic_vector(1 downto 0);
 
-        prop_seg      : in  unsigned(7 downto 0);
-        phase_seg1    : in  unsigned(7 downto 0);
-        phase_seg2    : in  unsigned(7 downto 0);
+        prop_seg      : in  unsigned(9 downto 0);
+        phase_seg1    : in  unsigned(9 downto 0);
+        phase_seg2    : in  unsigned(9 downto 0);
         
         frame         : out std_logic_vector(107 downto 0);     -- deserialized frame output
         ack_slot      : out std_logic;      -- ack slot flag
@@ -61,6 +61,7 @@ architecture arch_CAN_RX_module of CAN_RX_module is
     --signal state_can_r     : std_logic_vector(1 downto 0); -- IDLE
 
     signal sl_err_frame    : std_logic;
+    signal sl_err_stuff    : std_logic;
     signal sl_frame_rdy    : std_logic;
 
 begin
@@ -118,7 +119,6 @@ begin
             state_can    => state_can,
             bit_out      => sl_bit_out,
             bit_valid    => sl_bit_valid,
-            err_stuff    => open,
             err_frame    => sl_err_frame,
             edge_det     => sl_edge_det
         );

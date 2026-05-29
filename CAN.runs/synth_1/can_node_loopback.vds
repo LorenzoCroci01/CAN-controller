@@ -3,8 +3,8 @@
 # SW Build 6140274 on Thu May 22 00:12:29 MDT 2025
 # IP Build 6138677 on Thu May 22 03:10:11 MDT 2025
 # SharedData Build 6139179 on Tue May 20 17:58:58 MDT 2025
-# Start of session at: Fri Feb 13 16:11:57 2026
-# Process ID         : 10456
+# Start of session at: Tue May 12 14:06:31 2026
+# Process ID         : 4772
 # Current directory  : C:/Users/croci/CAN/CAN.runs/synth_1
 # Command line       : vivado.exe -log can_node_loopback.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source can_node_loopback.tcl
 # Log file           : C:/Users/croci/CAN/CAN.runs/synth_1/can_node_loopback.vds
@@ -17,12 +17,12 @@
 # CPU Physical cores : 10
 # CPU Logical cores  : 12
 # Host memory        : 16850 MB
-# Swap memory        : 7403 MB
-# Total Virtual      : 24253 MB
-# Available Virtual  : 2716 MB
+# Swap memory        : 5131 MB
+# Total Virtual      : 21981 MB
+# Available Virtual  : 4317 MB
 #-----------------------------------------------------------
 source can_node_loopback.tcl -notrace
-create_project: Time (s): cpu = 00:00:09 ; elapsed = 00:00:05 . Memory (MB): peak = 503.797 ; gain = 212.102
+create_project: Time (s): cpu = 00:00:13 ; elapsed = 00:00:08 . Memory (MB): peak = 506.684 ; gain = 213.090
 INFO: [IP_Flow 19-234] Refreshing IP repositories
 INFO: [IP_Flow 19-1700] Loaded user IP repository 'c:/Users/croci/AppData/Roaming/Xilinx/ip_repo'.
 INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'C:/Xilinx/2025.1/Vivado/data/ip'.
@@ -38,23 +38,23 @@ INFO: [Designutils 20-5440] No compile time benefit to using incremental synthes
 INFO: [Designutils 20-4379] Flow is switching to default flow due to incremental criteria not met. If you would like to alter this behaviour and have the flow terminate instead, please set the following parameter config_implementation {autoIncr.Synth.RejectBehavior Terminate}
 INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 2 processes.
 INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
-INFO: [Synth 8-7075] Helper process launched with PID 23524
+INFO: [Synth 8-7075] Helper process launched with PID 29656
 ---------------------------------------------------------------------------------
-Starting RTL Elaboration : Time (s): cpu = 00:00:04 ; elapsed = 00:00:05 . Memory (MB): peak = 1193.605 ; gain = 493.195
+Starting RTL Elaboration : Time (s): cpu = 00:00:07 ; elapsed = 00:00:08 . Memory (MB): peak = 1197.211 ; gain = 494.965
 ---------------------------------------------------------------------------------
 INFO: [Synth 8-638] synthesizing module 'can_node_loopback' [C:/Users/croci/CAN/CAN.srcs/sources_1/new/can_node_loopback.vhd:47]
-INFO: [Synth 8-638] synthesizing module 'can_node_top' [C:/Users/croci/CAN/CAN.srcs/sources_1/new/can_node_top.vhd:57]
-INFO: [Synth 8-226] default block is never used [C:/Users/croci/CAN/CAN.srcs/sources_1/new/can_node_top.vhd:175]
-INFO: [Synth 8-638] synthesizing module 'top_level_tx' [C:/Users/croci/CAN/CAN.srcs/sources_1/new/top_level_tx.vhd:57]
-WARNING: [Synth 8-7143] Equality comparison of non constant with static metalogical value is evaluated as 'false'. This may cause simulation-synthesis differences [C:/Users/croci/CAN/CAN.srcs/sources_1/new/top_level_tx.vhd:88]
-INFO: [Synth 8-638] synthesizing module 'driver_err' [C:/Users/croci/CAN/CAN.srcs/sources_1/new/driver_err.vhd:37]
-INFO: [Synth 8-256] done synthesizing module 'driver_err' (0#1) [C:/Users/croci/CAN/CAN.srcs/sources_1/new/driver_err.vhd:37]
-INFO: [Synth 8-638] synthesizing module 'builder_tx' [C:/Users/croci/CAN/CAN.srcs/sources_1/new/builder_tx.vhd:41]
-INFO: [Synth 8-256] done synthesizing module 'builder_tx' (0#1) [C:/Users/croci/CAN/CAN.srcs/sources_1/new/builder_tx.vhd:41]
-INFO: [Synth 8-638] synthesizing module 'arbiter' [C:/Users/croci/CAN/CAN.srcs/sources_1/new/arbiter.vhd:54]
-INFO: [Synth 8-256] done synthesizing module 'arbiter' (0#1) [C:/Users/croci/CAN/CAN.srcs/sources_1/new/arbiter.vhd:54]
-INFO: [Synth 8-638] synthesizing module 'serializer_stuff' [C:/Users/croci/CAN/CAN.srcs/sources_1/new/serializer_stuff.vhd:20]
-INFO: [Synth 8-256] done synthesizing module 'serializer_stuff' (0#1) [C:/Users/croci/CAN/CAN.srcs/sources_1/new/serializer_stuff.vhd:20]
+INFO: [Synth 8-638] synthesizing module 'can_node_top' [C:/Users/croci/CAN/CAN.srcs/sources_1/new/can_node_top.vhd:60]
+INFO: [Synth 8-226] default block is never used [C:/Users/croci/CAN/CAN.srcs/sources_1/new/can_node_top.vhd:192]
+INFO: [Synth 8-638] synthesizing module 'top_level_tx' [C:/Users/croci/CAN/CAN.srcs/sources_1/new/top_level_tx.vhd:59]
+WARNING: [Synth 8-7143] Equality comparison of non constant with static metalogical value is evaluated as 'false'. This may cause simulation-synthesis differences [C:/Users/croci/CAN/CAN.srcs/sources_1/new/top_level_tx.vhd:87]
+INFO: [Synth 8-638] synthesizing module 'driver_err' [C:/Users/croci/CAN/CAN.srcs/sources_1/new/driver_err.vhd:38]
+INFO: [Synth 8-256] done synthesizing module 'driver_err' (0#1) [C:/Users/croci/CAN/CAN.srcs/sources_1/new/driver_err.vhd:38]
+INFO: [Synth 8-638] synthesizing module 'builder_tx' [C:/Users/croci/CAN/CAN.srcs/sources_1/new/builder_tx.vhd:42]
+INFO: [Synth 8-256] done synthesizing module 'builder_tx' (0#1) [C:/Users/croci/CAN/CAN.srcs/sources_1/new/builder_tx.vhd:42]
+INFO: [Synth 8-638] synthesizing module 'arbiter' [C:/Users/croci/CAN/CAN.srcs/sources_1/new/arbiter.vhd:55]
+INFO: [Synth 8-256] done synthesizing module 'arbiter' (0#1) [C:/Users/croci/CAN/CAN.srcs/sources_1/new/arbiter.vhd:55]
+INFO: [Synth 8-638] synthesizing module 'serializer_stuff' [C:/Users/croci/CAN/CAN.srcs/sources_1/new/serializer_stuff.vhd:21]
+INFO: [Synth 8-256] done synthesizing module 'serializer_stuff' (0#1) [C:/Users/croci/CAN/CAN.srcs/sources_1/new/serializer_stuff.vhd:21]
 INFO: [Synth 8-638] synthesizing module 'BTU' [C:/Users/croci/CAN/CAN.srcs/sources_1/new/BTU.vhd:53]
 INFO: [Synth 8-256] done synthesizing module 'BTU' (0#1) [C:/Users/croci/CAN/CAN.srcs/sources_1/new/BTU.vhd:53]
 INFO: [Synth 8-638] synthesizing module 'driver_tx' [C:/Users/croci/CAN/CAN.srcs/sources_1/new/driver_tx.vhd:36]
@@ -68,9 +68,8 @@ INFO: [Synth 8-256] done synthesizing module 'Destuffing' (0#1) [C:/Users/croci/
 INFO: [Synth 8-638] synthesizing module 'deserializerTX' [C:/Users/croci/CAN/CAN.srcs/sources_1/new/deserializerTX.vhd:47]
 INFO: [Synth 8-256] done synthesizing module 'deserializerTX' (0#1) [C:/Users/croci/CAN/CAN.srcs/sources_1/new/deserializerTX.vhd:47]
 INFO: [Synth 8-256] done synthesizing module 'can_readTX' (0#1) [C:/Users/croci/CAN/CAN.srcs/sources_1/new/can_readTX.vhd:46]
-INFO: [Synth 8-256] done synthesizing module 'top_level_tx' (0#1) [C:/Users/croci/CAN/CAN.srcs/sources_1/new/top_level_tx.vhd:57]
-INFO: [Synth 8-638] synthesizing module 'top_level_RX' [C:/Users/croci/CAN/CAN.srcs/sources_1/new/top_level_RX.vhd:64]
-WARNING: [Synth 8-7143] Equality comparison of non constant with static metalogical value is evaluated as 'false'. This may cause simulation-synthesis differences [C:/Users/croci/CAN/CAN.srcs/sources_1/new/top_level_RX.vhd:85]
+INFO: [Synth 8-256] done synthesizing module 'top_level_tx' (0#1) [C:/Users/croci/CAN/CAN.srcs/sources_1/new/top_level_tx.vhd:59]
+INFO: [Synth 8-638] synthesizing module 'top_level_RX' [C:/Users/croci/CAN/CAN.srcs/sources_1/new/top_level_RX.vhd:67]
 INFO: [Synth 8-638] synthesizing module 'CAN_RX_module' [C:/Users/croci/CAN/CAN.srcs/sources_1/new/CAN_RX_module.vhd:50]
 INFO: [Synth 8-638] synthesizing module 'deserializer' [C:/Users/croci/CAN/CAN.srcs/sources_1/new/deserializer.vhd:46]
 INFO: [Synth 8-6054] Found Dynamic range expression with variable size [C:/Users/croci/CAN/CAN.srcs/sources_1/new/deserializer.vhd:128]
@@ -78,12 +77,11 @@ INFO: [Synth 8-256] done synthesizing module 'deserializer' (0#1) [C:/Users/croc
 INFO: [Synth 8-256] done synthesizing module 'CAN_RX_module' (0#1) [C:/Users/croci/CAN/CAN.srcs/sources_1/new/CAN_RX_module.vhd:50]
 INFO: [Synth 8-638] synthesizing module 'fsm_rx' [C:/Users/croci/CAN/CAN.srcs/sources_1/new/fsm_rx.vhd:40]
 INFO: [Synth 8-256] done synthesizing module 'fsm_rx' (0#1) [C:/Users/croci/CAN/CAN.srcs/sources_1/new/fsm_rx.vhd:40]
-INFO: [Synth 8-638] synthesizing module 'mem_filterID' [C:/Users/croci/CAN/CAN.srcs/sources_1/new/mem_filterID.vhd:37]
-INFO: [Synth 8-256] done synthesizing module 'mem_filterID' (0#1) [C:/Users/croci/CAN/CAN.srcs/sources_1/new/mem_filterID.vhd:37]
-INFO: [Synth 8-256] done synthesizing module 'top_level_RX' (0#1) [C:/Users/croci/CAN/CAN.srcs/sources_1/new/top_level_RX.vhd:64]
+INFO: [Synth 8-638] synthesizing module 'mem_filterID' [C:/Users/croci/CAN/CAN.srcs/sources_1/new/mem_filterID.vhd:38]
+INFO: [Synth 8-256] done synthesizing module 'mem_filterID' (0#1) [C:/Users/croci/CAN/CAN.srcs/sources_1/new/mem_filterID.vhd:38]
+INFO: [Synth 8-256] done synthesizing module 'top_level_RX' (0#1) [C:/Users/croci/CAN/CAN.srcs/sources_1/new/top_level_RX.vhd:67]
 INFO: [Synth 8-638] synthesizing module 'error_manager' [C:/Users/croci/CAN/CAN.srcs/sources_1/new/error_manager.vhd:52]
-WARNING: [Synth 8-614] signal 'TEC' is read in the process but is not in the sensitivity list [C:/Users/croci/CAN/CAN.srcs/sources_1/new/error_manager.vhd:70]
-WARNING: [Synth 8-614] signal 'REC' is read in the process but is not in the sensitivity list [C:/Users/croci/CAN/CAN.srcs/sources_1/new/error_manager.vhd:70]
+WARNING: [Synth 8-614] signal 'TEC' is read in the process but is not in the sensitivity list [C:/Users/croci/CAN/CAN.srcs/sources_1/new/error_manager.vhd:71]
 INFO: [Synth 8-256] done synthesizing module 'error_manager' (0#1) [C:/Users/croci/CAN/CAN.srcs/sources_1/new/error_manager.vhd:52]
 INFO: [Synth 8-638] synthesizing module 'fifo' [C:/Users/croci/CAN/CAN.srcs/sources_1/new/fifo.vhd:49]
 	Parameter DEPTH bound to: 16 - type: integer 
@@ -95,19 +93,17 @@ INFO: [Synth 8-638] synthesizing module 'fifo__parameterized0' [C:/Users/croci/C
 	Parameter WIDTH bound to: 83 - type: integer 
 	Parameter ADDR_WIDTH bound to: 4 - type: integer 
 INFO: [Synth 8-256] done synthesizing module 'fifo__parameterized0' (0#1) [C:/Users/croci/CAN/CAN.srcs/sources_1/new/fifo.vhd:49]
-INFO: [Synth 8-256] done synthesizing module 'can_node_top' (0#1) [C:/Users/croci/CAN/CAN.srcs/sources_1/new/can_node_top.vhd:57]
+INFO: [Synth 8-256] done synthesizing module 'can_node_top' (0#1) [C:/Users/croci/CAN/CAN.srcs/sources_1/new/can_node_top.vhd:60]
 INFO: [Synth 8-638] synthesizing module 'loopback' [C:/Users/croci/CAN/CAN.srcs/sources_1/new/loopback.vhd:47]
 INFO: [Synth 8-256] done synthesizing module 'loopback' (0#1) [C:/Users/croci/CAN/CAN.srcs/sources_1/new/loopback.vhd:47]
 INFO: [Synth 8-256] done synthesizing module 'can_node_loopback' (0#1) [C:/Users/croci/CAN/CAN.srcs/sources_1/new/can_node_loopback.vhd:47]
 WARNING: [Synth 8-6014] Unused sequential element s_data_len_reg was removed.  [C:/Users/croci/CAN/CAN.srcs/sources_1/new/deserializerTX.vhd:78]
-WARNING: [Synth 8-3848] Net err_stuff_out in module/entity deserializerTX does not have driver. [C:/Users/croci/CAN/CAN.srcs/sources_1/new/deserializerTX.vhd:41]
-WARNING: [Synth 8-3848] Net sl_tx_bit_out in module/entity top_level_tx does not have driver. [C:/Users/croci/CAN/CAN.srcs/sources_1/new/top_level_tx.vhd:80]
 WARNING: [Synth 8-6014] Unused sequential element s_data_len_reg was removed.  [C:/Users/croci/CAN/CAN.srcs/sources_1/new/deserializer.vhd:78]
 WARNING: [Synth 8-6014] Unused sequential element id_addr_reg was removed.  [C:/Users/croci/CAN/CAN.srcs/sources_1/new/fsm_rx.vhd:73]
 WARNING: [Synth 8-6014] Unused sequential element crc_reg_reg was removed.  [C:/Users/croci/CAN/CAN.srcs/sources_1/new/fsm_rx.vhd:65]
-WARNING: [Synth 8-6014] Unused sequential element sl_frame_tx_reg_reg was removed.  [C:/Users/croci/CAN/CAN.srcs/sources_1/new/can_node_top.vhd:114]
-WARNING: [Synth 8-3848] Net empty_fifo_rx in module/entity can_node_top does not have driver. [C:/Users/croci/CAN/CAN.srcs/sources_1/new/can_node_top.vhd:43]
-WARNING: [Synth 8-3848] Net full_fifo_tx in module/entity can_node_top does not have driver. [C:/Users/croci/CAN/CAN.srcs/sources_1/new/can_node_top.vhd:48]
+WARNING: [Synth 8-6014] Unused sequential element REC_reg was removed.  [C:/Users/croci/CAN/CAN.srcs/sources_1/new/error_manager.vhd:83]
+WARNING: [Synth 8-6014] Unused sequential element sl_frame_tx_reg_reg was removed.  [C:/Users/croci/CAN/CAN.srcs/sources_1/new/can_node_top.vhd:130]
+WARNING: [Synth 8-3848] Net full_fifo_tx in module/entity can_node_top does not have driver. [C:/Users/croci/CAN/CAN.srcs/sources_1/new/can_node_top.vhd:51]
 WARNING: [Synth 8-3848] Net ram_rdy in module/entity can_node_loopback does not have driver. [C:/Users/croci/CAN/CAN.srcs/sources_1/new/can_node_loopback.vhd:43]
 WARNING: [Synth 8-7129] Port frame_rx_out[24] in module loopback is either unconnected or has no load
 WARNING: [Synth 8-7129] Port frame_rx_out[23] in module loopback is either unconnected or has no load
@@ -137,60 +133,70 @@ WARNING: [Synth 8-7129] Port frame_rx_out[0] in module loopback is either unconn
 WARNING: [Synth 8-7129] Port state_can[1] in module Destuffing is either unconnected or has no load
 WARNING: [Synth 8-7129] Port state_can[0] in module Destuffing is either unconnected or has no load
 WARNING: [Synth 8-7129] Port rx_enable in module CAN_RX_module is either unconnected or has no load
-WARNING: [Synth 8-7129] Port err_stuff_out in module deserializerTX is either unconnected or has no load
-WARNING: [Synth 8-7129] Port err_stuff_in in module deserializerTX is either unconnected or has no load
 WARNING: [Synth 8-7129] Port state_can[1] in module deserializerTX is either unconnected or has no load
 WARNING: [Synth 8-7129] Port state_can[0] in module deserializerTX is either unconnected or has no load
 WARNING: [Synth 8-7129] Port sof_bit in module arbiter is either unconnected or has no load
+WARNING: [Synth 8-7129] Port bus_off in module arbiter is either unconnected or has no load
 WARNING: [Synth 8-7129] Port tx_request in module builder_tx is either unconnected or has no load
-WARNING: [Synth 8-7129] Port empty_fifo_rx in module can_node_top is either unconnected or has no load
 WARNING: [Synth 8-7129] Port full_fifo_tx in module can_node_top is either unconnected or has no load
 WARNING: [Synth 8-7129] Port ram_rdy in module can_node_loopback is either unconnected or has no load
 ---------------------------------------------------------------------------------
-Finished RTL Elaboration : Time (s): cpu = 00:00:05 ; elapsed = 00:00:06 . Memory (MB): peak = 1321.652 ; gain = 621.242
+Finished RTL Elaboration : Time (s): cpu = 00:00:09 ; elapsed = 00:00:10 . Memory (MB): peak = 1325.527 ; gain = 623.281
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Handling Custom Attributes
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Handling Custom Attributes : Time (s): cpu = 00:00:06 ; elapsed = 00:00:06 . Memory (MB): peak = 1321.652 ; gain = 621.242
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:09 ; elapsed = 00:00:10 . Memory (MB): peak = 1325.527 ; gain = 623.281
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:06 ; elapsed = 00:00:06 . Memory (MB): peak = 1321.652 ; gain = 621.242
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:09 ; elapsed = 00:00:10 . Memory (MB): peak = 1325.527 ; gain = 623.281
 ---------------------------------------------------------------------------------
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.045 . Memory (MB): peak = 1321.652 ; gain = 0.000
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.069 . Memory (MB): peak = 1325.527 ; gain = 0.000
 INFO: [Project 1-570] Preparing netlist for logic optimization
 
 Processing XDC Constraints
 Initializing timing engine
 Parsing XDC File [C:/Users/croci/CAN/CAN.srcs/constrs_1/new/constraint_can_module.xdc]
+WARNING: [Vivado 12-584] No ports matched 'rx_bit_in'. [C:/Users/croci/CAN/CAN.srcs/constrs_1/new/constraint_can_module.xdc:81]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [C:/Users/croci/CAN/CAN.srcs/constrs_1/new/constraint_can_module.xdc:81]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'tx_bit_out'. [C:/Users/croci/CAN/CAN.srcs/constrs_1/new/constraint_can_module.xdc:82]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [C:/Users/croci/CAN/CAN.srcs/constrs_1/new/constraint_can_module.xdc:82]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'rx_bit_in'. [C:/Users/croci/CAN/CAN.srcs/constrs_1/new/constraint_can_module.xdc:83]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [C:/Users/croci/CAN/CAN.srcs/constrs_1/new/constraint_can_module.xdc:83]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'tx_bit_out'. [C:/Users/croci/CAN/CAN.srcs/constrs_1/new/constraint_can_module.xdc:84]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [C:/Users/croci/CAN/CAN.srcs/constrs_1/new/constraint_can_module.xdc:84]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
 Finished Parsing XDC File [C:/Users/croci/CAN/CAN.srcs/constrs_1/new/constraint_can_module.xdc]
 INFO: [Project 1-236] Implementation specific constraints were found while reading constraint file [C:/Users/croci/CAN/CAN.srcs/constrs_1/new/constraint_can_module.xdc]. These constraints will be ignored for synthesis but will be used in implementation. Impacted constraints are listed in the file [.Xil/can_node_loopback_propImpl.xdc].
 Resolution: To avoid this warning, move constraints listed in [.Xil/can_node_loopback_propImpl.xdc] to another XDC file and exclude this new file from synthesis with the used_in_synthesis property (File Properties dialog in GUI) and re-run elaboration/synthesis.
 Completed Processing XDC Constraints
 
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1397.742 ; gain = 0.000
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 1386.496 ; gain = 0.000
 INFO: [Project 1-111] Unisim Transformation Summary:
 No Unisim elements were transformed.
 
-Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.007 . Memory (MB): peak = 1397.742 ; gain = 0.000
+Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.013 . Memory (MB): peak = 1386.496 ; gain = 0.000
 INFO: [Designutils 20-5440] No compile time benefit to using incremental synthesis; A full resynthesis will be run
 INFO: [Designutils 20-4379] Flow is switching to default flow due to incremental criteria not met. If you would like to alter this behaviour and have the flow terminate instead, please set the following parameter config_implementation {autoIncr.Synth.RejectBehavior Terminate}
 ---------------------------------------------------------------------------------
-Finished Constraint Validation : Time (s): cpu = 00:00:12 ; elapsed = 00:00:13 . Memory (MB): peak = 1397.742 ; gain = 697.332
+Finished Constraint Validation : Time (s): cpu = 00:00:19 ; elapsed = 00:00:22 . Memory (MB): peak = 1386.496 ; gain = 684.250
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Loading Part and Timing Information
 ---------------------------------------------------------------------------------
 Loading part: xc7a50tcpg236-1
 ---------------------------------------------------------------------------------
-Finished Loading Part and Timing Information : Time (s): cpu = 00:00:12 ; elapsed = 00:00:13 . Memory (MB): peak = 1397.742 ; gain = 697.332
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:20 ; elapsed = 00:00:22 . Memory (MB): peak = 1386.496 ; gain = 684.250
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Applying 'set_property' XDC Constraints
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:12 ; elapsed = 00:00:13 . Memory (MB): peak = 1397.742 ; gain = 697.332
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:20 ; elapsed = 00:00:22 . Memory (MB): peak = 1386.496 ; gain = 684.250
 ---------------------------------------------------------------------------------
 INFO: [Synth 8-802] inferred FSM for state register 'state_reg' in module 'builder_tx'
 INFO: [Synth 8-802] inferred FSM for state register 'state_reg' in module 'arbiter'
@@ -273,18 +279,19 @@ INFO: [Synth 8-3354] encoded FSM with state register 'state_reg' using encoding 
 ---------------------------------------------------------------------------------------------------
 INFO: [Synth 8-3354] encoded FSM with state register 'state_can_node_reg' using encoding 'sequential' in module 'can_node_top'
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:13 ; elapsed = 00:00:14 . Memory (MB): peak = 1397.742 ; gain = 697.332
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:21 ; elapsed = 00:00:24 . Memory (MB): peak = 1386.496 ; gain = 684.250
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start RTL Component Statistics 
 ---------------------------------------------------------------------------------
 Detailed RTL Component Info : 
 +---Adders : 
+	   4 Input   10 Bit       Adders := 3     
+	   2 Input   10 Bit       Adders := 3     
+	   3 Input   10 Bit       Adders := 3     
 	   2 Input    9 Bit       Adders := 2     
-	   2 Input    8 Bit       Adders := 8     
-	   4 Input    8 Bit       Adders := 3     
-	   3 Input    8 Bit       Adders := 3     
-	   2 Input    7 Bit       Adders := 4     
+	   2 Input    8 Bit       Adders := 4     
+	   2 Input    7 Bit       Adders := 3     
 	   2 Input    5 Bit       Adders := 3     
 	   3 Input    5 Bit       Adders := 1     
 	   2 Input    4 Bit       Adders := 9     
@@ -300,24 +307,25 @@ Detailed RTL Component Info :
 	               19 Bit    Registers := 1     
 	               15 Bit    Registers := 1     
 	               11 Bit    Registers := 2     
-	                8 Bit    Registers := 9     
+	               10 Bit    Registers := 3     
+	                8 Bit    Registers := 5     
 	                7 Bit    Registers := 3     
 	                5 Bit    Registers := 2     
 	                4 Bit    Registers := 8     
 	                3 Bit    Registers := 6     
 	                2 Bit    Registers := 2     
-	                1 Bit    Registers := 63    
+	                1 Bit    Registers := 66    
 +---RAMs : 
 	               2K Bit	(256 X 8 bit)          RAMs := 1     
 	               1K Bit	(16 X 108 bit)          RAMs := 1     
 	               1K Bit	(16 X 83 bit)          RAMs := 1     
 +---Muxes : 
-	   2 Input  108 Bit        Muxes := 2     
+	   2 Input  108 Bit        Muxes := 4     
 	   3 Input  108 Bit        Muxes := 3     
 	   3 Input   98 Bit        Muxes := 1     
 	   2 Input   98 Bit        Muxes := 3     
 	   6 Input   98 Bit        Muxes := 2     
-	   2 Input   83 Bit        Muxes := 1     
+	   2 Input   83 Bit        Muxes := 2     
 	  13 Input   64 Bit        Muxes := 1     
 	  13 Input   25 Bit        Muxes := 1     
 	   2 Input   19 Bit        Muxes := 1     
@@ -325,7 +333,8 @@ Detailed RTL Component Info :
 	   2 Input   16 Bit        Muxes := 83    
 	  13 Input   11 Bit        Muxes := 1     
 	   2 Input   11 Bit        Muxes := 3     
-	   2 Input    8 Bit        Muxes := 14    
+	   2 Input   10 Bit        Muxes := 6     
+	   2 Input    8 Bit        Muxes := 9     
 	  13 Input    7 Bit        Muxes := 2     
 	   6 Input    7 Bit        Muxes := 1     
 	   2 Input    4 Bit        Muxes := 9     
@@ -333,18 +342,18 @@ Detailed RTL Component Info :
 	  13 Input    4 Bit        Muxes := 3     
 	  36 Input    4 Bit        Muxes := 1     
 	   8 Input    3 Bit        Muxes := 1     
-	   2 Input    3 Bit        Muxes := 13    
+	   2 Input    3 Bit        Muxes := 17    
 	   6 Input    3 Bit        Muxes := 1     
 	   3 Input    2 Bit        Muxes := 1     
 	   5 Input    2 Bit        Muxes := 1     
-	   2 Input    2 Bit        Muxes := 13    
+	   2 Input    2 Bit        Muxes := 9     
 	   4 Input    2 Bit        Muxes := 1     
-	   2 Input    1 Bit        Muxes := 87    
+	   2 Input    1 Bit        Muxes := 101   
 	   3 Input    1 Bit        Muxes := 7     
 	   5 Input    1 Bit        Muxes := 9     
 	  13 Input    1 Bit        Muxes := 23    
 	   6 Input    1 Bit        Muxes := 8     
-	   4 Input    1 Bit        Muxes := 2     
+	   4 Input    1 Bit        Muxes := 3     
 ---------------------------------------------------------------------------------
 Finished RTL Component Statistics 
 ---------------------------------------------------------------------------------
@@ -389,18 +398,16 @@ WARNING: [Synth 8-7129] Port frame_rx_out[0] in module loopback is either unconn
 WARNING: [Synth 8-7129] Port state_can[1] in module Destuffing is either unconnected or has no load
 WARNING: [Synth 8-7129] Port state_can[0] in module Destuffing is either unconnected or has no load
 WARNING: [Synth 8-7129] Port rx_enable in module CAN_RX_module is either unconnected or has no load
-WARNING: [Synth 8-7129] Port err_stuff_out in module deserializerTX is either unconnected or has no load
-WARNING: [Synth 8-7129] Port err_stuff_in in module deserializerTX is either unconnected or has no load
 WARNING: [Synth 8-7129] Port state_can[1] in module deserializerTX is either unconnected or has no load
 WARNING: [Synth 8-7129] Port state_can[0] in module deserializerTX is either unconnected or has no load
 WARNING: [Synth 8-7129] Port sof_bit in module arbiter is either unconnected or has no load
+WARNING: [Synth 8-7129] Port bus_off in module arbiter is either unconnected or has no load
 WARNING: [Synth 8-7129] Port tx_request in module builder_tx is either unconnected or has no load
-WARNING: [Synth 8-7129] Port empty_fifo_rx in module can_node_top is either unconnected or has no load
 WARNING: [Synth 8-7129] Port full_fifo_tx in module can_node_top is either unconnected or has no load
 WARNING: [Synth 8-7129] Port ram_rdy in module can_node_loopback is either unconnected or has no load
 WARNING: [Synth 8-3332] Sequential element (mem_reg_async_reset_b) is unused and will be removed from module fifo.
 ---------------------------------------------------------------------------------
-Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:24 ; elapsed = 00:00:26 . Memory (MB): peak = 1491.438 ; gain = 791.027
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:41 ; elapsed = 00:00:44 . Memory (MB): peak = 1497.379 ; gain = 795.133
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start ROM, RAM, DSP, Shift Register and Retiming Reporting
@@ -430,13 +437,13 @@ Finished ROM, RAM, DSP, Shift Register and Retiming Reporting
 Start Applying XDC Timing Constraints
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:29 ; elapsed = 00:00:31 . Memory (MB): peak = 1534.570 ; gain = 834.160
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:48 ; elapsed = 00:00:52 . Memory (MB): peak = 1540.715 ; gain = 838.469
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Timing Optimization
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Timing Optimization : Time (s): cpu = 00:00:33 ; elapsed = 00:00:35 . Memory (MB): peak = 1623.570 ; gain = 923.160
+Finished Timing Optimization : Time (s): cpu = 00:00:55 ; elapsed = 00:00:59 . Memory (MB): peak = 1630.496 ; gain = 928.250
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start ROM, RAM, DSP, Shift Register and Retiming Reporting
@@ -464,7 +471,7 @@ Finished ROM, RAM, DSP, Shift Register and Retiming Reporting
 Start Technology Mapping
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Technology Mapping : Time (s): cpu = 00:00:34 ; elapsed = 00:00:36 . Memory (MB): peak = 1632.633 ; gain = 932.223
+Finished Technology Mapping : Time (s): cpu = 00:00:56 ; elapsed = 00:01:01 . Memory (MB): peak = 1639.566 ; gain = 937.320
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start IO Insertion
@@ -475,21 +482,20 @@ Start Final Netlist Cleanup
 ---------------------------------------------------------------------------------
 Finished Final Netlist Cleanup
 ---------------------------------------------------------------------------------
-CRITICAL WARNING: [Synth 8-5744] Inout buffer is not created at top module can_node_loopback for the pin tx_bit_out, other connections may not have buffer connection [C:/Users/croci/CAN/CAN.srcs/sources_1/new/can_node_loopback.vhd:27]
 ---------------------------------------------------------------------------------
-Finished IO Insertion : Time (s): cpu = 00:00:37 ; elapsed = 00:00:39 . Memory (MB): peak = 1792.000 ; gain = 1091.590
+Finished IO Insertion : Time (s): cpu = 00:01:01 ; elapsed = 00:01:06 . Memory (MB): peak = 1798.105 ; gain = 1095.859
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Instances
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Instances : Time (s): cpu = 00:00:37 ; elapsed = 00:00:39 . Memory (MB): peak = 1792.000 ; gain = 1091.590
+Finished Renaming Generated Instances : Time (s): cpu = 00:01:01 ; elapsed = 00:01:06 . Memory (MB): peak = 1798.105 ; gain = 1095.859
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Handling Custom Attributes
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Handling Custom Attributes : Time (s): cpu = 00:00:37 ; elapsed = 00:00:39 . Memory (MB): peak = 1792.039 ; gain = 1091.629
+Finished Handling Custom Attributes : Time (s): cpu = 00:01:02 ; elapsed = 00:01:06 . Memory (MB): peak = 1798.141 ; gain = 1095.895
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Writing Synthesis Report
@@ -506,48 +512,49 @@ Report Cell Usage:
 |      |Cell     |Count |
 +------+---------+------+
 |1     |BUFG     |     1|
-|2     |CARRY4   |    16|
-|3     |LUT1     |     8|
-|4     |LUT2     |   390|
-|5     |LUT3     |   227|
-|6     |LUT4     |   148|
-|7     |LUT5     |   166|
-|8     |LUT6     |  1001|
+|2     |CARRY4   |    28|
+|3     |LUT1     |    10|
+|4     |LUT2     |   223|
+|5     |LUT3     |   402|
+|6     |LUT4     |   135|
+|7     |LUT5     |   177|
+|8     |LUT6     |  1016|
 |9     |MUXF7    |    16|
-|10    |MUXF8    |     1|
-|11    |RAM64M   |    12|
-|12    |RAMB18E1 |     1|
-|13    |RAMB36E1 |     1|
-|14    |FDCE     |   721|
-|15    |FDPE     |   134|
-|16    |FDRE     |    98|
-|17    |IBUF     |    44|
-|18    |OBUFT    |     2|
+|10    |RAM64M   |    12|
+|11    |RAMB18E1 |     1|
+|12    |RAMB36E1 |     1|
+|13    |FDCE     |   724|
+|14    |FDPE     |   134|
+|15    |FDRE     |    99|
+|16    |IBUF     |    49|
+|17    |IOBUF    |     1|
+|18    |OBUFT    |     1|
 +------+---------+------+
 ---------------------------------------------------------------------------------
-Finished Writing Synthesis Report : Time (s): cpu = 00:00:37 ; elapsed = 00:00:39 . Memory (MB): peak = 1792.039 ; gain = 1091.629
+Finished Writing Synthesis Report : Time (s): cpu = 00:01:02 ; elapsed = 00:01:06 . Memory (MB): peak = 1798.141 ; gain = 1095.895
 ---------------------------------------------------------------------------------
-Synthesis finished with 0 errors, 1 critical warnings and 39 warnings.
-Synthesis Optimization Runtime : Time (s): cpu = 00:00:30 ; elapsed = 00:00:37 . Memory (MB): peak = 1792.039 ; gain = 1015.539
-Synthesis Optimization Complete : Time (s): cpu = 00:00:37 ; elapsed = 00:00:39 . Memory (MB): peak = 1792.039 ; gain = 1091.629
+Synthesis finished with 0 errors, 0 critical warnings and 37 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:00:50 ; elapsed = 00:01:03 . Memory (MB): peak = 1798.141 ; gain = 1034.926
+Synthesis Optimization Complete : Time (s): cpu = 00:01:02 ; elapsed = 00:01:07 . Memory (MB): peak = 1798.141 ; gain = 1095.895
 INFO: [Project 1-571] Translating synthesized netlist
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.026 . Memory (MB): peak = 1801.223 ; gain = 0.000
-INFO: [Netlist 29-17] Analyzing 47 Unisim elements for replacement
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.040 . Memory (MB): peak = 1807.277 ; gain = 0.000
+INFO: [Netlist 29-17] Analyzing 59 Unisim elements for replacement
 INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
 INFO: [Project 1-570] Preparing netlist for logic optimization
 INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1804.871 ; gain = 0.000
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 1810.973 ; gain = 0.000
 INFO: [Project 1-111] Unisim Transformation Summary:
-  A total of 12 instances were transformed.
+  A total of 13 instances were transformed.
+  IOBUF => IOBUF (IBUF, OBUFT): 1 instance 
   RAM64M => RAM64M (RAMD64E(x4)): 12 instances
 
-Synth Design complete | Checksum: f587f56b
+Synth Design complete | Checksum: 98037ffe
 INFO: [Common 17-83] Releasing license: Synthesis
-82 Infos, 91 Warnings, 1 Critical Warnings and 0 Errors encountered.
+82 Infos, 87 Warnings, 4 Critical Warnings and 0 Errors encountered.
 synth_design completed successfully
-synth_design: Time (s): cpu = 00:00:40 ; elapsed = 00:00:44 . Memory (MB): peak = 1804.871 ; gain = 1289.598
+synth_design: Time (s): cpu = 00:01:07 ; elapsed = 00:01:32 . Memory (MB): peak = 1810.973 ; gain = 1295.609
 INFO: [runtcl-6] Synthesis results are not added to the cache due to CRITICAL_WARNING
-Write ShapeDB Complete: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.003 . Memory (MB): peak = 1804.871 ; gain = 0.000
+Write ShapeDB Complete: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.007 . Memory (MB): peak = 1810.973 ; gain = 0.000
 INFO: [Common 17-1381] The checkpoint 'C:/Users/croci/CAN/CAN.runs/synth_1/can_node_loopback.dcp' has been generated.
 INFO: [Vivado 12-24828] Executing command : report_utilization -file can_node_loopback_utilization_synth.rpt -pb can_node_loopback_utilization_synth.pb
-INFO: [Common 17-206] Exiting Vivado at Fri Feb 13 16:12:49 2026...
+INFO: [Common 17-206] Exiting Vivado at Tue May 12 14:08:15 2026...

@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version     : Vivado v.2025.1 (win64) Build 6140274 Thu May 22 00:12:29 MDT 2025
-| Date             : Fri Feb 13 16:14:05 2026
+| Date             : Tue May 12 14:48:00 2026
 | Host             : Croci running 64-bit major release  (build 9200)
 | Command          : report_power -file can_node_loopback_power_routed.rpt -pb can_node_loopback_power_summary_routed.pb -rpx can_node_loopback_power_routed.rpx
 | Design           : can_node_loopback
@@ -30,11 +30,11 @@ Table of Contents
 ----------
 
 +--------------------------+--------------+
-| Total On-Chip Power (W)  | 0.124        |
+| Total On-Chip Power (W)  | 0.114        |
 | Design Power Budget (W)  | Unspecified* |
 | Power Budget Margin (W)  | NA           |
-| Dynamic (W)              | 0.052        |
-| Device Static (W)        | 0.072        |
+| Dynamic (W)              | 0.044        |
+| Device Static (W)        | 0.070        |
 | Effective TJA (C/W)      | 5.0          |
 | Max Ambient (C)          | 84.4         |
 | Junction Temperature (C) | 25.6         |
@@ -53,18 +53,18 @@ Table of Contents
 | On-Chip                  | Power (W) | Used     | Available | Utilization (%) |
 +--------------------------+-----------+----------+-----------+-----------------+
 | Clocks                   |     0.013 |        3 |       --- |             --- |
-| Slice Logic              |     0.014 |     3003 |       --- |             --- |
-|   LUT as Logic           |     0.013 |     1560 |     32600 |            4.79 |
-|   Register               |    <0.001 |      953 |     65200 |            1.46 |
-|   CARRY4                 |    <0.001 |       16 |      8150 |            0.20 |
+| Slice Logic              |     0.010 |     3039 |       --- |             --- |
+|   LUT as Logic           |     0.009 |     1579 |     32600 |            4.84 |
+|   CARRY4                 |    <0.001 |       28 |      8150 |            0.34 |
+|   Register               |    <0.001 |      957 |     65200 |            1.47 |
 |   LUT as Distributed RAM |    <0.001 |       48 |      9600 |            0.50 |
-|   F7/F8 Muxes            |    <0.001 |       17 |     32600 |            0.05 |
+|   F7/F8 Muxes            |    <0.001 |       16 |     32600 |            0.05 |
 |   Others                 |     0.000 |       30 |       --- |             --- |
-| Signals                  |     0.016 |     2447 |       --- |             --- |
+| Signals                  |     0.013 |     2467 |       --- |             --- |
 | Block RAM                |     0.008 |      1.5 |        75 |            2.00 |
-| I/O                      |     0.002 |       46 |       106 |           43.40 |
-| Static Power             |     0.072 |          |           |                 |
-| Total                    |     0.124 |          |           |                 |
+| I/O                      |    <0.001 |       51 |       106 |           48.11 |
+| Static Power             |     0.070 |          |           |                 |
+| Total                    |     0.114 |          |           |                 |
 +--------------------------+-----------+----------+-----------+-----------------+
 
 
@@ -74,11 +74,11 @@ Table of Contents
 +-----------+-------------+-----------+-------------+------------+-------------+-------------+------------+
 | Source    | Voltage (V) | Total (A) | Dynamic (A) | Static (A) | Powerup (A) | Budget (A)  | Margin (A) |
 +-----------+-------------+-----------+-------------+------------+-------------+-------------+------------+
-| Vccint    |       1.000 |     0.060 |       0.050 |      0.010 |       NA    | Unspecified | NA         |
+| Vccint    |       1.000 |     0.053 |       0.044 |      0.010 |       NA    | Unspecified | NA         |
 | Vccaux    |       1.800 |     0.013 |       0.000 |      0.013 |       NA    | Unspecified | NA         |
-| Vcco33    |       3.300 |     0.001 |       0.000 |      0.001 |       NA    | Unspecified | NA         |
+| Vcco33    |       3.300 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
 | Vcco25    |       2.500 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
-| Vcco18    |       1.800 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
+| Vcco18    |       1.800 |     0.001 |       0.000 |      0.001 |       NA    | Unspecified | NA         |
 | Vcco15    |       1.500 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
 | Vcco135   |       1.350 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
 | Vcco12    |       1.200 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
@@ -143,17 +143,17 @@ Table of Contents
 +-----------------------+-----------+
 | Name                  | Power (W) |
 +-----------------------+-----------+
-| can_node_loopback     |     0.052 |
-|   u_controller_can    |     0.050 |
+| can_node_loopback     |     0.044 |
+|   u_controller_can    |     0.042 |
 |     u_fifo_tx         |     0.009 |
-|     u_rx_module       |     0.020 |
+|     u_rx_module       |     0.021 |
 |       u_can_rx_module |     0.004 |
-|       u_fsm_rx        |     0.014 |
+|       u_fsm_rx        |     0.015 |
 |       u_ram_filter    |     0.002 |
-|     u_tx_module       |     0.020 |
+|     u_tx_module       |     0.012 |
 |       u_arbiter       |     0.002 |
 |       u_btu_tx        |     0.001 |
-|       u_builder_tx    |     0.011 |
+|       u_builder_tx    |     0.007 |
 |       u_can_readTX    |     0.002 |
 +-----------------------+-----------+
 

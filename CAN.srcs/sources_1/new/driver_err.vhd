@@ -28,6 +28,7 @@ entity driver_err is
         -- input
         frame_tx_fifo   : in std_logic_vector(82 downto 0);
         err_event       : in std_logic;
+        bus_off         : in std_logic;
         
         -- output
         frame_tx        : out std_logic_vector(82 downto 0)
@@ -37,13 +38,18 @@ end driver_err;
 architecture arch_driver_err of driver_err is
 
 begin
-    process(err_event, frame_tx_fifo)
+    process(err_event, frame_tx_fifo, bus_off)
     begin
         
-        if err_event = '0' then
-            frame_tx    <= frame_tx_fifo;
-        else
+        if bus_off = '1' then
             frame_tx    <= (others => '1');
+            
+        else
+            if err_event = '0' then
+                frame_tx    <= frame_tx_fifo;
+            else
+                frame_tx    <= (others => '1');
+            end if;
         end if;
     end process;
 

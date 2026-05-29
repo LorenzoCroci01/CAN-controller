@@ -40,9 +40,9 @@ entity BTU is
         edge_det        : in  std_logic;
         
         -- configuration parameters BTU (baud rate)
-        prop_seg     : in unsigned(7 downto 0);
-        phase_seg1   : in unsigned(7 downto 0);
-        phase_seg2   : in unsigned(7 downto 0);
+        prop_seg     : in unsigned(9 downto 0);
+        phase_seg1   : in unsigned(9 downto 0);
+        phase_seg2   : in unsigned(9 downto 0);
         
         -- output
         bit_tick     : out std_logic;
@@ -53,12 +53,12 @@ end entity;
 architecture arch_BTU of BTU is
     
     -- sync segment = 1 time quantum
-    constant C_sync_seg     : unsigned(7 downto 0) := "00000001";
+    constant C_sync_seg     : unsigned(9 downto 0) := "0000000001";
 
-    signal s_tq_cnt         : unsigned(7 downto 0);   -- time quanta counter
-    signal s_tq_total       : unsigned(7 downto 0);   -- total time quanta
-    signal s_sample_point   : unsigned(7 downto 0);   -- sample point
-    signal seg_a, seg_b     : unsigned(7 downto 0);
+    signal s_tq_cnt         : unsigned(9 downto 0);   -- time quanta counter
+    signal s_tq_total       : unsigned(9 downto 0);   -- total time quanta
+    signal s_sample_point   : unsigned(9 downto 0);   -- sample point
+    signal seg_a, seg_b     : unsigned(9 downto 0);
 
 begin
 

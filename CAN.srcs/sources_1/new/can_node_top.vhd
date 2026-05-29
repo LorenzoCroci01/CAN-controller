@@ -27,15 +27,18 @@ entity can_node_top is
         clock       : in std_logic;
         reset       : in std_logic;
 
-        cfg_mode    : in std_logic;    -- configuration mode enable
+        cfg_mode    : in std_logic;
 
-        --bus_line    : inout std_logic;
-        rx_bit_in   : in std_logic;
-        tx_bit_out  : out std_logic;
-
-        prop_seg    : in unsigned(7 downto 0);
-        phase_seg1  : in unsigned(7 downto 0);
-        phase_seg2  : in unsigned(7 downto 0);
+        -- segnale i/o bus per simulazione
+        bus_line    : inout std_logic;
+        
+        -- segnali i/o bus per sintesi e implementazione
+        --rx_bit_in   : in std_logic;
+        --tx_bit_out  : out std_logic;
+        
+        prop_seg    : in unsigned(9 downto 0);
+        phase_seg1  : in unsigned(9 downto 0);
+        phase_seg2  : in unsigned(9 downto 0);
         
         -- FIFO RX interface
         frame_rx_out    : out std_logic_vector(107 downto 0);
@@ -56,7 +59,7 @@ end can_node_top;
 
 architecture arch_can_node_top of can_node_top is
 
-    -- NODE STATE: 00 IDLE, 01 RX, 10 TX, 11 ERROR
+    -- NODE STATE
     signal state_can_node     : std_logic_vector(1 downto 0);
 
     -- TX
@@ -79,7 +82,7 @@ architecture arch_can_node_top of can_node_top is
     signal sl_empty_fifo_tx   : std_logic;
     signal sl_pop_tx          : std_logic;
 
-    -- Frame stable + request to TX builder
+    -- TX request
     signal sl_frame_tx_reg    : std_logic_vector(82 downto 0);
     signal sl_tx_request_lat  : std_logic;
     signal sl_pop_pending     : std_logic;
@@ -104,8 +107,21 @@ architecture arch_can_node_top of can_node_top is
     signal sl_err_stuff       : std_logic;
     signal sl_gen_errTx       : std_logic;
 
+    -- BUS normalization
+    signal bus_rx_norm        : std_logic;
+
 begin
 
+    ---------------------------------------------------------
+    -- CAN bus normalization
+    -- Z = recessive = 1
+    ---------------------------------------------------------
+    bus_rx_norm <= '0' when bus_line = '0' else '1';
+    --bus_rx_norm <= '0' when rx_bit_in = '0' else '1';
+
+    ---------------------------------------------------------
+    -- TX request manager
+    ---------------------------------------------------------
     process(clock, reset)
     begin
         if reset = '1' then
@@ -122,17 +138,14 @@ begin
                 sl_tx_request_lat <= '0';
 
             else
-                if (state_can_node = "00") and (sl_bus_busy = '0')
-                   and (sl_empty_fifo_tx = '0')
-                   and (sl_pop_pending = '0')
-                   and (sl_tx_request_lat = '0') then
-                    sl_pop_tx      <= '1';   -- pulse
-                    sl_pop_pending <= '1';   -- data available next clock
+                if (state_can_node = "00") and (sl_bus_busy = '0') and (sl_empty_fifo_tx = '0') and (sl_pop_pending = '0') and (sl_tx_request_lat = '0') then
+                    sl_pop_tx      <= '1';
+                    sl_pop_pending <= '1';
                 end if;
 
                 if sl_pop_pending = '1' then
                     sl_frame_tx_reg   <= sl_fifo_tx_out;
-                    sl_tx_request_lat <= '1';   -- tell builder there is a frame
+                    sl_tx_request_lat <= '1';
                     sl_pop_pending    <= '0';
                 end if;
 
@@ -144,6 +157,9 @@ begin
         end if;
     end process;
 
+    ---------------------------------------------------------
+    -- Node state machine
+    ---------------------------------------------------------
     process(clock, reset)
         variable rise_end_tx    : std_logic;
         variable rise_lost_arb  : std_logic;
@@ -158,13 +174,14 @@ begin
             sl_rx_enable        <= '1';
 
         elsif rising_edge(clock) then
+
             rise_end_tx     := sl_end_tx and not sl_last_end_tx;
             rise_lost_arb   := sl_lost_arb and not sl_last_lost_arb;
             rise_frame_rdy  := sl_frame_rdy and not sl_last_frame_rdy;
 
-            sl_last_lost_arb    <= sl_lost_arb;
-            sl_last_end_tx      <= sl_end_tx;
-            sl_last_frame_rdy   <= sl_frame_rdy;
+            sl_last_lost_arb  <= sl_lost_arb;
+            sl_last_end_tx    <= sl_end_tx;
+            sl_last_frame_rdy <= sl_frame_rdy;
 
             if (rise_lost_arb = '1') and (state_can_node = "10") then
                 sl_retry_tx <= '1';
@@ -173,57 +190,69 @@ begin
             end if;
 
             case state_can_node is
+
                 when "00" => -- IDLE
                     sl_rx_enable <= '1';
+
                     if sl_start_rx = '1' then
                         state_can_node <= "01";
+
                     elsif (cfg_mode = '0') and (sl_tx_request_lat = '1') then
                         state_can_node <= "10";
-                    else
-                        state_can_node <= "00";
+
                     end if;
 
                 when "01" => -- RX
                     sl_rx_enable <= '1';
+
                     if (sl_err_crc = '1') or (sl_err_frame = '1') then
                         state_can_node <= "11";
+
                     elsif (sl_frame_rdy = '1') and (sl_retry_tx = '0') then
                         state_can_node <= "00";
-                    elsif (rise_frame_rdy = '1') and (sl_retry_tx = '1') then
+
+                    elsif (sl_frame_rdy = '1') and (sl_retry_tx = '1') then
                         state_can_node <= "10";
-                    else
-                        state_can_node <= "01";
+
                     end if;
 
                 when "10" => -- TX
                     sl_rx_enable <= '0';
-                    if (sl_err_ack = '1') or (sl_err_format = '1') or (sl_err_stuff = '1') then
+                    
+                    if sl_bus_off = '0' and ((sl_err_ack = '1') or (sl_err_format = '1') or (sl_err_stuff = '1')) then
                         state_can_node <= "11";
+
                     elsif sl_end_tx = '1' then
                         state_can_node <= "00";
+
                     elsif (rise_lost_arb = '1') and (sl_retry_tx = '0') then
                         state_can_node <= "01";
-                    else
-                        state_can_node <= "10";
-                    end if;
 
+                    end if;
+                    
                 when "11" => -- ERROR
                     sl_rx_enable <= '0';
-                    if (rise_end_tx = '1') and (sl_gen_errTx = '1') then
-                        state_can_node <= "10";
-                    elsif (sl_err_frame = '1') and (sl_gen_errTx = '0') then
-                        state_can_node <= "00";
-                    else
-                        state_can_node <= "11";
-                    end if;
+                    
+                        if (rise_end_tx = '1') and (sl_gen_errTx = '1') and (sl_bus_off = '0') then
+                            state_can_node <= "10";
+                        
+                        elsif (rise_end_tx = '1') and (sl_gen_errTx = '1') and (sl_bus_off = '1') then
+                            state_can_node <= "00";
 
+                        elsif (sl_end_tx = '1') and (sl_gen_errTx = '0') then
+                            state_can_node <= "00";
+                        end if;
+                        
                 when others =>
                     state_can_node <= "00";
+
             end case;
         end if;
     end process;
 
-    -- TX Module
+    ---------------------------------------------------------
+    -- TX MODULE
+    ---------------------------------------------------------
     u_tx_module : entity work.top_level_tx
         port map (
             clock            => clock,
@@ -234,16 +263,17 @@ begin
             bus_off          => sl_bus_off,
             err_status       => sv_err_status,
             err_event        => sl_err_event,
+            gen_errTx        => sl_gen_errTx,
             prop_seg         => prop_seg,
             phase_seg1       => phase_seg1,
             phase_seg2       => phase_seg2,
-            frame_tx_rdy     => sl_frame_tx_rdy,
+            --frame_tx_rdy     => sl_frame_tx_rdy,
             err_stuff        => sl_err_stuff,
             err_ack          => sl_err_ack,
             err_format       => sl_err_format,
             state_can        => state_can_node,
-            state_next_arb   => sl_state_next_arb,
-            bus_line         => tx_bit_out,
+            --state_next_arb   => sl_state_next_arb,
+            bus_line         => bus_line,   
             bus_busy         => sl_bus_busy,
             end_tx           => sl_end_tx,
             lost_arb         => sl_lost_arb,
@@ -251,13 +281,15 @@ begin
             id_len           => s_id_len
         );
 
-    -- RX Module
+    ---------------------------------------------------------
+    -- RX MODULE
+    ---------------------------------------------------------
     u_rx_module : entity work.top_level_rx
         port map (
             clock            => clock,
             reset            => reset,
-            rx_in            => rx_bit_in,
-            rx_enable        => sl_rx_enable,
+            rx_in            => bus_rx_norm,
+            --rx_enable        => sl_rx_enable,
             lost_arbitration => sl_lost_arb,
             id_rx_in         => sv_id_rx,
             id_len           => s_id_len,
@@ -269,6 +301,7 @@ begin
             ram_addrID       => ram_addrID,
             ram_dinID        => ram_dinID,
             ram_rdy          => sl_ram_rdy,
+            cfg_mode         => cfg_mode,
             ack_slot         => sl_ack_slot,
             err_frame        => sl_err_frame,
             frame_rdy        => sl_frame_rdy,
@@ -277,8 +310,10 @@ begin
             valid_frame      => sl_valid_frame,
             frame_out        => sl_frame_rx_out
         );
-    
-    -- Error Manager
+
+    ---------------------------------------------------------
+    -- ERROR MANAGER
+    ---------------------------------------------------------
     u_error_manager : entity work.error_manager
         port map (
             clock           => clock,
@@ -297,7 +332,9 @@ begin
             err_event       => sl_err_event
         );
 
+    ---------------------------------------------------------
     -- FIFO RX
+    ---------------------------------------------------------
     u_fifo_rx : entity work.fifo
         generic map (DEPTH => 16, WIDTH => 108, ADDR_WIDTH => 4)
         port map (
@@ -307,10 +344,12 @@ begin
             push      => sl_valid_frame,
             pop       => pop_fifo_rx,
             frame_out => frame_rx_out,
-            empty     => open
+            empty     => empty_fifo_rx
         );
 
+    ---------------------------------------------------------
     -- FIFO TX
+    ---------------------------------------------------------
     u_fifo_tx : entity work.fifo
         generic map (DEPTH => 16, WIDTH => 83, ADDR_WIDTH => 4)
         port map (

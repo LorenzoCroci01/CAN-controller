@@ -67,7 +67,7 @@ begin
     err_format  <= sl_err_format;
     err_ack     <= sl_err_ack;
     
-    --err_stuff_out <= err_stuff_in when state /= CRC_DELIM and state /= ACK and state /= ACK_DELIM and state /= EOF and state /= DELIM else '0';
+    err_stuff_out <= err_stuff_in when state /= CRC_DELIM and state /= ACK and state /= ACK_DELIM and state /= EOF and state /= DELIM else '0';
     
     proc_deserializerTX : process(clock, reset)
     begin

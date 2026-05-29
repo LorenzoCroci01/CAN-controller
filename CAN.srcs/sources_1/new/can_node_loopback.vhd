@@ -29,13 +29,13 @@ entity can_node_loopback is
         clock       : in std_logic;
         reset       : in std_logic;
         
-        --bus_line    : inout std_logic;
-        rx_bit_in   : in std_logic;
-        tx_bit_out  : out std_logic;
+        bus_line    : inout std_logic;
+        --rx_bit_in   : in std_logic;
+        --tx_bit_out  : out std_logic;
           
-        prop_seg    : in unsigned(7 downto 0);
-        phase_seg1  : in unsigned(7 downto 0);
-        phase_seg2  : in unsigned(7 downto 0);
+        prop_seg    : in unsigned(9 downto 0);
+        phase_seg1  : in unsigned(9 downto 0);
+        phase_seg2  : in unsigned(9 downto 0);
         
         we_memID     : in  std_logic;
         ram_addrID   : in  unsigned(7 downto 0);
@@ -61,8 +61,7 @@ begin
             clock           => clock,
             reset           => reset,
             cfg_mode        => sl_cfg_mode,
-            rx_bit_in       => rx_bit_in,
-            tx_bit_out      => tx_bit_out,
+            bus_line        => bus_line,
             prop_seg        => prop_seg,
             phase_seg1      => phase_seg1,
             phase_seg2      => phase_seg2,

@@ -56,12 +56,13 @@ architecture arch_error_manager of error_manager is
     signal sl_last_err_ack     : std_logic;
     signal sl_last_err_frame   : std_logic;
     signal sl_last_err_format  : std_logic;
-    signal sl_last_err_stuff     : std_logic;
+    signal sl_last_err_stuff   : std_logic;
     signal sl_last_err_crc     : std_logic;
     
     signal sl_err_event_rx     : std_logic;
     signal sl_err_event_tx     : std_logic;
     signal sl_gen_errTx        : std_logic;
+    signal sl_bus_off          : std_logic;
     
 begin
 
@@ -87,10 +88,11 @@ begin
             sl_last_err_crc    <= '0';
             sl_err_event_rx <= '0';
             sl_err_event_tx <= '0';
-            bus_off         <= '0';
+            sl_bus_off      <= '0';
             
         elsif rising_edge(clock) then
             
+            bus_off <= sl_bus_off;
             -- edge detect error signals
             rise_err_ack        := err_ack and not sl_last_err_ack;
             rise_err_frame      := err_frame and not sl_last_err_frame;
@@ -152,11 +154,11 @@ begin
                     end if;
                 else    
                     -- ack error or format error or stuffing error
-                    if rise_err_ack = '1' or rise_err_format = '1' or rise_err_stuff = '1' then
+                    if rise_err_ack = '1' or rise_err_format = '1' or rise_err_stuff = '1' then --or rise_err_stuff = '1' then
                         sl_err_event_tx     <= '1';
                         sl_gen_errTx        <= '1';
 
-                        if TEC < "11111111" then
+                        if sl_bus_off /= '1' and TEC < "11111111" then
                             TEC <= TEC + 8;
                         end if;
                     end if;
@@ -170,15 +172,15 @@ begin
             end if;
         end if;  
         
-        if TEC = to_unsigned(255, 8) then
+        if TEC = to_unsigned(128, 8) then
             err_status  <= "10";    -- BUS OFF
-            bus_off     <= '1';
-        elsif (TEC >= to_unsigned(128, 8)) or (REC >= to_unsigned(128, 8)) then
-            err_status  <= "01";    -- ERROR PASSIVE
-            bus_off     <= '0';
+            sl_bus_off     <= '1';
+        --elsif (TEC >= to_unsigned(128, 8)) or (REC >= to_unsigned(128, 8)) then
+        --    err_status  <= "01";    -- ERROR PASSIVE
+        --    bus_off     <= '0';
         else
             err_status  <= "00";    -- ERROR ACTIVE
-            bus_off     <= '0';
+            sl_bus_off     <= '0';
         end if;     
     end process;
             

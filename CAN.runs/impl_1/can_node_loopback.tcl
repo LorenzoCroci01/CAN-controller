@@ -107,32 +107,14 @@ set rc [catch {
   set_param chipscope.maxJobs 3
   set_param general.usePosixSpawnForFork 1
   set_param runs.launchOptions { -jobs 12  }
-OPTRACE "create in-memory project" START { }
-  create_project -in_memory -part xc7a50tcpg236-1
-  set_property design_mode GateLvl [current_fileset]
-  set_param project.singleFileAddWarning.threshold 0
-OPTRACE "create in-memory project" END { }
-OPTRACE "set parameters" START { }
+  reset_param project.defaultXPMLibraries 
+  open_checkpoint C:/Users/croci/CAN/CAN.runs/impl_1/can_node_loopback.dcp
   set_property webtalk.parent_dir C:/Users/croci/CAN/CAN.cache/wt [current_project]
   set_property parent.project_path C:/Users/croci/CAN/CAN.xpr [current_project]
   set_property ip_repo_paths C:/Users/croci/AppData/Roaming/Xilinx/ip_repo [current_project]
   update_ip_catalog
   set_property ip_output_repo C:/Users/croci/CAN/CAN.cache/ip [current_project]
   set_property ip_cache_permissions {read write} [current_project]
-OPTRACE "set parameters" END { }
-OPTRACE "add files" START { }
-  add_files -quiet C:/Users/croci/CAN/CAN.runs/synth_1/can_node_loopback.dcp
-OPTRACE "read constraints: implementation" START { }
-  read_xdc C:/Users/croci/CAN/CAN.srcs/constrs_1/new/constraint_can_module.xdc
-OPTRACE "read constraints: implementation" END { }
-OPTRACE "read constraints: implementation_pre" START { }
-OPTRACE "read constraints: implementation_pre" END { }
-OPTRACE "add files" END { }
-OPTRACE "link_design" START { }
-  link_design -top can_node_loopback -part xc7a50tcpg236-1 
-OPTRACE "link_design" END { }
-OPTRACE "gray box cells" START { }
-OPTRACE "gray box cells" END { }
 OPTRACE "init_design_reports" START { REPORT }
 OPTRACE "init_design_reports" END { }
 OPTRACE "init_design_write_hwdef" START { }
