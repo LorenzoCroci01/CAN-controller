@@ -208,7 +208,7 @@ begin
             id_bit_valid => sl_id_bit_valid,
             busy         => sl_bus_busy,
             id_rx        => sv_id_rx,
-            frame_rdy    => sl_bus_frame_rdy,
+            --frame_rdy    => sl_bus_frame_rdy,
             err_stuff    => err_stuff,
             err_ack      => err_ack,
             err_format   => err_format

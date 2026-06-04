@@ -29,7 +29,7 @@ entity Destuffing is
         reset       : in std_logic; -- async reset 
         rx_in_sync  : in std_logic; -- sync rx bit 
         sample_tick : in std_logic; -- sample tick signal 
-        state_can   : in std_logic_vector(1 downto 0); -- internal can state 
+        --state_can   : in std_logic_vector(1 downto 0); -- internal can state 
     
         -- output 
         bit_out     : out std_logic; -- output bit to deserializer 

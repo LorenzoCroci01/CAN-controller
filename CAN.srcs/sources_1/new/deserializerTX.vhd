@@ -31,7 +31,7 @@ entity deserializerTX is
         err_stuff_in    : in std_logic;
         bit_valid       : in std_logic;     -- valid bit flag
         sample_tick     : in std_logic;     -- sample tick pulse
-        state_can       : in std_logic_vector(1 downto 0);      -- can bus state
+        --state_can       : in std_logic_vector(1 downto 0);      -- can bus state
         
         sof_bit         : out std_logic;
         id_bit_valid    : out std_logic;

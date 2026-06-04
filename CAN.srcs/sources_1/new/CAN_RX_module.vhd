@@ -116,7 +116,7 @@ begin
             reset        => reset,
             rx_in_sync   => sl_rx_in_sync,
             sample_tick  => sl_sample_tick,
-            state_can    => state_can,
+            --state_can    => state_can,
             bit_out      => sl_bit_out,
             bit_valid    => sl_bit_valid,
             err_frame    => sl_err_frame,
