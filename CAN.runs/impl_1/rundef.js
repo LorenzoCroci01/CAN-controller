@@ -26,7 +26,7 @@ eval( EAInclude(ISEJScriptLib) );
 // pre-commands:
 ISETouchFile( "init_design", "begin" );
 ISEStep( "vivado",
-         "-log can_node_loopback.vdi -applog -m64 -product Vivado -messageDb vivado.pb -mode batch -source can_node_loopback.tcl -notrace" );
+         "-log can_fpga_top.vdi -applog -m64 -product Vivado -messageDb vivado.pb -mode batch -source can_fpga_top.tcl -notrace" );
 
 
 

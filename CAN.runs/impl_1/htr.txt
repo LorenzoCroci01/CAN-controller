@@ -7,4 +7,4 @@ REM Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
 REM Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
 REM
 
-vivado -log can_node_loopback.vdi -applog -m64 -product Vivado -messageDb vivado.pb -mode batch -source can_node_loopback.tcl -notrace
+vivado -log can_fpga_top.vdi -applog -m64 -product Vivado -messageDb vivado.pb -mode batch -source can_fpga_top.tcl -notrace

@@ -25,54 +25,49 @@ use IEEE.NUMERIC_STD.ALL;
 entity top_level_RX is
     Port (
         -- input
-        clock        : in std_logic;    -- main clock signal
-        reset        : in std_logic;    -- async reset
-        rx_in        : in std_logic;    -- rx async bit input
-        --rx_enable    : in std_logic;    -- rx enable flag
+        clock        : in std_logic;
+        reset        : in std_logic;
+
+        -- CAN bus input (already normalized by upper wrapper)
+        rx_in        : in std_logic;
+
         lost_arbitration : in std_logic;
         id_rx_in         : in std_logic_vector(10 downto 0);
-        id_len       : in integer range 0 to 10;
+        id_len           : in integer range 0 to 10;
         
         state_can    : in std_logic_vector(1 downto 0);
 
-        -- input to CAN RX module (BTU config)
+        -- BTU configuration
         prop_seg     : in unsigned(9 downto 0);
         phase_seg1   : in unsigned(9 downto 0);
         phase_seg2   : in unsigned(9 downto 0);
 
-        -- config interface to block RAM filter ID
-        we_memID     : in std_logic;                        -- write enable config
-        ram_addrID   : in unsigned(7 downto 0);             -- address for config
-        ram_dinID    : in std_logic_vector(7 downto 0);     -- data for config
-        ram_rdy      : out std_logic;                       -- ram ready flag
+        -- RAM filter ID configuration
+        we_memID     : in std_logic;
+        ram_addrID   : in unsigned(7 downto 0);
+        ram_dinID    : in std_logic_vector(7 downto 0);
+        ram_rdy      : out std_logic;
         
-        cfg_mode     : in std_logic;    -- configuration mode 
+        cfg_mode     : in std_logic;
 
-        -- output from CAN RX module
-        ack_slot     : out std_logic;   -- ack slot flag
-        err_frame    : out std_logic;   -- error frame flag
+        -- CAN RX output
+        ack_slot     : out std_logic;
+        err_frame    : out std_logic;
         frame_rdy    : out std_logic;
 
-        -- start receiving signal
         start_rx     : out std_logic;
 
-        -- output from fsm_rx
-        --end_crc      : out std_logic;
-        err_crc      : out std_logic;                       -- CRC error flag
-        valid_frame  : out std_logic;                       -- valid frame flag
-        frame_out    : out std_logic_vector(107 downto 0)   -- output frame
+        -- FSM RX output
+        err_crc      : out std_logic;
+        valid_frame  : out std_logic;
+        frame_out    : out std_logic_vector(107 downto 0)
     );
 end top_level_RX;
 
 architecture arch_top_level_RX of top_level_RX is
 
     signal sv_frame_in      : std_logic_vector(107 downto 0);
-    signal sl_ack_slot      : std_logic;
     signal sl_frame_rdy     : std_logic;
-    signal sv_state_can     : std_logic_vector(1 downto 0);
-
-    -- normalize bus input (treat released line as recessive '1')
-    signal rx_in_norm       : std_logic;
 
     -- interface between FSM and RAM
     signal ram_addrID_fsm   : unsigned(7 downto 0);
@@ -80,20 +75,18 @@ architecture arch_top_level_RX of top_level_RX is
     signal ram_doutID_int   : std_logic_vector(7 downto 0);
     signal ram_we_int       : std_logic;
 
-begin
-    
-    frame_rdy   <= sl_frame_rdy;
-    
-    -- RX input normalization
-    rx_in_norm <= '1' when rx_in = '1' else rx_in;
+begin    
 
+    frame_rdy <= sl_frame_rdy;
+
+    ----------------------------------------------------------
     -- CAN RX module
+    ----------------------------------------------------------
     u_can_rx_module : entity work.CAN_RX_module
         port map (
             clock       => clock,
             reset       => reset,
-            rx_in       => rx_in_norm,
-            --rx_enable   => rx_enable,
+            rx_in       => rx_in,
             lost_arbitration => lost_arbitration,
             id_rx_in    => id_rx_in,
             id_len      => id_len,
@@ -108,7 +101,9 @@ begin
             start_rx    => start_rx
         );
 
-    -- FSM RX (CRC + ID filter via RAM)
+    ----------------------------------------------------------
+    -- FSM RX (CRC + ID filter)
+    ----------------------------------------------------------
     u_fsm_rx : entity work.fsm_rx
         port map (
             clock       => clock,
@@ -122,23 +117,25 @@ begin
             ram_addrID  => ram_addrID_fsm
         );
 
+    ----------------------------------------------------------
+    -- RAM address mux
+    ----------------------------------------------------------
     ram_addrID_int <= ram_addrID when we_memID = '1' else ram_addrID_fsm;
-    ram_we_int     <= we_memID;
+    ram_we_int <= we_memID;
 
-    -- Block RAM filter ID 256 x 8 bit
+    ----------------------------------------------------------
+    -- RAM filter ID
+    ----------------------------------------------------------
     u_ram_filter : entity work.mem_filterID
         port map (
-            clock   => clock,
-            reset   => reset,
+            clock    => clock,
+            reset    => reset,
             cfg_mode => cfg_mode,
-            we      => ram_we_int,
-            addr    => ram_addrID_int,
-            din     => ram_dinID,
-            dout    => ram_doutID_int,
-            ram_rdy => ram_rdy
+            we       => ram_we_int,
+            addr     => ram_addrID_int,
+            din      => ram_dinID,
+            dout     => ram_doutID_int,
+            ram_rdy  => ram_rdy
         );
-
-    --ack_slot        <= sl_ack_slot;
-    --state_can_rx_out <= sv_state_can;
 
 end architecture;

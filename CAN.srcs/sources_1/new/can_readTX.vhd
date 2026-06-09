@@ -113,7 +113,7 @@ begin
             busy         => busy,
             id_rx        => id_rx,
             frame_rdy    => sl_frame_rdy,
-            err_stuff_out  => err_stuff,
+            err_stuff_out  => open,--err_stuff,
             err_ack      => err_ack,
             err_format   => err_format
         );

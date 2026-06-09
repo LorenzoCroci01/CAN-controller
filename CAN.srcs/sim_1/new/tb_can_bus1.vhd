@@ -23,288 +23,333 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 
+
 entity tb_can_bus1 is
 end entity;
 
+
 architecture sim of tb_can_bus1 is
 
-    -- clock
-    signal clock  : std_logic := '0';
-    signal clock_a  : std_logic;
-    signal clock_b  : std_logic;
-    signal clock_c  : std_logic;
 
-    -- resets
+    -------------------------------------------------------
+    -- CLOCK
+    -------------------------------------------------------
+    signal clock_a : std_logic := '0';
+    signal clock_b : std_logic := '1';
+
+    -------------------------------------------------------
+    -- RESET
+    -------------------------------------------------------
     signal reset_a : std_logic := '1';
     signal reset_b : std_logic := '1';
-    signal reset_c : std_logic := '1';
 
-    -- config mode
+
+    -------------------------------------------------------
+    -- CONFIG MODE
+    -------------------------------------------------------
     signal cfg_mode_a : std_logic := '1';
     signal cfg_mode_b : std_logic := '1';
-    signal cfg_mode_c : std_logic := '1';
 
-    -- shared CAN bus (pull-up)
+
+    -------------------------------------------------------
+    -- SHARED CAN BUS
+    -------------------------------------------------------
     signal bus_line : std_logic;
 
-    -- bit timing
-    signal prop_seg   : unsigned(9 downto 0) := to_unsigned(2, 10);
-    signal phase_seg1 : unsigned(9 downto 0) := to_unsigned(2, 10);
-    signal phase_seg2 : unsigned(9 downto 0) := to_unsigned(2, 10);
 
-    -- RX pop
+    -------------------------------------------------------
+    -- BIT TIMING
+    -------------------------------------------------------
+    signal prop_seg   : unsigned(9 downto 0) := to_unsigned(2,10);
+    signal phase_seg1 : unsigned(9 downto 0) := to_unsigned(2,10);
+    signal phase_seg2 : unsigned(9 downto 0) := to_unsigned(2,10);
+
+
+    -------------------------------------------------------
+    -- RX FIFO
+    -------------------------------------------------------
     signal pop_fifo_rx_a : std_logic := '0';
     signal pop_fifo_rx_b : std_logic := '0';
-    signal pop_fifo_rx_c : std_logic := '0';
 
-    -- TX push
-    signal push_fifo_tx_a : std_logic := '0';
-    signal push_fifo_tx_b : std_logic := '0';
-    signal push_fifo_tx_c : std_logic := '0';
-
-    -- TX input data (written into internal TX FIFO)
-    signal frame_tx_in_a : std_logic_vector(82 downto 0) := (others => '0');
-    signal frame_tx_in_b : std_logic_vector(82 downto 0) := (others => '0');
-    signal frame_tx_in_c : std_logic_vector(82 downto 0) := (others => '0');
-
-    -- RX outputs
     signal frame_rx_out_a : std_logic_vector(107 downto 0);
     signal frame_rx_out_b : std_logic_vector(107 downto 0);
-    signal frame_rx_out_c : std_logic_vector(107 downto 0);
 
-    -- RAM ports A
+
+    -------------------------------------------------------
+    -- TX FIFO
+    -------------------------------------------------------
+    signal push_fifo_tx_a : std_logic := '0';
+    signal push_fifo_tx_b : std_logic := '0';
+
+    signal frame_tx_in_a : std_logic_vector(82 downto 0);
+    signal frame_tx_in_b : std_logic_vector(82 downto 0);
+
+    signal empty_fifo_rx_a : std_logic;
+    signal empty_fifo_rx_b : std_logic;
+
+    signal full_fifo_tx_a : std_logic;
+    signal full_fifo_tx_b : std_logic;
+
+
+
+    -------------------------------------------------------
+    -- RAM FILTER
+    -------------------------------------------------------
     signal we_memID_a   : std_logic := '0';
-    signal ram_addrID_a : unsigned(7 downto 0) := (others => '0');
-    signal ram_dinID_a  : std_logic_vector(7 downto 0) := (others => '0');
+    signal ram_addrID_a : unsigned(7 downto 0) := (others=>'0');
+    signal ram_dinID_a  : std_logic_vector(7 downto 0) := (others=>'0');
     signal ram_rdy_a    : std_logic;
 
-    -- RAM ports B
+
     signal we_memID_b   : std_logic := '0';
-    signal ram_addrID_b : unsigned(7 downto 0) := (others => '0');
-    signal ram_dinID_b  : std_logic_vector(7 downto 0) := (others => '0');
+    signal ram_addrID_b : unsigned(7 downto 0) := (others=>'0');
+    signal ram_dinID_b  : std_logic_vector(7 downto 0) := (others=>'0');
     signal ram_rdy_b    : std_logic;
 
-    -- RAM ports C
-    signal we_memID_c   : std_logic := '0';
-    signal ram_addrID_c : unsigned(7 downto 0) := (others => '0');
-    signal ram_dinID_c  : std_logic_vector(7 downto 0) := (others => '0');
-    signal ram_rdy_c    : std_logic;
 
-    -- Three frames with different IDs to force arbitration
-    
-    -- ID frame 1: 0x093
+
+    -------------------------------------------------------
+    -- FRAMES
+    -------------------------------------------------------
+
+    -- ID 0x093
     constant FRAME_1 : std_logic_vector(82 downto 0) :=
-        "0000100100110000010" &
-        "0000000000000000000000000000000000000000000000001010010100111100";
-    
-    -- ID frame 2: 0x0f3
+    "0000100100110000010" &
+    "0000000000000000000000000000000000000000000000001010010100111100";
+
+
+    -- ID 0x0F3
     constant FRAME_2 : std_logic_vector(82 downto 0) :=
-        "0000111100110000010" &
-        "0000000000000000000000000000000000000000000000001010010100111100";
-    
-    -- ID frame 3: 0x193
+    "0000111100110000010" &
+    "0000000000000000000000000000000000000000000000001010010100111100";
+
+
+    -- ID 0x193
     constant FRAME_3 : std_logic_vector(82 downto 0) :=
-        "0001100100110000010" &
-        "0000000000000000000000000000000000000000000000001010010100111100";
-    
-    -- ID frame 4: 0x3b3
+    "0001100100110000010" &
+    "0000000000000000000000000000000000000000000000001010010100111100";
+
+
+    -- ID 0x3B3
     constant FRAME_4 : std_logic_vector(82 downto 0) :=
-        "0011101100110000010" &
-        "0000000000000000000000000000000000000000000000001010010100111100";
-    
-    -- ID frame 5: 0x1ff
-    constant FRAME_5 : std_logic_vector(82 downto 0) :=
-        "0001111111110000010" &
-        "0000000000000000000000000000000000000000000000001010010100111100";
+    "0011101100110000010" &
+    "0000000000000000000000000000000000000000000000001010010100111100";
+
+
 
 begin
 
-    -- 100 MHz clock
-    clock <= not clock after 5 ns;
-    
-    -- Node A
-    node_A : entity work.can_node_top
-        port map (
-            clock        => clock,
-            reset        => reset_a,
-            cfg_mode     => cfg_mode_a,
-            bus_line     => bus_line,
-            prop_seg     => prop_seg,
-            phase_seg1   => phase_seg1,
-            phase_seg2   => phase_seg2,
-            pop_fifo_rx  => pop_fifo_rx_a,
-            push_fifo_tx => push_fifo_tx_a,
-            frame_rx_out => frame_rx_out_a,
-            frame_tx_in  => frame_tx_in_a,
-            we_memID     => we_memID_a,
-            ram_addrID   => ram_addrID_a,
-            ram_dinID    => ram_dinID_a,
-            ram_rdy      => ram_rdy_a
-        );
 
-    -- Node B
-    node_B : entity work.can_node_top
-        port map (
-            clock        => clock,
-            reset        => reset_b,
-            cfg_mode     => cfg_mode_b,
-            bus_line     => bus_line,
-            prop_seg     => prop_seg,
-            phase_seg1   => phase_seg1,
-            phase_seg2   => phase_seg2,
-            pop_fifo_rx  => pop_fifo_rx_b,
-            push_fifo_tx => push_fifo_tx_b,
-            frame_rx_out => frame_rx_out_b,
-            frame_tx_in  => frame_tx_in_b,
-            we_memID     => we_memID_b,
-            ram_addrID   => ram_addrID_b,
-            ram_dinID    => ram_dinID_b,
-            ram_rdy      => ram_rdy_b
-        );
+-------------------------------------------------------
+-- CLOCK
+-------------------------------------------------------
 
-    -- Node C
-    node_C : entity work.can_node_top
-        port map (
-            clock        => clock,
-            reset        => reset_c,
-            cfg_mode     => cfg_mode_c,
-            bus_line     => bus_line,
-            prop_seg     => prop_seg,
-            phase_seg1   => phase_seg1,
-            phase_seg2   => phase_seg2,
-            pop_fifo_rx  => pop_fifo_rx_c,
-            push_fifo_tx => push_fifo_tx_c,
-            frame_rx_out => frame_rx_out_c,
-            frame_tx_in  => frame_tx_in_c,
-            we_memID     => we_memID_c,
-            ram_addrID   => ram_addrID_c,
-            ram_dinID    => ram_dinID_c,
-            ram_rdy      => ram_rdy_c
-        );
+clock_a <= not clock_a after 5 ns;
+clock_b <= not clock_a;
 
-    -- Stimulus
-    stim_proc : process
 
-        procedure ram_write_a(a : unsigned(7 downto 0); d : std_logic_vector(7 downto 0)) is
-        begin
-            ram_addrID_a <= a;
-            ram_dinID_a  <= d;
-            we_memID_a   <= '1';
-            wait until rising_edge(clock);
-            we_memID_a   <= '0';
-            wait until rising_edge(clock);
-        end procedure;
+-------------------------------------------------------
+-- NODE A
+-------------------------------------------------------
 
-        procedure ram_write_b(a : unsigned(7 downto 0); d : std_logic_vector(7 downto 0)) is
-        begin
-            ram_addrID_b <= a;
-            ram_dinID_b  <= d;
-            we_memID_b   <= '1';
-            wait until rising_edge(clock);
-            we_memID_b   <= '0';
-            wait until rising_edge(clock);
-        end procedure;
+node_A : entity work.can_fpga_top
+port map (
 
-        procedure ram_write_c(a : unsigned(7 downto 0); d : std_logic_vector(7 downto 0)) is
-        begin
-            ram_addrID_c <= a;
-            ram_dinID_c  <= d;
-            we_memID_c   <= '1';
-            wait until rising_edge(clock);
-            we_memID_c   <= '0';
-            wait until rising_edge(clock);
-        end procedure;
+    clock => clock_a,
+    reset => reset_a,
 
-        procedure tx_fifo_push_a(f : std_logic_vector(82 downto 0)) is
-        begin
-            frame_tx_in_a  <= f;
-            push_fifo_tx_a <= '1';
-            wait until rising_edge(clock);
-            push_fifo_tx_a <= '0';
-            wait until rising_edge(clock);
-        end procedure;
+    cfg_mode => cfg_mode_a,
 
-        procedure tx_fifo_push_b(f : std_logic_vector(82 downto 0)) is
-        begin
-            frame_tx_in_b  <= f;
-            push_fifo_tx_b <= '1';
-            wait until rising_edge(clock);
-            push_fifo_tx_b <= '0';
-            wait until rising_edge(clock);
-        end procedure;
+    bus_ext => bus_line,
 
-        procedure tx_fifo_push_c(f : std_logic_vector(82 downto 0)) is
-        begin
-            frame_tx_in_c  <= f;
-            push_fifo_tx_c <= '1';
-            wait until rising_edge(clock);
-            push_fifo_tx_c <= '0';
-            wait until rising_edge(clock);
-        end procedure;
+    prop_seg => prop_seg,
+    phase_seg1 => phase_seg1,
+    phase_seg2 => phase_seg2,
 
-        procedure pop_all_rx_once is
-        begin
-            pop_fifo_rx_a <= '1';
-            pop_fifo_rx_b <= '1';
-            pop_fifo_rx_c <= '1';
-            wait until rising_edge(clock);
-            pop_fifo_rx_a <= '0';
-            pop_fifo_rx_b <= '0';
-            pop_fifo_rx_c <= '0';
-        end procedure;
 
-    begin
+    frame_rx_out => frame_rx_out_a,
+    pop_fifo_rx => pop_fifo_rx_a,
+    empty_fifo_rx => empty_fifo_rx_a,
 
-        cfg_mode_a <= '1';
-        cfg_mode_b <= '1';
-        cfg_mode_c <= '1';
 
-        reset_a <= '1'; reset_b <= '1'; reset_c <= '1';
-        wait for 50 ns;
+    frame_tx_in => frame_tx_in_a,
+    push_fifo_tx => push_fifo_tx_a,
+    full_fifo_tx => full_fifo_tx_a,
 
-        reset_a <= '0'; reset_b <= '0'; reset_c <= '0';
-        wait for 50 ns;
 
-        -- wait RAM ready
-        wait until (ram_rdy_a = '1' and ram_rdy_b = '1' and ram_rdy_c = '1');
+    we_memID => we_memID_a,
+    ram_addrID => ram_addrID_a,
+    ram_dinID => ram_dinID_a,
+    ram_rdy => ram_rdy_a
+);
 
-        -- Program filters
-        -- NODE A
-        ram_write_a(x"32", "00001000"); -- 0x193
-        ram_write_a(x"3f", "10000000"); -- 0x1ff
-        
-        -- NODE B
-        ram_write_b(x"12", "00001000"); -- 0x093
-        ram_write_b(x"3f", "10000000"); -- 0x1ff
-        
-        -- NODE C
-        ram_write_c(x"1e", "00001000"); -- 0x0f3
-        ram_write_c(x"76", "00001000"); -- 0x3b3
 
-        -- push frames into FIFOs TX
-        tx_fifo_push_a(FRAME_1);
-        tx_fifo_push_a(FRAME_2);
-        tx_fifo_push_b(FRAME_3);
-        tx_fifo_push_b(FRAME_4);
-        tx_fifo_push_c(FRAME_5);
 
-        wait for 200 ns;
+-------------------------------------------------------
+-- NODE B
+-------------------------------------------------------
 
-        -- enable transmition
-        cfg_mode_a <= '0';
-        cfg_mode_b <= '0';
-        cfg_mode_c <= '0';
+node_B : entity work.can_fpga_top
+port map (
 
-        wait for 50 us;
+    clock => clock_b,
+    reset => reset_b,
 
-        -- pop all frames FIFOs RX
-        pop_all_rx_once;
+    cfg_mode => cfg_mode_b,
 
-        wait for 100 us;
-        wait;
-    end process;
+    bus_ext => bus_line,
+
+    prop_seg => prop_seg,
+    phase_seg1 => phase_seg1,
+    phase_seg2 => phase_seg2,
+
+
+    frame_rx_out => frame_rx_out_b,
+    pop_fifo_rx => pop_fifo_rx_b,
+    empty_fifo_rx => empty_fifo_rx_b,
+
+
+    frame_tx_in => frame_tx_in_b,
+    push_fifo_tx => push_fifo_tx_b,
+    full_fifo_tx => full_fifo_tx_b,
+
+
+    we_memID => we_memID_b,
+    ram_addrID => ram_addrID_b,
+    ram_dinID => ram_dinID_b,
+    ram_rdy => ram_rdy_b
+);
+
+
+
+-------------------------------------------------------
+-- STIMULUS
+-------------------------------------------------------
+
+stim_proc : process
+
+
+procedure ram_write_a(
+    a : unsigned(7 downto 0);
+    d : std_logic_vector(7 downto 0)) is
+begin
+    ram_addrID_a <= a;
+    ram_dinID_a <= d;
+    we_memID_a <= '1';
+    wait until rising_edge(clock_a);
+    we_memID_a <= '0';
+    wait until rising_edge(clock_a);
+end procedure;
+
+
+
+procedure ram_write_b(
+    a : unsigned(7 downto 0);
+    d : std_logic_vector(7 downto 0)) is
+begin
+    ram_addrID_b <= a;
+    ram_dinID_b <= d;
+    we_memID_b <= '1';
+    wait until rising_edge(clock_b);
+    we_memID_b <= '0';
+    wait until rising_edge(clock_b);
+end procedure;
+
+
+
+procedure tx_fifo_push_a(
+    f : std_logic_vector(82 downto 0)) is
+begin
+    frame_tx_in_a <= f;
+    push_fifo_tx_a <= '1';
+    wait until rising_edge(clock_a);
+    push_fifo_tx_a <= '0';
+    wait until rising_edge(clock_a);
+end procedure;
+
+
+
+procedure tx_fifo_push_b(
+    f : std_logic_vector(82 downto 0)) is
+begin
+    frame_tx_in_b <= f;
+    push_fifo_tx_b <= '1';
+    wait until rising_edge(clock_b);
+    push_fifo_tx_b <= '0';
+    wait until rising_edge(clock_b);
+end procedure;
+
+
+
+begin
+
+
+reset_a <= '1';
+reset_b <= '1';
+
+wait for 50 ns;
+
+
+reset_a <= '0';
+reset_b <= '0';
+
+
+wait until ram_rdy_a='1'
+       and ram_rdy_b='1';
+
+
+
+-------------------------------------------------------
+-- FILTER CONFIG
+-------------------------------------------------------
+
+-- nodo A riceve ID nodo B
+
+ram_write_a(x"32","00001000"); -- 0x193
+ram_write_a(x"76","00001000"); -- 0x3B3
+
+
+-- nodo B riceve ID nodo A
+
+ram_write_b(x"12","00001000"); -- 0x093
+ram_write_b(x"1E","00001000"); -- 0x0F3
+
+
+
+-------------------------------------------------------
+-- LOAD TX FIFO
+-------------------------------------------------------
+
+tx_fifo_push_a(FRAME_1);
+tx_fifo_push_a(FRAME_2);
+
+
+tx_fifo_push_b(FRAME_3);
+tx_fifo_push_b(FRAME_4);
+
+
+
+wait for 200 ns;
+
+
+-------------------------------------------------------
+-- ENABLE CAN
+-------------------------------------------------------
+
+cfg_mode_a <= '0';
+cfg_mode_b <= '0';
+
+
+
+wait for 150 us;
+
+
+wait;
+
+
+end process;
+
 
 end architecture;
-
 
 

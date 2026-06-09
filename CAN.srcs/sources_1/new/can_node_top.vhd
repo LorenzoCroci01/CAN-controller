@@ -29,8 +29,9 @@ entity can_node_top is
 
         cfg_mode    : in std_logic;
 
-        -- segnale i/o bus per simulazione
-        bus_line    : inout std_logic;
+        bus_line_i    : in std_logic;
+        bus_line_o    : out std_logic;
+        bus_line_oe   : out std_logic;
         
         -- segnali i/o bus per sintesi e implementazione
         --rx_bit_in   : in std_logic;
@@ -107,17 +108,7 @@ architecture arch_can_node_top of can_node_top is
     signal sl_err_stuff       : std_logic;
     signal sl_gen_errTx       : std_logic;
 
-    -- BUS normalization
-    signal bus_rx_norm        : std_logic;
-
 begin
-
-    ---------------------------------------------------------
-    -- CAN bus normalization
-    -- Z = recessive = 1
-    ---------------------------------------------------------
-    bus_rx_norm <= '0' when bus_line = '0' else '1';
-    --bus_rx_norm <= '0' when rx_bit_in = '0' else '1';
 
     ---------------------------------------------------------
     -- TX request manager
@@ -272,8 +263,9 @@ begin
             err_ack          => sl_err_ack,
             err_format       => sl_err_format,
             state_can        => state_can_node,
-            --state_next_arb   => sl_state_next_arb,
-            bus_line         => bus_line,   
+            bus_line_i       => bus_line_i,
+            bus_line_o       => bus_line_o,
+            bus_line_oe      => bus_line_oe,   
             bus_busy         => sl_bus_busy,
             end_tx           => sl_end_tx,
             lost_arb         => sl_lost_arb,
@@ -288,7 +280,7 @@ begin
         port map (
             clock            => clock,
             reset            => reset,
-            rx_in            => bus_rx_norm,
+            rx_in            => bus_line_i,
             --rx_enable        => sl_rx_enable,
             lost_arbitration => sl_lost_arb,
             id_rx_in         => sv_id_rx,

@@ -24,37 +24,62 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity driver_tx is
     Port (
-        bit_in      : in std_logic;     -- input bit
-        state_can   : in std_logic_vector(1 downto 0);  -- can node state
-        ack_slot    : in std_logic;     -- ack slot flag
-        bus_off     : in std_logic;     -- bus off flag
-        
-        bit_out     : out std_logic     -- output bit
+        bit_in      : in std_logic;     
+        state_can   : in std_logic_vector(1 downto 0);
+        ack_slot    : in std_logic;
+        bus_off     : in std_logic;
+
+        bus_line_o  : out std_logic;
+        bus_line_oe : out std_logic
     );
 end driver_tx;
 
+
 architecture arch_driver_tx of driver_tx is
 begin
+
     process(bit_in, state_can, ack_slot, bus_off)
     begin
-        bit_out <= 'Z';
-    
+        
+        -------------------------------------------------
+        -- default: bus released (recessive)
+        -------------------------------------------------
+        bus_line_o  <= '0';
+        bus_line_oe <= '0';
+
         if bus_off = '0' then
 
+            -------------------------------------------------
+            -- TRANSMISSION or ERROR FRAME
+            -------------------------------------------------
             if state_can = "10" or state_can = "11" then
+
                 if bit_in = '0' then
-                    bit_out <= '0';
+                    
+                    -- dominant bit
+                    bus_line_o  <= '0';
+                    bus_line_oe <= '1';
+
                 else
-                    bit_out <= 'Z';
+                    
+                    -- recessive bit
+                    bus_line_oe <= '0';
+
                 end if;
-          
-            -- ACK slot forces dominant
-            elsif (state_can = "01" and ack_slot = '1') then
-                bit_out <= '0';
+
+            -------------------------------------------------
+            -- ACK generation while receiving
+            -------------------------------------------------
+            elsif state_can = "01" and ack_slot = '1' then
+
+                -- force dominant ACK
+                bus_line_o  <= '0';
+                bus_line_oe <= '1';
+
             end if;
-        else
-            bit_out <= 'Z';
-        end if;  
-          
+
+        end if;
+
     end process;
+
 end architecture;

@@ -1,0 +1,303 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+---------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2025.1 (win64) Build 6140274 Thu May 22 00:12:29 MDT 2025
+| Date         : Tue Jun  9 18:47:30 2026
+| Host         : Croci running 64-bit major release  (build 9200)
+| Command      : report_drc -file can_fpga_top_drc_opted.rpt -pb can_fpga_top_drc_opted.pb -rpx can_fpga_top_drc_opted.rpx
+| Design       : can_fpga_top
+| Device       : xc7a50tcpg236-1
+| Speed File   : -1
+| Design State : Synthesized
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+Report DRC
+
+Table of Contents
+-----------------
+1. REPORT SUMMARY
+2. REPORT DETAILS
+
+1. REPORT SUMMARY
+-----------------
+            Netlist: netlist
+          Floorplan: design_1
+      Design limits: <entire design considered>
+           Ruledeck: default
+             Max checks: <unlimited>
+             Checks found: 49
++-----------+------------------+-----------------------------------------------------+--------+
+| Rule      | Severity         | Description                                         | Checks |
++-----------+------------------+-----------------------------------------------------+--------+
+| NSTD-1    | Critical Warning | Unspecified I/O Standard                            | 1      |
+| UCIO-1    | Critical Warning | Unconstrained Logical Port                          | 1      |
+| CFGBVS-1  | Warning          | Missing CFGBVS and CONFIG_VOLTAGE Design Properties | 1      |
+| CHECK-3   | Warning          | Report rule limit reached                           | 2      |
+| IOCNT-1   | Warning          | Number of IOs                                       | 1      |
+| PLIO-3    | Warning          | Placement Constraints Check for IO constraints      | 3      |
+| REQP-1839 | Warning          | RAMB36 async control check                          | 20     |
+| REQP-1840 | Warning          | RAMB18 async control check                          | 20     |
++-----------+------------------+-----------------------------------------------------+--------+
+
+2. REPORT DETAILS
+-----------------
+NSTD-1#1 Critical Warning
+Unspecified I/O Standard  
+197 out of 247 logical ports use I/O standard (IOSTANDARD) value 'DEFAULT', instead of a user assigned specific value. This may cause I/O contention or incompatibility with the board power or connectivity affecting performance, signal integrity or in extreme cases cause damage to the device or the components to which it is connected. To correct this violation, specify all I/O standards. This design will fail to generate a bitstream unless all logical ports have a user specified I/O standard value defined. To allow bitstream creation with unspecified I/O standard values (not recommended), use this command: set_property SEVERITY {Warning} [get_drc_checks NSTD-1].  NOTE: When using the Vivado Runs infrastructure (e.g. launch_runs Tcl command), add this command to a .tcl file and add that file as a pre-hook for write_bitstream step for the implementation run. Problem ports: bus_ext, cfg_mode, empty_fifo_rx, frame_rx_out[107:0], frame_tx_in[82:0],
+full_fifo_tx, pop_fifo_rx, push_fifo_tx.
+Related violations: <none>
+
+UCIO-1#1 Critical Warning
+Unconstrained Logical Port  
+204 out of 247 logical ports have no user assigned specific location constraint (LOC). This may cause I/O contention or incompatibility with the board power or connectivity affecting performance, signal integrity or in extreme cases cause damage to the device or the components to which it is connected. To correct this violation, specify all pin locations. This design will fail to generate a bitstream unless all logical ports have a user specified site LOC constraint defined.  To allow bitstream creation with unspecified pin locations (not recommended), use this command: set_property SEVERITY {Warning} [get_drc_checks UCIO-1].  NOTE: When using the Vivado Runs infrastructure (e.g. launch_runs Tcl command), add this command to a .tcl file and add that file as a pre-hook for write_bitstream step for the implementation run.  Problem ports: frame_rx_out[107:0], frame_tx_in[82:0], phase_seg1[9], phase_seg1[8],
+phase_seg2[9], phase_seg2[8], prop_seg[9], prop_seg[8], bus_ext, cfg_mode,
+empty_fifo_rx, full_fifo_tx, pop_fifo_rx, push_fifo_tx.
+Related violations: <none>
+
+CFGBVS-1#1 Warning
+Missing CFGBVS and CONFIG_VOLTAGE Design Properties  
+Neither the CFGBVS nor CONFIG_VOLTAGE voltage property is set in the current_design.  Configuration bank voltage select (CFGBVS) must be set to VCCO or GND, and CONFIG_VOLTAGE must be set to the correct configuration voltage, in order to determine the I/O voltage support for the pins in bank 0.  It is suggested to specify these either using the 'Edit Device Properties' function in the GUI or directly in the XDC file using the following syntax:
+
+ set_property CFGBVS value1 [current_design]
+ #where value1 is either VCCO or GND
+
+ set_property CONFIG_VOLTAGE value2 [current_design]
+ #where value2 is the voltage provided to configuration bank 0
+
+Refer to the device configuration user guide for more information.
+Related violations: <none>
+
+CHECK-3#1 Warning
+Report rule limit reached  
+REQP-1839 rule limit reached: 20 violations have been found.
+Related violations: <none>
+
+CHECK-3#2 Warning
+Report rule limit reached  
+REQP-1840 rule limit reached: 20 violations have been found.
+Related violations: <none>
+
+IOCNT-1#1 Warning
+Number of IOs  
+The design contains 204 unplaced I/O ports while the target device, xc7a50tcpg236-1, has 105 remaining available user I/O pins. This DRC assumes that all ports which do not drive MGT pins should be placed on user I/O pins. To correct this issue:
+1. Ensure you are targeting the correct device and package. Select a larger device or different package if necessary.
+2. Check the top-level ports of the design to ensure the correct number of ports are specified.
+3. Consider design changes to reduce the number of user I/O pins needed.
+
+Related violations: <none>
+
+PLIO-3#1 Warning
+Placement Constraints Check for IO constraints  
+Partially locked IO Bus is found. Following components of the IO Bus phase_seg1[9:0] are not locked:  phase_seg1[9] phase_seg1[8]
+Related violations: <none>
+
+PLIO-3#2 Warning
+Placement Constraints Check for IO constraints  
+Partially locked IO Bus is found. Following components of the IO Bus phase_seg2[9:0] are not locked:  phase_seg2[9] phase_seg2[8]
+Related violations: <none>
+
+PLIO-3#3 Warning
+Placement Constraints Check for IO constraints  
+Partially locked IO Bus is found. Following components of the IO Bus prop_seg[9:0] are not locked:  prop_seg[9] prop_seg[8]
+Related violations: <none>
+
+REQP-1839#1 Warning
+RAMB36 async control check  
+The RAMB36E1 u_can_node/u_fifo_rx/mem_reg_0 has an input control pin u_can_node/u_fifo_rx/mem_reg_0/ADDRARDADDR[6] (net: u_can_node/u_fifo_rx/rd_ptr[0]) which is driven by a register (u_can_node/u_fifo_rx/rd_ptr_reg[0]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+Related violations: <none>
+
+REQP-1839#2 Warning
+RAMB36 async control check  
+The RAMB36E1 u_can_node/u_fifo_rx/mem_reg_0 has an input control pin u_can_node/u_fifo_rx/mem_reg_0/ADDRARDADDR[7] (net: u_can_node/u_fifo_rx/rd_ptr[1]) which is driven by a register (u_can_node/u_fifo_rx/rd_ptr_reg[1]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+Related violations: <none>
+
+REQP-1839#3 Warning
+RAMB36 async control check  
+The RAMB36E1 u_can_node/u_fifo_rx/mem_reg_0 has an input control pin u_can_node/u_fifo_rx/mem_reg_0/ADDRARDADDR[8] (net: u_can_node/u_fifo_rx/rd_ptr[2]) which is driven by a register (u_can_node/u_fifo_rx/rd_ptr_reg[2]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+Related violations: <none>
+
+REQP-1839#4 Warning
+RAMB36 async control check  
+The RAMB36E1 u_can_node/u_fifo_rx/mem_reg_0 has an input control pin u_can_node/u_fifo_rx/mem_reg_0/ADDRARDADDR[9] (net: u_can_node/u_fifo_rx/rd_ptr[3]) which is driven by a register (u_can_node/u_fifo_rx/rd_ptr_reg[3]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+Related violations: <none>
+
+REQP-1839#5 Warning
+RAMB36 async control check  
+The RAMB36E1 u_can_node/u_fifo_rx/mem_reg_0 has an input control pin u_can_node/u_fifo_rx/mem_reg_0/ADDRBWRADDR[6] (net: u_can_node/u_fifo_rx/wr_ptr_reg[0]) which is driven by a register (u_can_node/u_fifo_rx/wr_ptr_reg[0]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+Related violations: <none>
+
+REQP-1839#6 Warning
+RAMB36 async control check  
+The RAMB36E1 u_can_node/u_fifo_rx/mem_reg_0 has an input control pin u_can_node/u_fifo_rx/mem_reg_0/ADDRBWRADDR[7] (net: u_can_node/u_fifo_rx/wr_ptr_reg[1]) which is driven by a register (u_can_node/u_fifo_rx/wr_ptr_reg[1]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+Related violations: <none>
+
+REQP-1839#7 Warning
+RAMB36 async control check  
+The RAMB36E1 u_can_node/u_fifo_rx/mem_reg_0 has an input control pin u_can_node/u_fifo_rx/mem_reg_0/ADDRBWRADDR[8] (net: u_can_node/u_fifo_rx/wr_ptr_reg[2]) which is driven by a register (u_can_node/u_fifo_rx/wr_ptr_reg[2]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+Related violations: <none>
+
+REQP-1839#8 Warning
+RAMB36 async control check  
+The RAMB36E1 u_can_node/u_fifo_rx/mem_reg_0 has an input control pin u_can_node/u_fifo_rx/mem_reg_0/ADDRBWRADDR[9] (net: u_can_node/u_fifo_rx/wr_ptr_reg[3]) which is driven by a register (u_can_node/u_fifo_rx/wr_ptr_reg[3]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+Related violations: <none>
+
+REQP-1839#9 Warning
+RAMB36 async control check  
+The RAMB36E1 u_can_node/u_fifo_rx/mem_reg_0 has an input control pin u_can_node/u_fifo_rx/mem_reg_0/ENARDEN (net: u_can_node/u_fifo_rx/mem_reg_1_i_1_n_0) which is driven by a register (u_can_node/u_fifo_rx/count_reg[0]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+Related violations: <none>
+
+REQP-1839#10 Warning
+RAMB36 async control check  
+The RAMB36E1 u_can_node/u_fifo_rx/mem_reg_0 has an input control pin u_can_node/u_fifo_rx/mem_reg_0/ENARDEN (net: u_can_node/u_fifo_rx/mem_reg_1_i_1_n_0) which is driven by a register (u_can_node/u_fifo_rx/count_reg[1]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+Related violations: <none>
+
+REQP-1839#11 Warning
+RAMB36 async control check  
+The RAMB36E1 u_can_node/u_fifo_rx/mem_reg_0 has an input control pin u_can_node/u_fifo_rx/mem_reg_0/ENARDEN (net: u_can_node/u_fifo_rx/mem_reg_1_i_1_n_0) which is driven by a register (u_can_node/u_fifo_rx/count_reg[2]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+Related violations: <none>
+
+REQP-1839#12 Warning
+RAMB36 async control check  
+The RAMB36E1 u_can_node/u_fifo_rx/mem_reg_0 has an input control pin u_can_node/u_fifo_rx/mem_reg_0/ENARDEN (net: u_can_node/u_fifo_rx/mem_reg_1_i_1_n_0) which is driven by a register (u_can_node/u_fifo_rx/count_reg[3]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+Related violations: <none>
+
+REQP-1839#13 Warning
+RAMB36 async control check  
+The RAMB36E1 u_can_node/u_fifo_rx/mem_reg_0 has an input control pin u_can_node/u_fifo_rx/mem_reg_0/ENARDEN (net: u_can_node/u_fifo_rx/mem_reg_1_i_1_n_0) which is driven by a register (u_can_node/u_fifo_rx/count_reg[4]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+Related violations: <none>
+
+REQP-1839#14 Warning
+RAMB36 async control check  
+The RAMB36E1 u_can_node/u_fifo_rx/mem_reg_0 has an input control pin u_can_node/u_fifo_rx/mem_reg_0/ENBWREN (net: u_can_node/u_fifo_rx/p_9_out) which is driven by a register (u_can_node/u_fifo_rx/count_reg[0]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+Related violations: <none>
+
+REQP-1839#15 Warning
+RAMB36 async control check  
+The RAMB36E1 u_can_node/u_fifo_rx/mem_reg_0 has an input control pin u_can_node/u_fifo_rx/mem_reg_0/ENBWREN (net: u_can_node/u_fifo_rx/p_9_out) which is driven by a register (u_can_node/u_fifo_rx/count_reg[1]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+Related violations: <none>
+
+REQP-1839#16 Warning
+RAMB36 async control check  
+The RAMB36E1 u_can_node/u_fifo_rx/mem_reg_0 has an input control pin u_can_node/u_fifo_rx/mem_reg_0/ENBWREN (net: u_can_node/u_fifo_rx/p_9_out) which is driven by a register (u_can_node/u_fifo_rx/count_reg[2]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+Related violations: <none>
+
+REQP-1839#17 Warning
+RAMB36 async control check  
+The RAMB36E1 u_can_node/u_fifo_rx/mem_reg_0 has an input control pin u_can_node/u_fifo_rx/mem_reg_0/ENBWREN (net: u_can_node/u_fifo_rx/p_9_out) which is driven by a register (u_can_node/u_fifo_rx/count_reg[3]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+Related violations: <none>
+
+REQP-1839#18 Warning
+RAMB36 async control check  
+The RAMB36E1 u_can_node/u_fifo_rx/mem_reg_0 has an input control pin u_can_node/u_fifo_rx/mem_reg_0/ENBWREN (net: u_can_node/u_fifo_rx/p_9_out) which is driven by a register (u_can_node/u_fifo_rx/count_reg[4]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+Related violations: <none>
+
+REQP-1839#19 Warning
+RAMB36 async control check  
+The RAMB36E1 u_can_node/u_fifo_rx/mem_reg_0 has an input control pin u_can_node/u_fifo_rx/mem_reg_0/ENBWREN (net: u_can_node/u_fifo_rx/p_9_out) which is driven by a register (u_can_node/u_rx_module/u_fsm_rx/valid_frame_reg) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+Related violations: <none>
+
+REQP-1839#20 Warning
+RAMB36 async control check  
+The RAMB36E1 u_can_node/u_fifo_rx/mem_reg_0 has an input control pin u_can_node/u_fifo_rx/mem_reg_0/RSTREGARSTREG (net: u_can_node/u_fifo_rx/mem_reg_1_i_4_n_0) which is driven by a register (u_can_node/u_fifo_rx/mem_reg_async_reset_b) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+Related violations: <none>
+
+REQP-1840#1 Warning
+RAMB18 async control check  
+The RAMB18E1 u_can_node/u_fifo_rx/mem_reg_1 has an input control pin u_can_node/u_fifo_rx/mem_reg_1/ADDRARDADDR[5] (net: u_can_node/u_fifo_rx/rd_ptr[0]) which is driven by a register (u_can_node/u_fifo_rx/rd_ptr_reg[0]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+Related violations: <none>
+
+REQP-1840#2 Warning
+RAMB18 async control check  
+The RAMB18E1 u_can_node/u_fifo_rx/mem_reg_1 has an input control pin u_can_node/u_fifo_rx/mem_reg_1/ADDRARDADDR[6] (net: u_can_node/u_fifo_rx/rd_ptr[1]) which is driven by a register (u_can_node/u_fifo_rx/rd_ptr_reg[1]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+Related violations: <none>
+
+REQP-1840#3 Warning
+RAMB18 async control check  
+The RAMB18E1 u_can_node/u_fifo_rx/mem_reg_1 has an input control pin u_can_node/u_fifo_rx/mem_reg_1/ADDRARDADDR[7] (net: u_can_node/u_fifo_rx/rd_ptr[2]) which is driven by a register (u_can_node/u_fifo_rx/rd_ptr_reg[2]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+Related violations: <none>
+
+REQP-1840#4 Warning
+RAMB18 async control check  
+The RAMB18E1 u_can_node/u_fifo_rx/mem_reg_1 has an input control pin u_can_node/u_fifo_rx/mem_reg_1/ADDRARDADDR[8] (net: u_can_node/u_fifo_rx/rd_ptr[3]) which is driven by a register (u_can_node/u_fifo_rx/rd_ptr_reg[3]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+Related violations: <none>
+
+REQP-1840#5 Warning
+RAMB18 async control check  
+The RAMB18E1 u_can_node/u_fifo_rx/mem_reg_1 has an input control pin u_can_node/u_fifo_rx/mem_reg_1/ADDRBWRADDR[5] (net: u_can_node/u_fifo_rx/wr_ptr_reg[0]) which is driven by a register (u_can_node/u_fifo_rx/wr_ptr_reg[0]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+Related violations: <none>
+
+REQP-1840#6 Warning
+RAMB18 async control check  
+The RAMB18E1 u_can_node/u_fifo_rx/mem_reg_1 has an input control pin u_can_node/u_fifo_rx/mem_reg_1/ADDRBWRADDR[6] (net: u_can_node/u_fifo_rx/wr_ptr_reg[1]) which is driven by a register (u_can_node/u_fifo_rx/wr_ptr_reg[1]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+Related violations: <none>
+
+REQP-1840#7 Warning
+RAMB18 async control check  
+The RAMB18E1 u_can_node/u_fifo_rx/mem_reg_1 has an input control pin u_can_node/u_fifo_rx/mem_reg_1/ADDRBWRADDR[7] (net: u_can_node/u_fifo_rx/wr_ptr_reg[2]) which is driven by a register (u_can_node/u_fifo_rx/wr_ptr_reg[2]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+Related violations: <none>
+
+REQP-1840#8 Warning
+RAMB18 async control check  
+The RAMB18E1 u_can_node/u_fifo_rx/mem_reg_1 has an input control pin u_can_node/u_fifo_rx/mem_reg_1/ADDRBWRADDR[8] (net: u_can_node/u_fifo_rx/wr_ptr_reg[3]) which is driven by a register (u_can_node/u_fifo_rx/wr_ptr_reg[3]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+Related violations: <none>
+
+REQP-1840#9 Warning
+RAMB18 async control check  
+The RAMB18E1 u_can_node/u_fifo_rx/mem_reg_1 has an input control pin u_can_node/u_fifo_rx/mem_reg_1/ENARDEN (net: u_can_node/u_fifo_rx/mem_reg_1_i_1_n_0) which is driven by a register (u_can_node/u_fifo_rx/count_reg[0]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+Related violations: <none>
+
+REQP-1840#10 Warning
+RAMB18 async control check  
+The RAMB18E1 u_can_node/u_fifo_rx/mem_reg_1 has an input control pin u_can_node/u_fifo_rx/mem_reg_1/ENARDEN (net: u_can_node/u_fifo_rx/mem_reg_1_i_1_n_0) which is driven by a register (u_can_node/u_fifo_rx/count_reg[1]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+Related violations: <none>
+
+REQP-1840#11 Warning
+RAMB18 async control check  
+The RAMB18E1 u_can_node/u_fifo_rx/mem_reg_1 has an input control pin u_can_node/u_fifo_rx/mem_reg_1/ENARDEN (net: u_can_node/u_fifo_rx/mem_reg_1_i_1_n_0) which is driven by a register (u_can_node/u_fifo_rx/count_reg[2]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+Related violations: <none>
+
+REQP-1840#12 Warning
+RAMB18 async control check  
+The RAMB18E1 u_can_node/u_fifo_rx/mem_reg_1 has an input control pin u_can_node/u_fifo_rx/mem_reg_1/ENARDEN (net: u_can_node/u_fifo_rx/mem_reg_1_i_1_n_0) which is driven by a register (u_can_node/u_fifo_rx/count_reg[3]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+Related violations: <none>
+
+REQP-1840#13 Warning
+RAMB18 async control check  
+The RAMB18E1 u_can_node/u_fifo_rx/mem_reg_1 has an input control pin u_can_node/u_fifo_rx/mem_reg_1/ENARDEN (net: u_can_node/u_fifo_rx/mem_reg_1_i_1_n_0) which is driven by a register (u_can_node/u_fifo_rx/count_reg[4]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+Related violations: <none>
+
+REQP-1840#14 Warning
+RAMB18 async control check  
+The RAMB18E1 u_can_node/u_fifo_rx/mem_reg_1 has an input control pin u_can_node/u_fifo_rx/mem_reg_1/ENBWREN (net: u_can_node/u_fifo_rx/p_9_out) which is driven by a register (u_can_node/u_fifo_rx/count_reg[0]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+Related violations: <none>
+
+REQP-1840#15 Warning
+RAMB18 async control check  
+The RAMB18E1 u_can_node/u_fifo_rx/mem_reg_1 has an input control pin u_can_node/u_fifo_rx/mem_reg_1/ENBWREN (net: u_can_node/u_fifo_rx/p_9_out) which is driven by a register (u_can_node/u_fifo_rx/count_reg[1]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+Related violations: <none>
+
+REQP-1840#16 Warning
+RAMB18 async control check  
+The RAMB18E1 u_can_node/u_fifo_rx/mem_reg_1 has an input control pin u_can_node/u_fifo_rx/mem_reg_1/ENBWREN (net: u_can_node/u_fifo_rx/p_9_out) which is driven by a register (u_can_node/u_fifo_rx/count_reg[2]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+Related violations: <none>
+
+REQP-1840#17 Warning
+RAMB18 async control check  
+The RAMB18E1 u_can_node/u_fifo_rx/mem_reg_1 has an input control pin u_can_node/u_fifo_rx/mem_reg_1/ENBWREN (net: u_can_node/u_fifo_rx/p_9_out) which is driven by a register (u_can_node/u_fifo_rx/count_reg[3]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+Related violations: <none>
+
+REQP-1840#18 Warning
+RAMB18 async control check  
+The RAMB18E1 u_can_node/u_fifo_rx/mem_reg_1 has an input control pin u_can_node/u_fifo_rx/mem_reg_1/ENBWREN (net: u_can_node/u_fifo_rx/p_9_out) which is driven by a register (u_can_node/u_fifo_rx/count_reg[4]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+Related violations: <none>
+
+REQP-1840#19 Warning
+RAMB18 async control check  
+The RAMB18E1 u_can_node/u_fifo_rx/mem_reg_1 has an input control pin u_can_node/u_fifo_rx/mem_reg_1/ENBWREN (net: u_can_node/u_fifo_rx/p_9_out) which is driven by a register (u_can_node/u_rx_module/u_fsm_rx/valid_frame_reg) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+Related violations: <none>
+
+REQP-1840#20 Warning
+RAMB18 async control check  
+The RAMB18E1 u_can_node/u_fifo_rx/mem_reg_1 has an input control pin u_can_node/u_fifo_rx/mem_reg_1/RSTREGARSTREG (net: u_can_node/u_fifo_rx/mem_reg_1_i_4_n_0) which is driven by a register (u_can_node/u_fifo_rx/mem_reg_async_reset_b) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
+Related violations: <none>
+
+

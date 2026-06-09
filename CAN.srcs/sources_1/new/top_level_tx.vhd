@@ -46,8 +46,9 @@ entity top_level_tx is
         
         state_can       : in std_logic_vector(1 downto 0);
         --state_next_arb  : out std_logic_vector(1 downto 0);
-        --bus_line        : out std_logic;
-        bus_line        : inout std_logic;
+        bus_line_i      : in std_logic;
+        bus_line_o      : out std_logic;
+        bus_line_oe     : out std_logic;
         bus_busy        : out std_logic;
         end_tx          : out std_logic;
         lost_arb        : out std_logic;
@@ -75,28 +76,10 @@ architecture arch_top_level_tx of top_level_tx is
     signal sl_bus_busy      : std_logic;
     signal sl_id_bit_valid  : std_logic;
 
-    signal bus_rx_norm      : std_logic;
-
 begin
 
     bus_busy <= sl_bus_busy;
     lost_arb <= sl_lost_arb;
-
-    --------------------------------------------------------------------
-    -- CAN bus normalization
-    -- Dominant  = '0'
-    -- Recessive = '1', 'Z', 'H'
-    --------------------------------------------------------------------
-    process(bus_line)
-    begin
-        case bus_line is
-            when '0' =>
-                bus_rx_norm <= '0';
-
-            when others =>
-                bus_rx_norm <= '1';
-        end case;
-    end process;
 
     --------------------------------------------------------------------
     -- Driver ERR
@@ -190,7 +173,8 @@ begin
             state_can => state_can,
             ack_slot  => ack_slot,
             bus_off   => bus_off,
-            bit_out   => bus_line
+            bus_line_o   => bus_line_o,
+            bus_line_oe  => bus_line_oe
         );
 
     --------------------------------------------------------------------
@@ -200,7 +184,7 @@ begin
         port map (
             clock        => clock,
             reset        => reset,
-            rx_in        => bus_rx_norm,
+            rx_in        => bus_line_i,
             prop_seg     => prop_seg,
             phase_seg1   => phase_seg1,
             phase_seg2   => phase_seg2,
