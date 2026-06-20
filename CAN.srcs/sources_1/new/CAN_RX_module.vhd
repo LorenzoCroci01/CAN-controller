@@ -34,9 +34,9 @@ entity CAN_RX_module is
         
         state_can     : in std_logic_vector(1 downto 0);
 
-        prop_seg      : in  unsigned(9 downto 0);
-        phase_seg1    : in  unsigned(9 downto 0);
-        phase_seg2    : in  unsigned(9 downto 0);
+        prop_seg      : in  unsigned(7 downto 0);
+        phase_seg1    : in  unsigned(7 downto 0);
+        phase_seg2    : in  unsigned(7 downto 0);
         
         frame         : out std_logic_vector(107 downto 0);     -- deserialized frame output
         ack_slot      : out std_logic;      -- ack slot flag

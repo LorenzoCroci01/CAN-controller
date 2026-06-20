@@ -44,7 +44,7 @@ begin
         -------------------------------------------------
         -- default: bus released (recessive)
         -------------------------------------------------
-        bus_line_o  <= '0';
+        bus_line_o  <= '1';
         bus_line_oe <= '0';
 
         if bus_off = '0' then
@@ -63,6 +63,7 @@ begin
                 else
                     
                     -- recessive bit
+                    bus_line_o  <= '1';
                     bus_line_oe <= '0';
 
                 end if;

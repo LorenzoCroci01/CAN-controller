@@ -37,9 +37,9 @@ entity can_node_top is
         --rx_bit_in   : in std_logic;
         --tx_bit_out  : out std_logic;
         
-        prop_seg    : in unsigned(9 downto 0);
-        phase_seg1  : in unsigned(9 downto 0);
-        phase_seg2  : in unsigned(9 downto 0);
+        prop_seg    : in unsigned(7 downto 0);
+        phase_seg1  : in unsigned(7 downto 0);
+        phase_seg2  : in unsigned(7 downto 0);
         
         -- FIFO RX interface
         frame_rx_out    : out std_logic_vector(107 downto 0);
@@ -52,7 +52,7 @@ entity can_node_top is
         full_fifo_tx    : out std_logic;
 
         we_memID     : in  std_logic;
-        ram_addrID   : in  unsigned(7 downto 0);
+        ram_addrID   : in  unsigned (7 downto 0);
         ram_dinID    : in  std_logic_vector(7 downto 0);
         ram_rdy      : out std_logic
     );
@@ -81,6 +81,7 @@ architecture arch_can_node_top of can_node_top is
     -- FIFO TX
     signal sl_fifo_tx_out     : std_logic_vector(82 downto 0);
     signal sl_empty_fifo_tx   : std_logic;
+    signal sl_full_fifo_rx    : std_logic;
     signal sl_pop_tx          : std_logic;
 
     -- TX request
@@ -336,7 +337,8 @@ begin
             push      => sl_valid_frame,
             pop       => pop_fifo_rx,
             frame_out => frame_rx_out,
-            empty     => empty_fifo_rx
+            empty     => empty_fifo_rx,
+            full      => open
         );
 
     ---------------------------------------------------------
@@ -351,7 +353,8 @@ begin
             push      => push_fifo_tx,
             pop       => sl_pop_tx,
             frame_out => sl_fifo_tx_out,
-            empty     => sl_empty_fifo_tx
+            empty     => sl_empty_fifo_tx,
+            full      => full_fifo_tx
         );
 
     ram_rdy <= sl_ram_rdy;

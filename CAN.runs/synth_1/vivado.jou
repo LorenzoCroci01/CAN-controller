@@ -3,11 +3,11 @@
 # SW Build 6140274 on Thu May 22 00:12:29 MDT 2025
 # IP Build 6138677 on Thu May 22 03:10:11 MDT 2025
 # SharedData Build 6139179 on Tue May 20 17:58:58 MDT 2025
-# Start of session at: Tue Jun  9 18:44:59 2026
-# Process ID         : 29908
+# Start of session at: Wed Jun 10 03:22:45 2026
+# Process ID         : 7164
 # Current directory  : C:/Users/croci/CAN/CAN.runs/synth_1
-# Command line       : vivado.exe -log can_fpga_top.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source can_fpga_top.tcl
-# Log file           : C:/Users/croci/CAN/CAN.runs/synth_1/can_fpga_top.vds
+# Command line       : vivado.exe -log can_node_loopback.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source can_node_loopback.tcl
+# Log file           : C:/Users/croci/CAN/CAN.runs/synth_1/can_node_loopback.vds
 # Journal file       : C:/Users/croci/CAN/CAN.runs/synth_1\vivado.jou
 # Running On         : Croci
 # Platform           : Windows Server 2016 or Windows 10
@@ -19,6 +19,6 @@
 # Host memory        : 16850 MB
 # Swap memory        : 11388 MB
 # Total Virtual      : 28238 MB
-# Available Virtual  : 5146 MB
+# Available Virtual  : 4051 MB
 #-----------------------------------------------------------
-source can_fpga_top.tcl -notrace
+source can_node_loopback.tcl -notrace

@@ -1,6 +1,6 @@
 
 *** Running vivado
-    with args -log can_fpga_top.vds -m64 -product Vivado -mode batch -messageDb vivado.pb -notrace -source can_fpga_top.tcl
+    with args -log can_node_loopback.vds -m64 -product Vivado -mode batch -messageDb vivado.pb -notrace -source can_node_loopback.tcl
 
 
 
@@ -8,30 +8,31 @@
   **** SW Build 6140274 on Thu May 22 00:12:29 MDT 2025
   **** IP Build 6138677 on Thu May 22 03:10:11 MDT 2025
   **** SharedData Build 6139179 on Tue May 20 17:58:58 MDT 2025
-  **** Start of session at: Tue Jun  9 18:44:59 2026
+  **** Start of session at: Wed Jun 10 03:22:45 2026
     ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
     ** Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
 
-source can_fpga_top.tcl -notrace
-create_project: Time (s): cpu = 00:00:19 ; elapsed = 00:00:13 . Memory (MB): peak = 503.512 ; gain = 212.574
+source can_node_loopback.tcl -notrace
+create_project: Time (s): cpu = 00:00:13 ; elapsed = 00:00:08 . Memory (MB): peak = 504.473 ; gain = 210.340
 INFO: [IP_Flow 19-234] Refreshing IP repositories
 INFO: [IP_Flow 19-1700] Loaded user IP repository 'c:/Users/croci/AppData/Roaming/Xilinx/ip_repo'.
 INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'C:/Xilinx/2025.1/Vivado/data/ip'.
 Command: read_checkpoint -auto_incremental -incremental C:/Users/croci/CAN/CAN.srcs/utils_1/imports/synth_1/Destuffing.dcp
 INFO: [Vivado 12-5825] Read reference checkpoint from C:/Users/croci/CAN/CAN.srcs/utils_1/imports/synth_1/Destuffing.dcp for incremental synthesis
 INFO: [Vivado 12-7989] Please ensure there are no constraint changes
-Command: synth_design -top can_fpga_top -part xc7a50tcpg236-1 -flatten_hierarchy none
+Command: synth_design -top can_node_loopback -part xc7a50tcpg236-1 -flatten_hierarchy none
 Starting synth_design
 Attempting to get a license for feature 'Synthesis' and/or device 'xc7a50t'
 INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7a50t'
 INFO: [Device 21-403] Loading part xc7a50tcpg236-1
 INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 2 processes.
 INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
-INFO: [Synth 8-7075] Helper process launched with PID 1360
+INFO: [Synth 8-7075] Helper process launched with PID 25800
 ---------------------------------------------------------------------------------
-Starting RTL Elaboration : Time (s): cpu = 00:00:08 ; elapsed = 00:00:08 . Memory (MB): peak = 1195.930 ; gain = 492.758
+Starting RTL Elaboration : Time (s): cpu = 00:00:13 ; elapsed = 00:00:15 . Memory (MB): peak = 1195.074 ; gain = 492.059
 ---------------------------------------------------------------------------------
-INFO: [Synth 8-638] synthesizing module 'can_fpga_top' [C:/Users/croci/CAN/CAN.srcs/sources_1/new/cam_fpga_top.vhd:86]
+INFO: [Synth 8-638] synthesizing module 'can_node_loopback' [C:/Users/croci/CAN/CAN.srcs/sources_1/new/can_node_loopback.vhd:48]
+INFO: [Synth 8-638] synthesizing module 'can_fpga_top' [C:/Users/croci/CAN/CAN.srcs/sources_1/new/cam_fpga_top.vhd:66]
 INFO: [Synth 8-638] synthesizing module 'can_node_top' [C:/Users/croci/CAN/CAN.srcs/sources_1/new/can_node_top.vhd:61]
 INFO: [Synth 8-226] default block is never used [C:/Users/croci/CAN/CAN.srcs/sources_1/new/can_node_top.vhd:183]
 INFO: [Synth 8-638] synthesizing module 'top_level_tx' [C:/Users/croci/CAN/CAN.srcs/sources_1/new/top_level_tx.vhd:60]
@@ -83,8 +84,13 @@ INFO: [Synth 8-638] synthesizing module 'fifo__parameterized0' [C:/Users/croci/C
 	Parameter ADDR_WIDTH bound to: 4 - type: integer 
 INFO: [Synth 8-256] done synthesizing module 'fifo__parameterized0' (0#1) [C:/Users/croci/CAN/CAN.srcs/sources_1/new/fifo.vhd:49]
 INFO: [Synth 8-256] done synthesizing module 'can_node_top' (0#1) [C:/Users/croci/CAN/CAN.srcs/sources_1/new/can_node_top.vhd:61]
-INFO: [Synth 8-256] done synthesizing module 'can_fpga_top' (0#1) [C:/Users/croci/CAN/CAN.srcs/sources_1/new/cam_fpga_top.vhd:86]
+INFO: [Synth 8-256] done synthesizing module 'can_fpga_top' (0#1) [C:/Users/croci/CAN/CAN.srcs/sources_1/new/cam_fpga_top.vhd:66]
+INFO: [Synth 8-638] synthesizing module 'loopback' [C:/Users/croci/CAN/CAN.srcs/sources_1/new/loopback.vhd:47]
+INFO: [Synth 8-256] done synthesizing module 'loopback' (0#1) [C:/Users/croci/CAN/CAN.srcs/sources_1/new/loopback.vhd:47]
+INFO: [Synth 8-256] done synthesizing module 'can_node_loopback' (0#1) [C:/Users/croci/CAN/CAN.srcs/sources_1/new/can_node_loopback.vhd:48]
 WARNING: [Synth 8-6014] Unused sequential element s_data_len_reg was removed.  [C:/Users/croci/CAN/CAN.srcs/sources_1/new/deserializerTX.vhd:78]
+WARNING: [Synth 8-3848] Net err_stuff_out in module/entity deserializerTX does not have driver. [C:/Users/croci/CAN/CAN.srcs/sources_1/new/deserializerTX.vhd:41]
+WARNING: [Synth 8-3848] Net err_stuff in module/entity can_readTX does not have driver. [C:/Users/croci/CAN/CAN.srcs/sources_1/new/can_readTX.vhd:40]
 WARNING: [Synth 8-6014] Unused sequential element s_data_len_reg was removed.  [C:/Users/croci/CAN/CAN.srcs/sources_1/new/deserializer.vhd:78]
 WARNING: [Synth 8-6014] Unused sequential element id_addr_reg was removed.  [C:/Users/croci/CAN/CAN.srcs/sources_1/new/fsm_rx.vhd:73]
 WARNING: [Synth 8-6014] Unused sequential element crc_reg_reg was removed.  [C:/Users/croci/CAN/CAN.srcs/sources_1/new/fsm_rx.vhd:65]
@@ -92,23 +98,51 @@ WARNING: [Synth 8-6014] Unused sequential element REC_reg was removed.  [C:/User
 WARNING: [Synth 8-6014] Unused sequential element sl_frame_tx_reg_reg was removed.  [C:/Users/croci/CAN/CAN.srcs/sources_1/new/can_node_top.vhd:121]
 WARNING: [Synth 8-6014] Unused sequential element sl_rx_enable_reg was removed.  [C:/Users/croci/CAN/CAN.srcs/sources_1/new/can_node_top.vhd:165]
 WARNING: [Synth 8-3848] Net full_fifo_tx in module/entity can_node_top does not have driver. [C:/Users/croci/CAN/CAN.srcs/sources_1/new/can_node_top.vhd:52]
+WARNING: [Synth 8-7129] Port frame_rx_out[24] in module loopback is either unconnected or has no load
+WARNING: [Synth 8-7129] Port frame_rx_out[23] in module loopback is either unconnected or has no load
+WARNING: [Synth 8-7129] Port frame_rx_out[22] in module loopback is either unconnected or has no load
+WARNING: [Synth 8-7129] Port frame_rx_out[21] in module loopback is either unconnected or has no load
+WARNING: [Synth 8-7129] Port frame_rx_out[20] in module loopback is either unconnected or has no load
+WARNING: [Synth 8-7129] Port frame_rx_out[19] in module loopback is either unconnected or has no load
+WARNING: [Synth 8-7129] Port frame_rx_out[18] in module loopback is either unconnected or has no load
+WARNING: [Synth 8-7129] Port frame_rx_out[17] in module loopback is either unconnected or has no load
+WARNING: [Synth 8-7129] Port frame_rx_out[16] in module loopback is either unconnected or has no load
+WARNING: [Synth 8-7129] Port frame_rx_out[15] in module loopback is either unconnected or has no load
+WARNING: [Synth 8-7129] Port frame_rx_out[14] in module loopback is either unconnected or has no load
+WARNING: [Synth 8-7129] Port frame_rx_out[13] in module loopback is either unconnected or has no load
+WARNING: [Synth 8-7129] Port frame_rx_out[12] in module loopback is either unconnected or has no load
+WARNING: [Synth 8-7129] Port frame_rx_out[11] in module loopback is either unconnected or has no load
+WARNING: [Synth 8-7129] Port frame_rx_out[10] in module loopback is either unconnected or has no load
+WARNING: [Synth 8-7129] Port frame_rx_out[9] in module loopback is either unconnected or has no load
+WARNING: [Synth 8-7129] Port frame_rx_out[8] in module loopback is either unconnected or has no load
+WARNING: [Synth 8-7129] Port frame_rx_out[7] in module loopback is either unconnected or has no load
+WARNING: [Synth 8-7129] Port frame_rx_out[6] in module loopback is either unconnected or has no load
+WARNING: [Synth 8-7129] Port frame_rx_out[5] in module loopback is either unconnected or has no load
+WARNING: [Synth 8-7129] Port frame_rx_out[4] in module loopback is either unconnected or has no load
+WARNING: [Synth 8-7129] Port frame_rx_out[3] in module loopback is either unconnected or has no load
+WARNING: [Synth 8-7129] Port frame_rx_out[2] in module loopback is either unconnected or has no load
+WARNING: [Synth 8-7129] Port frame_rx_out[1] in module loopback is either unconnected or has no load
+WARNING: [Synth 8-7129] Port frame_rx_out[0] in module loopback is either unconnected or has no load
+WARNING: [Synth 8-7129] Port err_stuff_out in module deserializerTX is either unconnected or has no load
+WARNING: [Synth 8-7129] Port err_stuff_in in module deserializerTX is either unconnected or has no load
+WARNING: [Synth 8-7129] Port err_stuff in module can_readTX is either unconnected or has no load
 WARNING: [Synth 8-7129] Port sof_bit in module arbiter is either unconnected or has no load
 WARNING: [Synth 8-7129] Port bus_off in module arbiter is either unconnected or has no load
 WARNING: [Synth 8-7129] Port tx_request in module builder_tx is either unconnected or has no load
 WARNING: [Synth 8-7129] Port full_fifo_tx in module can_node_top is either unconnected or has no load
 ---------------------------------------------------------------------------------
-Finished RTL Elaboration : Time (s): cpu = 00:00:10 ; elapsed = 00:00:11 . Memory (MB): peak = 1322.871 ; gain = 619.699
+Finished RTL Elaboration : Time (s): cpu = 00:00:19 ; elapsed = 00:00:21 . Memory (MB): peak = 1322.047 ; gain = 619.031
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Handling Custom Attributes
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Handling Custom Attributes : Time (s): cpu = 00:00:10 ; elapsed = 00:00:11 . Memory (MB): peak = 1322.871 ; gain = 619.699
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:19 ; elapsed = 00:00:21 . Memory (MB): peak = 1322.047 ; gain = 619.031
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:10 ; elapsed = 00:00:11 . Memory (MB): peak = 1322.871 ; gain = 619.699
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:19 ; elapsed = 00:00:21 . Memory (MB): peak = 1322.047 ; gain = 619.031
 ---------------------------------------------------------------------------------
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.062 . Memory (MB): peak = 1322.871 ; gain = 0.000
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.144 . Memory (MB): peak = 1322.047 ; gain = 0.000
 INFO: [Project 1-570] Preparing netlist for logic optimization
 
 Processing XDC Constraints
@@ -127,40 +161,40 @@ WARNING: [Vivado 12-584] No ports matched 'tx_bit_out'. [C:/Users/croci/CAN/CAN.
 CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [C:/Users/croci/CAN/CAN.srcs/constrs_1/new/constraint_can_module.xdc:84]
 Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
 Finished Parsing XDC File [C:/Users/croci/CAN/CAN.srcs/constrs_1/new/constraint_can_module.xdc]
-INFO: [Project 1-236] Implementation specific constraints were found while reading constraint file [C:/Users/croci/CAN/CAN.srcs/constrs_1/new/constraint_can_module.xdc]. These constraints will be ignored for synthesis but will be used in implementation. Impacted constraints are listed in the file [.Xil/can_fpga_top_propImpl.xdc].
-Resolution: To avoid this warning, move constraints listed in [.Xil/can_fpga_top_propImpl.xdc] to another XDC file and exclude this new file from synthesis with the used_in_synthesis property (File Properties dialog in GUI) and re-run elaboration/synthesis.
+INFO: [Project 1-236] Implementation specific constraints were found while reading constraint file [C:/Users/croci/CAN/CAN.srcs/constrs_1/new/constraint_can_module.xdc]. These constraints will be ignored for synthesis but will be used in implementation. Impacted constraints are listed in the file [.Xil/can_node_loopback_propImpl.xdc].
+Resolution: To avoid this warning, move constraints listed in [.Xil/can_node_loopback_propImpl.xdc] to another XDC file and exclude this new file from synthesis with the used_in_synthesis property (File Properties dialog in GUI) and re-run elaboration/synthesis.
 Completed Processing XDC Constraints
 
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 1382.191 ; gain = 0.000
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.002 . Memory (MB): peak = 1401.438 ; gain = 0.000
 INFO: [Project 1-111] Unisim Transformation Summary:
 No Unisim elements were transformed.
 
-Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.013 . Memory (MB): peak = 1382.191 ; gain = 0.000
+Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.028 . Memory (MB): peak = 1401.438 ; gain = 0.000
 ---------------------------------------------------------------------------------
-Finished Constraint Validation : Time (s): cpu = 00:00:20 ; elapsed = 00:00:22 . Memory (MB): peak = 1382.191 ; gain = 679.020
+Finished Constraint Validation : Time (s): cpu = 00:00:42 ; elapsed = 00:00:44 . Memory (MB): peak = 1401.438 ; gain = 698.422
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Loading Part and Timing Information
 ---------------------------------------------------------------------------------
 Loading part: xc7a50tcpg236-1
 ---------------------------------------------------------------------------------
-Finished Loading Part and Timing Information : Time (s): cpu = 00:00:20 ; elapsed = 00:00:22 . Memory (MB): peak = 1382.191 ; gain = 679.020
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:42 ; elapsed = 00:00:45 . Memory (MB): peak = 1401.438 ; gain = 698.422
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Applying 'set_property' XDC Constraints
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:20 ; elapsed = 00:00:22 . Memory (MB): peak = 1382.191 ; gain = 679.020
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:42 ; elapsed = 00:00:45 . Memory (MB): peak = 1401.438 ; gain = 698.422
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Preparing Guide Design
 ---------------------------------------------------------------------------------
 CRITICAL WARNING: [Synth 8-6895] The reference checkpoint C:/Users/croci/CAN/CAN.srcs/utils_1/imports/synth_1/Destuffing.dcp is not suitable for use with incremental synthesis for this design. Please regenerate the checkpoint for this design with -incremental_synth switch in the same Vivado session that synth_design has been run. Synthesis will continue with the default flow
 ---------------------------------------------------------------------------------
-Finished Doing Graph Differ : Time (s): cpu = 00:00:21 ; elapsed = 00:00:22 . Memory (MB): peak = 1382.191 ; gain = 679.020
+Finished Doing Graph Differ : Time (s): cpu = 00:00:42 ; elapsed = 00:00:45 . Memory (MB): peak = 1401.438 ; gain = 698.422
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Preparing Guide Design : Time (s): cpu = 00:00:21 ; elapsed = 00:00:22 . Memory (MB): peak = 1382.191 ; gain = 679.020
+Finished Preparing Guide Design : Time (s): cpu = 00:00:42 ; elapsed = 00:00:45 . Memory (MB): peak = 1401.438 ; gain = 698.422
 ---------------------------------------------------------------------------------
 INFO: [Synth 8-802] inferred FSM for state register 'state_reg' in module 'builder_tx'
 INFO: [Synth 8-802] inferred FSM for state register 'state_reg' in module 'arbiter'
@@ -242,7 +276,7 @@ INFO: [Synth 8-3354] encoded FSM with state register 'state_reg' using encoding 
 ---------------------------------------------------------------------------------------------------
 INFO: [Synth 8-3354] encoded FSM with state register 'state_can_node_reg' using encoding 'sequential' in module 'can_node_top'
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:22 ; elapsed = 00:00:24 . Memory (MB): peak = 1382.191 ; gain = 679.020
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:46 ; elapsed = 00:00:49 . Memory (MB): peak = 1401.438 ; gain = 698.422
 ---------------------------------------------------------------------------------
 
 
@@ -274,7 +308,7 @@ Detailed RTL Component Info :
 +---Registers : 
 	              108 Bit    Registers := 7     
 	               98 Bit    Registers := 2     
-	               83 Bit    Registers := 2     
+	               83 Bit    Registers := 3     
 	               64 Bit    Registers := 1     
 	               25 Bit    Registers := 1     
 	               19 Bit    Registers := 1     
@@ -287,7 +321,7 @@ Detailed RTL Component Info :
 	                4 Bit    Registers := 8     
 	                3 Bit    Registers := 6     
 	                2 Bit    Registers := 2     
-	                1 Bit    Registers := 63    
+	                1 Bit    Registers := 65    
 +---RAMs : 
 	               2K Bit	(256 X 8 bit)          RAMs := 1     
 	               1K Bit	(16 X 108 bit)          RAMs := 1     
@@ -320,7 +354,7 @@ Detailed RTL Component Info :
 	   4 Input    2 Bit        Muxes := 2     
 	   6 Input    2 Bit        Muxes := 1     
 	   2 Input    2 Bit        Muxes := 9     
-	   2 Input    1 Bit        Muxes := 96    
+	   2 Input    1 Bit        Muxes := 91    
 	   3 Input    1 Bit        Muxes := 7     
 	   4 Input    1 Bit        Muxes := 10    
 	  13 Input    1 Bit        Muxes := 23    
@@ -341,33 +375,61 @@ Finished Part Resource Summary
 Start Cross Boundary and Area Optimization
 ---------------------------------------------------------------------------------
 WARNING: [Synth 8-7080] Parallel synthesis criteria is not met
+WARNING: [Synth 8-7129] Port frame_rx_out[24] in module loopback is either unconnected or has no load
+WARNING: [Synth 8-7129] Port frame_rx_out[23] in module loopback is either unconnected or has no load
+WARNING: [Synth 8-7129] Port frame_rx_out[22] in module loopback is either unconnected or has no load
+WARNING: [Synth 8-7129] Port frame_rx_out[21] in module loopback is either unconnected or has no load
+WARNING: [Synth 8-7129] Port frame_rx_out[20] in module loopback is either unconnected or has no load
+WARNING: [Synth 8-7129] Port frame_rx_out[19] in module loopback is either unconnected or has no load
+WARNING: [Synth 8-7129] Port frame_rx_out[18] in module loopback is either unconnected or has no load
+WARNING: [Synth 8-7129] Port frame_rx_out[17] in module loopback is either unconnected or has no load
+WARNING: [Synth 8-7129] Port frame_rx_out[16] in module loopback is either unconnected or has no load
+WARNING: [Synth 8-7129] Port frame_rx_out[15] in module loopback is either unconnected or has no load
+WARNING: [Synth 8-7129] Port frame_rx_out[14] in module loopback is either unconnected or has no load
+WARNING: [Synth 8-7129] Port frame_rx_out[13] in module loopback is either unconnected or has no load
+WARNING: [Synth 8-7129] Port frame_rx_out[12] in module loopback is either unconnected or has no load
+WARNING: [Synth 8-7129] Port frame_rx_out[11] in module loopback is either unconnected or has no load
+WARNING: [Synth 8-7129] Port frame_rx_out[10] in module loopback is either unconnected or has no load
+WARNING: [Synth 8-7129] Port frame_rx_out[9] in module loopback is either unconnected or has no load
+WARNING: [Synth 8-7129] Port frame_rx_out[8] in module loopback is either unconnected or has no load
+WARNING: [Synth 8-7129] Port frame_rx_out[7] in module loopback is either unconnected or has no load
+WARNING: [Synth 8-7129] Port frame_rx_out[6] in module loopback is either unconnected or has no load
+WARNING: [Synth 8-7129] Port frame_rx_out[5] in module loopback is either unconnected or has no load
+WARNING: [Synth 8-7129] Port frame_rx_out[4] in module loopback is either unconnected or has no load
+WARNING: [Synth 8-7129] Port frame_rx_out[3] in module loopback is either unconnected or has no load
+WARNING: [Synth 8-7129] Port frame_rx_out[2] in module loopback is either unconnected or has no load
+WARNING: [Synth 8-7129] Port frame_rx_out[1] in module loopback is either unconnected or has no load
+WARNING: [Synth 8-7129] Port frame_rx_out[0] in module loopback is either unconnected or has no load
+WARNING: [Synth 8-7129] Port err_stuff_out in module deserializerTX is either unconnected or has no load
+WARNING: [Synth 8-7129] Port err_stuff_in in module deserializerTX is either unconnected or has no load
+WARNING: [Synth 8-7129] Port err_stuff in module can_readTX is either unconnected or has no load
 WARNING: [Synth 8-7129] Port sof_bit in module arbiter is either unconnected or has no load
 WARNING: [Synth 8-7129] Port bus_off in module arbiter is either unconnected or has no load
 WARNING: [Synth 8-7129] Port tx_request in module builder_tx is either unconnected or has no load
 WARNING: [Synth 8-7129] Port full_fifo_tx in module can_node_top is either unconnected or has no load
+WARNING: [Synth 8-3332] Sequential element (mem_reg_async_reset_b) is unused and will be removed from module fifo.
 ---------------------------------------------------------------------------------
-Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:42 ; elapsed = 00:00:44 . Memory (MB): peak = 1501.312 ; gain = 798.141
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:01:28 ; elapsed = 00:01:33 . Memory (MB): peak = 1494.535 ; gain = 791.520
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start ROM, RAM, DSP, Shift Register and Retiming Reporting
 ---------------------------------------------------------------------------------
 
 Block RAM: Preliminary Mapping Report (see note below)
-+---------------------+------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
-|Module Name          | RTL Object | PORT A (Depth x Width) | W | R | PORT B (Depth x Width) | W | R | Ports driving FF | RAMB18 | RAMB36 | 
-+---------------------+------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
-|u_can_node/u_fifo_rx | mem_reg    | 16 x 108(READ_FIRST)   | W |   | 16 x 108(WRITE_FIRST)  |   | R | Port A and B     | 1      | 1      | 
-|u_can_node/u_fifo_tx | mem_reg    | 16 x 83(READ_FIRST)    | W |   | 16 x 83(WRITE_FIRST)   |   | R | Port A and B     | 1      | 1      | 
-+---------------------+------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
++--------------------------------------+------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
+|Module Name                           | RTL Object | PORT A (Depth x Width) | W | R | PORT B (Depth x Width) | W | R | Ports driving FF | RAMB18 | RAMB36 | 
++--------------------------------------+------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
+|u_controller_can/u_can_node/u_fifo_tx | mem_reg    | 16 x 83(READ_FIRST)    | W |   | 16 x 83(WRITE_FIRST)   |   | R | Port A and B     | 1      | 1      | 
++--------------------------------------+------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
 
 Note: The table above is a preliminary report that shows the Block RAMs at the current stage of the synthesis flow. Some Block RAMs may be reimplemented as non Block RAM primitives later in the synthesis flow. Multiple instantiated Block RAMs are reported only once. 
 
 Distributed RAM: Preliminary Mapping Report (see note below)
-+------------------------------------+------------+-----------+----------------------+--------------+
-|Module Name                         | RTL Object | Inference | Size (Depth x Width) | Primitives   | 
-+------------------------------------+------------+-----------+----------------------+--------------+
-|u_can_node/u_rx_module/u_ram_filter | RAM_reg    | Implied   | 256 x 8              | RAM64M x 12  | 
-+------------------------------------+------------+-----------+----------------------+--------------+
++-----------------------------------------------------+------------+-----------+----------------------+--------------+
+|Module Name                                          | RTL Object | Inference | Size (Depth x Width) | Primitives   | 
++-----------------------------------------------------+------------+-----------+----------------------+--------------+
+|u_controller_can/u_can_node/u_rx_module/u_ram_filter | RAM_reg    | Implied   | 256 x 8              | RAM64M x 12  | 
++-----------------------------------------------------+------------+-----------+----------------------+--------------+
 
 Note: The table above is a preliminary report that shows the Distributed RAMs at the current stage of the synthesis flow. Some Distributed RAMs may be reimplemented as non Distributed RAM primitives later in the synthesis flow. Multiple instantiated RAMs are reported only once.
 ---------------------------------------------------------------------------------
@@ -377,33 +439,32 @@ Finished ROM, RAM, DSP, Shift Register and Retiming Reporting
 Start Applying XDC Timing Constraints
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:49 ; elapsed = 00:00:51 . Memory (MB): peak = 1544.676 ; gain = 841.504
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:01:37 ; elapsed = 00:01:42 . Memory (MB): peak = 1537.555 ; gain = 834.539
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Timing Optimization
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Timing Optimization : Time (s): cpu = 00:00:55 ; elapsed = 00:00:58 . Memory (MB): peak = 1634.480 ; gain = 931.309
+Finished Timing Optimization : Time (s): cpu = 00:01:44 ; elapsed = 00:01:49 . Memory (MB): peak = 1627.426 ; gain = 924.410
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start ROM, RAM, DSP, Shift Register and Retiming Reporting
 ---------------------------------------------------------------------------------
 
 Block RAM: Final Mapping Report
-+---------------------+------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
-|Module Name          | RTL Object | PORT A (Depth x Width) | W | R | PORT B (Depth x Width) | W | R | Ports driving FF | RAMB18 | RAMB36 | 
-+---------------------+------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
-|u_can_node/u_fifo_rx | mem_reg    | 16 x 108(READ_FIRST)   | W |   | 16 x 108(WRITE_FIRST)  |   | R | Port A and B     | 1      | 1      | 
-|u_can_node/u_fifo_tx | mem_reg    | 16 x 83(READ_FIRST)    | W |   | 16 x 83(WRITE_FIRST)   |   | R | Port A and B     | 1      | 1      | 
-+---------------------+------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
++--------------------------------------+------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
+|Module Name                           | RTL Object | PORT A (Depth x Width) | W | R | PORT B (Depth x Width) | W | R | Ports driving FF | RAMB18 | RAMB36 | 
++--------------------------------------+------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
+|u_controller_can/u_can_node/u_fifo_tx | mem_reg    | 16 x 83(READ_FIRST)    | W |   | 16 x 83(WRITE_FIRST)   |   | R | Port A and B     | 1      | 1      | 
++--------------------------------------+------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
 
 
 Distributed RAM: Final Mapping Report
-+------------------------------------+------------+-----------+----------------------+--------------+
-|Module Name                         | RTL Object | Inference | Size (Depth x Width) | Primitives   | 
-+------------------------------------+------------+-----------+----------------------+--------------+
-|u_can_node/u_rx_module/u_ram_filter | RAM_reg    | Implied   | 256 x 8              | RAM64M x 12  | 
-+------------------------------------+------------+-----------+----------------------+--------------+
++-----------------------------------------------------+------------+-----------+----------------------+--------------+
+|Module Name                                          | RTL Object | Inference | Size (Depth x Width) | Primitives   | 
++-----------------------------------------------------+------------+-----------+----------------------+--------------+
+|u_controller_can/u_can_node/u_rx_module/u_ram_filter | RAM_reg    | Implied   | 256 x 8              | RAM64M x 12  | 
++-----------------------------------------------------+------------+-----------+----------------------+--------------+
 
 ---------------------------------------------------------------------------------
 Finished ROM, RAM, DSP, Shift Register and Retiming Reporting
@@ -412,7 +473,7 @@ Finished ROM, RAM, DSP, Shift Register and Retiming Reporting
 Start Technology Mapping
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Technology Mapping : Time (s): cpu = 00:00:57 ; elapsed = 00:01:00 . Memory (MB): peak = 1643.559 ; gain = 940.387
+Finished Technology Mapping : Time (s): cpu = 00:01:46 ; elapsed = 00:01:51 . Memory (MB): peak = 1636.477 ; gain = 933.461
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start IO Insertion
@@ -424,19 +485,19 @@ Start Final Netlist Cleanup
 Finished Final Netlist Cleanup
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished IO Insertion : Time (s): cpu = 00:01:02 ; elapsed = 00:01:05 . Memory (MB): peak = 1801.301 ; gain = 1098.129
+Finished IO Insertion : Time (s): cpu = 00:01:51 ; elapsed = 00:01:57 . Memory (MB): peak = 1794.793 ; gain = 1091.777
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Instances
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Instances : Time (s): cpu = 00:01:02 ; elapsed = 00:01:05 . Memory (MB): peak = 1801.301 ; gain = 1098.129
+Finished Renaming Generated Instances : Time (s): cpu = 00:01:51 ; elapsed = 00:01:57 . Memory (MB): peak = 1794.793 ; gain = 1091.777
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Handling Custom Attributes
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Handling Custom Attributes : Time (s): cpu = 00:01:02 ; elapsed = 00:01:06 . Memory (MB): peak = 1802.309 ; gain = 1099.137
+Finished Handling Custom Attributes : Time (s): cpu = 00:01:52 ; elapsed = 00:01:57 . Memory (MB): peak = 1794.812 ; gain = 1091.797
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Writing Synthesis Report
@@ -454,49 +515,48 @@ Report Cell Usage:
 +------+---------+------+
 |1     |BUFG     |     1|
 |2     |CARRY4   |    28|
-|3     |LUT1     |    12|
-|4     |LUT2     |   227|
-|5     |LUT3     |   409|
-|6     |LUT4     |   135|
-|7     |LUT5     |   174|
-|8     |LUT6     |  1013|
-|9     |MUXF7    |    18|
+|3     |LUT1     |    10|
+|4     |LUT2     |   223|
+|5     |LUT3     |   406|
+|6     |LUT4     |   132|
+|7     |LUT5     |   175|
+|8     |LUT6     |  1004|
+|9     |MUXF7    |    16|
 |10    |RAM64M   |    12|
-|11    |RAMB18E1 |     2|
-|12    |RAMB36E1 |     2|
-|13    |FDCE     |   849|
-|14    |FDPE     |   134|
+|11    |RAMB18E1 |     1|
+|12    |RAMB36E1 |     1|
+|13    |FDCE     |   721|
+|14    |FDPE     |   135|
 |15    |FDRE     |    99|
-|16    |IBUF     |   135|
+|16    |IBUF     |    49|
 |17    |IOBUF    |     1|
-|18    |OBUF     |   110|
-|19    |OBUFT    |     1|
+|18    |OBUF     |     1|
 +------+---------+------+
 ---------------------------------------------------------------------------------
-Finished Writing Synthesis Report : Time (s): cpu = 00:01:02 ; elapsed = 00:01:06 . Memory (MB): peak = 1802.309 ; gain = 1099.137
+Finished Writing Synthesis Report : Time (s): cpu = 00:01:52 ; elapsed = 00:01:57 . Memory (MB): peak = 1794.812 ; gain = 1091.797
 ---------------------------------------------------------------------------------
-Synthesis finished with 0 errors, 1 critical warnings and 5 warnings.
-Synthesis Optimization Runtime : Time (s): cpu = 00:00:50 ; elapsed = 00:01:03 . Memory (MB): peak = 1802.309 ; gain = 1039.816
-Synthesis Optimization Complete : Time (s): cpu = 00:01:03 ; elapsed = 00:01:06 . Memory (MB): peak = 1802.309 ; gain = 1099.137
+Synthesis finished with 0 errors, 1 critical warnings and 34 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:01:27 ; elapsed = 00:01:51 . Memory (MB): peak = 1794.812 ; gain = 1012.406
+Synthesis Optimization Complete : Time (s): cpu = 00:01:52 ; elapsed = 00:01:57 . Memory (MB): peak = 1794.812 ; gain = 1091.797
 INFO: [Project 1-571] Translating synthesized netlist
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.042 . Memory (MB): peak = 1811.492 ; gain = 0.000
-INFO: [Netlist 29-17] Analyzing 63 Unisim elements for replacement
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.043 . Memory (MB): peak = 1804.008 ; gain = 0.000
+INFO: [Netlist 29-17] Analyzing 59 Unisim elements for replacement
 INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
 INFO: [Project 1-570] Preparing netlist for logic optimization
 INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 1815.188 ; gain = 0.000
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.002 . Memory (MB): peak = 1807.695 ; gain = 0.000
 INFO: [Project 1-111] Unisim Transformation Summary:
   A total of 13 instances were transformed.
   IOBUF => IOBUF (IBUF, OBUFT): 1 instance 
   RAM64M => RAM64M (RAMD64E(x4)): 12 instances
 
-Synth Design complete | Checksum: fad5ab38
+Synth Design complete | Checksum: 44c7bc2b
 INFO: [Common 17-83] Releasing license: Synthesis
-78 Infos, 23 Warnings, 5 Critical Warnings and 0 Errors encountered.
+82 Infos, 82 Warnings, 5 Critical Warnings and 0 Errors encountered.
 synth_design completed successfully
-synth_design: Time (s): cpu = 00:01:10 ; elapsed = 00:01:16 . Memory (MB): peak = 1815.188 ; gain = 1302.016
+synth_design: Time (s): cpu = 00:01:59 ; elapsed = 00:02:08 . Memory (MB): peak = 1807.695 ; gain = 1291.832
 INFO: [runtcl-6] Synthesis results are not added to the cache due to CRITICAL_WARNING
-Write ShapeDB Complete: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.010 . Memory (MB): peak = 1815.188 ; gain = 0.000
-INFO: [Common 17-1381] The checkpoint 'C:/Users/croci/CAN/CAN.runs/synth_1/can_fpga_top.dcp' has been generated.
-INFO: [Vivado 12-24828] Executing command : report_utilization -file can_fpga_top_utilization_synth.rpt -pb can_fpga_top_utilization_synth.pb
-INFO: [Common 17-206] Exiting Vivado at Tue Jun  9 18:46:34 2026...
+Write ShapeDB Complete: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.009 . Memory (MB): peak = 1807.695 ; gain = 0.000
+INFO: [Common 17-1381] The checkpoint 'C:/Users/croci/CAN/CAN.runs/synth_1/can_node_loopback.dcp' has been generated.
+INFO: [Vivado 12-24828] Executing command : report_utilization -file can_node_loopback_utilization_synth.rpt -pb can_node_loopback_utilization_synth.pb
+INFO: [Common 17-206] Exiting Vivado at Wed Jun 10 03:25:06 2026...

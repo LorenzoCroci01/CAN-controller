@@ -4,7 +4,7 @@
 
 set TIME_start [clock seconds] 
 namespace eval ::optrace {
-  variable script "C:/Users/croci/CAN/CAN.runs/synth_1/can_fpga_top.tcl"
+  variable script "C:/Users/croci/CAN/CAN.runs/synth_1/can_node_loopback.tcl"
   variable category "vivado_synth"
 }
 
@@ -98,6 +98,8 @@ read_vhdl -library xil_defaultlib {
   C:/Users/croci/CAN/CAN.srcs/sources_1/new/fifo.vhd
   C:/Users/croci/CAN/CAN.srcs/sources_1/new/error_manager.vhd
   C:/Users/croci/CAN/CAN.srcs/sources_1/new/can_node_top.vhd
+  C:/Users/croci/CAN/CAN.srcs/sources_1/new/loopback.vhd
+  C:/Users/croci/CAN/CAN.srcs/sources_1/new/can_node_loopback.vhd
   C:/Users/croci/CAN/CAN.srcs/sources_1/new/cam_fpga_top.vhd
 }
 OPTRACE "Adding files" END { }
@@ -118,7 +120,7 @@ read_checkpoint -auto_incremental -incremental C:/Users/croci/CAN/CAN.srcs/utils
 close [open __synthesis_is_running__ w]
 
 OPTRACE "synth_design" START { }
-synth_design -top can_fpga_top -part xc7a50tcpg236-1 -flatten_hierarchy none
+synth_design -top can_node_loopback -part xc7a50tcpg236-1 -flatten_hierarchy none
 OPTRACE "synth_design" END { }
 if { [get_msg_config -count -severity {CRITICAL WARNING}] > 0 } {
  send_msg_id runtcl-6 info "Synthesis results are not added to the cache due to CRITICAL_WARNING"
@@ -128,10 +130,10 @@ if { [get_msg_config -count -severity {CRITICAL WARNING}] > 0 } {
 OPTRACE "write_checkpoint" START { CHECKPOINT }
 # disable binary constraint mode for synth run checkpoints
 set_param constraints.enableBinaryConstraints false
-write_checkpoint -force -noxdef can_fpga_top.dcp
+write_checkpoint -force -noxdef can_node_loopback.dcp
 OPTRACE "write_checkpoint" END { }
 OPTRACE "synth reports" START { REPORT }
-generate_parallel_reports -reports { "report_utilization -file can_fpga_top_utilization_synth.rpt -pb can_fpga_top_utilization_synth.pb"  } 
+generate_parallel_reports -reports { "report_utilization -file can_node_loopback_utilization_synth.rpt -pb can_node_loopback_utilization_synth.pb"  } 
 OPTRACE "synth reports" END { }
 file delete __synthesis_is_running__
 close [open __synthesis_is_complete__ w]

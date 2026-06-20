@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<GenRun Id="synth_1" LaunchPart="xc7a50tcpg236-1" LaunchTime="1781023497" LaunchIncrCheckpoint="$PSRCDIR/utils_1/imports/synth_1/Destuffing.dcp">
-  <File Type="PA-TCL" Name="can_fpga_top.tcl"/>
-  <File Type="REPORTS-TCL" Name="can_fpga_top_reports.tcl"/>
-  <File Type="RDS-RDS" Name="can_fpga_top.vds"/>
-  <File Type="RDS-PROPCONSTRS" Name="can_fpga_top_drc_synth.rpt"/>
-  <File Type="RDS-UTIL" Name="can_fpga_top_utilization_synth.rpt"/>
-  <File Type="RDS-UTIL-PB" Name="can_fpga_top_utilization_synth.pb"/>
-  <File Type="RDS-DCP" Name="can_fpga_top.dcp"/>
-  <File Type="VDS-TIMINGSUMMARY" Name="can_fpga_top_timing_summary_synth.rpt"/>
-  <File Type="VDS-TIMING-PB" Name="can_fpga_top_timing_summary_synth.pb"/>
+<GenRun Id="synth_1" LaunchPart="xc7a50tcpg236-1" LaunchTime="1781054563" LaunchIncrCheckpoint="$PSRCDIR/utils_1/imports/synth_1/Destuffing.dcp">
+  <File Type="REPORTS-TCL" Name="can_node_loopback_reports.tcl"/>
+  <File Type="RDS-UTIL" Name="can_node_loopback_utilization_synth.rpt"/>
+  <File Type="RDS-UTIL-PB" Name="can_node_loopback_utilization_synth.pb"/>
+  <File Type="PA-TCL" Name="can_node_loopback.tcl"/>
+  <File Type="RDS-RDS" Name="can_node_loopback.vds"/>
+  <File Type="RDS-DCP" Name="can_node_loopback.dcp"/>
   <FileSet Name="sources" Type="DesignSrcs" RelSrcDir="$PSRCDIR/sources_1" RelGenDir="$PGENDIR/sources_1">
     <Filter Type="Srcs"/>
     <File Path="$PSRCDIR/sources_1/new/FF.vhd">
@@ -127,7 +124,6 @@
     </File>
     <File Path="$PSRCDIR/sources_1/new/loopback.vhd">
       <FileInfo>
-        <Attr Name="UserDisabled" Val="1"/>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="simulation"/>
       </FileInfo>
@@ -137,7 +133,6 @@
     </File>
     <File Path="$PSRCDIR/sources_1/new/can_node_loopback.vhd">
       <FileInfo>
-        <Attr Name="UserDisabled" Val="1"/>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="simulation"/>
       </FileInfo>
@@ -150,7 +145,7 @@
     </File>
     <Config>
       <Option Name="DesignMode" Val="RTL"/>
-      <Option Name="TopModule" Val="can_fpga_top"/>
+      <Option Name="TopModule" Val="can_node_loopback"/>
     </Config>
   </FileSet>
   <FileSet Name="constrs_in" Type="Constrs" RelSrcDir="$PSRCDIR/constrs_1" RelGenDir="$PGENDIR/constrs_1">

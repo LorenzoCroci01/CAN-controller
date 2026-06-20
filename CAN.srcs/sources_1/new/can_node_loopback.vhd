@@ -32,9 +32,9 @@ entity can_node_loopback is
         -- physical CAN bus
         bus_line    : inout std_logic;
           
-        prop_seg    : in unsigned(9 downto 0);
-        phase_seg1  : in unsigned(9 downto 0);
-        phase_seg2  : in unsigned(9 downto 0);
+        prop_seg    : in unsigned(7 downto 0);
+        phase_seg1  : in unsigned(7 downto 0);
+        phase_seg2  : in unsigned(7 downto 0);
         
         we_memID    : in  std_logic;
         ram_addrID  : in  unsigned(7 downto 0);
@@ -64,43 +64,13 @@ architecture rtl of can_node_loopback is
     signal sl_full_fifo_tx  : std_logic;
 
 
-
-    ------------------------------------------------
-    -- CAN physical interface
-    ------------------------------------------------
-
-    signal bus_line_i       : std_logic;
-    signal bus_line_o       : std_logic;
-    signal bus_line_oe      : std_logic;
-
-
 begin
-
-
-    ------------------------------------------------
-    -- TRI STATE CAN BUS
-    ------------------------------------------------
-
-    bus_line <= bus_line_o
-                when bus_line_oe = '1'
-                else 'Z';
-
-
-    ------------------------------------------------
-    -- normalize input
-    ------------------------------------------------
-
-    bus_line_i <= '0'
-                  when bus_line = '0'
-                  else '1';
-
-
 
     ------------------------------------------------
     -- CAN controller
     ------------------------------------------------
 
-    u_controller_can : entity work.can_node_top
+    u_controller_can : entity work.can_fpga_top
         port map (
 
             clock => clock,
@@ -108,9 +78,7 @@ begin
 
             cfg_mode => sl_cfg_mode,
 
-            bus_line_i  => bus_line_i,
-            bus_line_o  => bus_line_o,
-            bus_line_oe => bus_line_oe,
+            bus_ext => bus_line,
 
             prop_seg   => prop_seg,
             phase_seg1 => phase_seg1,

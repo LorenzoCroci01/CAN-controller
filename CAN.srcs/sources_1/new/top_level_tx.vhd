@@ -34,9 +34,9 @@ entity top_level_tx is
         err_event       : in std_logic;
         gen_errTx       : in std_logic;
         
-        prop_seg        : in unsigned(9 downto 0);
-        phase_seg1      : in unsigned(9 downto 0);
-        phase_seg2      : in unsigned(9 downto 0);
+        prop_seg        : in unsigned(7 downto 0);
+        phase_seg1      : in unsigned(7 downto 0);
+        phase_seg2      : in unsigned(7 downto 0);
         
         --frame_tx_rdy    : out std_logic;
         
@@ -81,9 +81,7 @@ begin
     bus_busy <= sl_bus_busy;
     lost_arb <= sl_lost_arb;
 
-    --------------------------------------------------------------------
     -- Driver ERR
-    --------------------------------------------------------------------
     u_driver_err : entity work.driver_err
         port map (
             frame_tx_fifo   => frame_tx_fifo,
@@ -92,9 +90,7 @@ begin
             frame_tx        => sv_frm_build_in
         );
 
-    --------------------------------------------------------------------
     -- Frame builder
-    --------------------------------------------------------------------
     u_builder_tx : entity work.builder_tx
         port map (
             clock        => clock,

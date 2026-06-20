@@ -38,9 +38,9 @@ entity can_fpga_top is
         bus_ext     : inout std_logic;
 
         -- bit timing config
-        prop_seg    : in unsigned(9 downto 0);
-        phase_seg1  : in unsigned(9 downto 0);
-        phase_seg2  : in unsigned(9 downto 0);
+        prop_seg    : in unsigned(7 downto 0);
+        phase_seg1  : in unsigned(7 downto 0);
+        phase_seg2  : in unsigned(7 downto 0);
 
         -- FIFO RX interface
         frame_rx_out  : out std_logic_vector(107 downto 0);

@@ -38,9 +38,9 @@ entity top_level_RX is
         state_can    : in std_logic_vector(1 downto 0);
 
         -- BTU configuration
-        prop_seg     : in unsigned(9 downto 0);
-        phase_seg1   : in unsigned(9 downto 0);
-        phase_seg2   : in unsigned(9 downto 0);
+        prop_seg     : in unsigned(7 downto 0);
+        phase_seg1   : in unsigned(7 downto 0);
+        phase_seg2   : in unsigned(7 downto 0);
 
         -- RAM filter ID configuration
         we_memID     : in std_logic;

@@ -35,7 +35,7 @@ architecture sim of tb_can_bus1 is
     -- CLOCK
     -------------------------------------------------------
     signal clock_a : std_logic := '0';
-    signal clock_b : std_logic := '1';
+    signal clock_b : std_logic := '0';
 
     -------------------------------------------------------
     -- RESET
@@ -54,15 +54,15 @@ architecture sim of tb_can_bus1 is
     -------------------------------------------------------
     -- SHARED CAN BUS
     -------------------------------------------------------
-    signal bus_line : std_logic;
+    signal bus_line : std_logic := '0';
 
 
     -------------------------------------------------------
     -- BIT TIMING
     -------------------------------------------------------
-    signal prop_seg   : unsigned(9 downto 0) := to_unsigned(2,10);
-    signal phase_seg1 : unsigned(9 downto 0) := to_unsigned(2,10);
-    signal phase_seg2 : unsigned(9 downto 0) := to_unsigned(2,10);
+    signal prop_seg   : unsigned(7 downto 0) := to_unsigned(2,8);
+    signal phase_seg1 : unsigned(7 downto 0) := to_unsigned(2,8);
+    signal phase_seg2 : unsigned(7 downto 0) := to_unsigned(2,8);
 
 
     -------------------------------------------------------
@@ -89,7 +89,11 @@ architecture sim of tb_can_bus1 is
 
     signal full_fifo_tx_a : std_logic;
     signal full_fifo_tx_b : std_logic;
-
+    
+    -------------------------------------------------------
+    -- ERROR INJECTION
+    -------------------------------------------------------
+    signal force_error : std_logic := '0';
 
 
     -------------------------------------------------------
@@ -143,7 +147,6 @@ begin
 -------------------------------------------------------
 -- CLOCK
 -------------------------------------------------------
-
 clock_a <= not clock_a after 5 ns;
 clock_b <= not clock_a;
 
@@ -154,7 +157,6 @@ clock_b <= not clock_a;
 
 node_A : entity work.can_fpga_top
 port map (
-
     clock => clock_a,
     reset => reset_a,
 
@@ -166,16 +168,13 @@ port map (
     phase_seg1 => phase_seg1,
     phase_seg2 => phase_seg2,
 
-
     frame_rx_out => frame_rx_out_a,
     pop_fifo_rx => pop_fifo_rx_a,
     empty_fifo_rx => empty_fifo_rx_a,
 
-
     frame_tx_in => frame_tx_in_a,
     push_fifo_tx => push_fifo_tx_a,
     full_fifo_tx => full_fifo_tx_a,
-
 
     we_memID => we_memID_a,
     ram_addrID => ram_addrID_a,
@@ -191,7 +190,6 @@ port map (
 
 node_B : entity work.can_fpga_top
 port map (
-
     clock => clock_b,
     reset => reset_b,
 
@@ -203,16 +201,13 @@ port map (
     phase_seg1 => phase_seg1,
     phase_seg2 => phase_seg2,
 
-
     frame_rx_out => frame_rx_out_b,
     pop_fifo_rx => pop_fifo_rx_b,
     empty_fifo_rx => empty_fifo_rx_b,
 
-
     frame_tx_in => frame_tx_in_b,
     push_fifo_tx => push_fifo_tx_b,
     full_fifo_tx => full_fifo_tx_b,
-
 
     we_memID => we_memID_b,
     ram_addrID => ram_addrID_b,
@@ -222,133 +217,105 @@ port map (
 
 
 
--------------------------------------------------------
 -- STIMULUS
--------------------------------------------------------
-
 stim_proc : process
 
 
-procedure ram_write_a(
-    a : unsigned(7 downto 0);
-    d : std_logic_vector(7 downto 0)) is
-begin
-    ram_addrID_a <= a;
-    ram_dinID_a <= d;
-    we_memID_a <= '1';
-    wait until rising_edge(clock_a);
-    we_memID_a <= '0';
-    wait until rising_edge(clock_a);
-end procedure;
+    procedure ram_write_a(
+        a : unsigned(7 downto 0);
+        d : std_logic_vector(7 downto 0)) is
+    begin
+        ram_addrID_a <= a;
+        ram_dinID_a <= d;
+        we_memID_a <= '1';
+        wait until rising_edge(clock_a);
+        we_memID_a <= '0';
+        wait until rising_edge(clock_a);
+    end procedure;
 
 
 
-procedure ram_write_b(
-    a : unsigned(7 downto 0);
-    d : std_logic_vector(7 downto 0)) is
-begin
-    ram_addrID_b <= a;
-    ram_dinID_b <= d;
-    we_memID_b <= '1';
-    wait until rising_edge(clock_b);
-    we_memID_b <= '0';
-    wait until rising_edge(clock_b);
-end procedure;
+    procedure ram_write_b(
+        a : unsigned(7 downto 0);
+        d : std_logic_vector(7 downto 0)) is
+    begin
+        ram_addrID_b <= a;
+        ram_dinID_b <= d;
+        we_memID_b <= '1';
+        wait until rising_edge(clock_b);
+        we_memID_b <= '0';
+        wait until rising_edge(clock_b);
+    end procedure;
 
 
 
-procedure tx_fifo_push_a(
-    f : std_logic_vector(82 downto 0)) is
-begin
-    frame_tx_in_a <= f;
-    push_fifo_tx_a <= '1';
-    wait until rising_edge(clock_a);
-    push_fifo_tx_a <= '0';
-    wait until rising_edge(clock_a);
-end procedure;
+    procedure tx_fifo_push_a(
+        f : std_logic_vector(82 downto 0)) is
+    begin
+        frame_tx_in_a <= f;
+        push_fifo_tx_a <= '1';
+        wait until rising_edge(clock_a);
+        push_fifo_tx_a <= '0';
+        wait until rising_edge(clock_a);
+    end procedure;
 
 
-
-procedure tx_fifo_push_b(
-    f : std_logic_vector(82 downto 0)) is
-begin
-    frame_tx_in_b <= f;
-    push_fifo_tx_b <= '1';
-    wait until rising_edge(clock_b);
-    push_fifo_tx_b <= '0';
-    wait until rising_edge(clock_b);
-end procedure;
-
+    procedure tx_fifo_push_b(
+        f : std_logic_vector(82 downto 0)) is
+    begin
+        frame_tx_in_b <= f;
+        push_fifo_tx_b <= '1';
+        wait until rising_edge(clock_b);
+        push_fifo_tx_b <= '0';
+        wait until rising_edge(clock_b);
+    end procedure;
 
 
 begin
 
+    reset_a <= '1';
+    reset_b <= '1';
 
-reset_a <= '1';
-reset_b <= '1';
+    wait for 50 ns;
 
-wait for 50 ns;
+    reset_a <= '0';
+    reset_b <= '0';
 
-
-reset_a <= '0';
-reset_b <= '0';
-
-
-wait until ram_rdy_a='1'
-       and ram_rdy_b='1';
+    wait until ram_rdy_a='1' and ram_rdy_b='1';
 
 
+    -- FILTER CONFIG
 
--------------------------------------------------------
--- FILTER CONFIG
--------------------------------------------------------
+    -- nodo A riceve ID nodo B
+    ram_write_a(x"32","00001000"); -- 0x193
+    ram_write_a(x"76","00001000"); -- 0x3B3
 
--- nodo A riceve ID nodo B
-
-ram_write_a(x"32","00001000"); -- 0x193
-ram_write_a(x"76","00001000"); -- 0x3B3
-
-
--- nodo B riceve ID nodo A
-
-ram_write_b(x"12","00001000"); -- 0x093
-ram_write_b(x"1E","00001000"); -- 0x0F3
+    -- nodo B riceve ID nodo A
+    ram_write_b(x"12","00001000"); -- 0x093
+    ram_write_a(x"1E","00001000"); -- 0x0F3
 
 
+    -- LOAD TX FIFO
 
--------------------------------------------------------
--- LOAD TX FIFO
--------------------------------------------------------
+    tx_fifo_push_a(FRAME_1);
+    tx_fifo_push_b(FRAME_2);
+    --tx_fifo_push_b(FRAME_3);
+    --tx_fifo_push_b(FRAME_4);
 
-tx_fifo_push_a(FRAME_1);
-tx_fifo_push_a(FRAME_2);
-
-
-tx_fifo_push_b(FRAME_3);
-tx_fifo_push_b(FRAME_4);
+    wait for 200 ns;
 
 
+    -- ENABLE CAN
 
-wait for 200 ns;
-
-
--------------------------------------------------------
--- ENABLE CAN
--------------------------------------------------------
-
-cfg_mode_a <= '0';
-cfg_mode_b <= '0';
+    cfg_mode_a <= '0';
+    cfg_mode_b <= '0';
 
 
+    wait for 150 us;
 
-wait for 150 us;
-
-
-wait;
-
+    wait;
 
 end process;
-
 
 end architecture;
 
