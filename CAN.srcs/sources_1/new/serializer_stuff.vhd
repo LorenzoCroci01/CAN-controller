@@ -126,7 +126,7 @@ begin
 
                 if gen_errTx = '0' then
                     -- error flag standard (14 bit)
-                    if s_bit_idx = 13 then
+                    if s_bit_idx = 12 then
                         s_bit_idx <= (others => '0');
                         end_tx    <= '1';
                     else

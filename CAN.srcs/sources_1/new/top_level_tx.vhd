@@ -26,6 +26,8 @@ entity top_level_tx is
     Port (
         clock           : in std_logic;
         reset           : in std_logic;
+        cfg_mode        : in std_logic;
+        
         frame_tx_fifo   : in std_logic_vector(82 downto 0);
         tx_request      : in std_logic;
         ack_slot        : in std_logic;
@@ -154,6 +156,7 @@ begin
             clock       => clock,
             reset       => reset,
             edge_det    => '0',
+            cfg_mode    => cfg_mode,
             prop_seg    => prop_seg,
             phase_seg1  => phase_seg1,
             phase_seg2  => phase_seg2,
@@ -181,6 +184,7 @@ begin
             clock        => clock,
             reset        => reset,
             rx_in        => bus_line_i,
+            cfg_mode     => cfg_mode,
             prop_seg     => prop_seg,
             phase_seg1   => phase_seg1,
             phase_seg2   => phase_seg2,

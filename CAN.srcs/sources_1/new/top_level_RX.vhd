@@ -87,6 +87,7 @@ begin
             clock       => clock,
             reset       => reset,
             rx_in       => rx_in,
+            cfg_mode    => cfg_mode,
             lost_arbitration => lost_arbitration,
             id_rx_in    => id_rx_in,
             id_len      => id_len,

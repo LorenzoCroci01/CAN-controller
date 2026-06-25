@@ -27,7 +27,7 @@ entity CAN_RX_module is
         clock         : in  std_logic;      -- main clock
         reset         : in  std_logic;      -- async reset
         rx_in         : in  std_logic;      -- rx async bit input
-        --rx_enable     : in std_logic;       -- rx enable flag
+        cfg_mode      : in std_logic;
         lost_arbitration : in std_logic;
         id_rx_in      : in std_logic_vector(10 downto 0);
         id_len        : in integer range 0 to 10;
@@ -70,22 +70,6 @@ begin
     frame_rdy   <= sl_frame_rdy;
     err_frame   <= sl_err_frame;    
 
-    -- can state manager
-    --process(clock, reset)
-    --begin
-    --    if reset = '1' then
-    --        state_can_r <= "00"; -- IDLE
-    --    elsif rising_edge(clock) then
-    --        -- end of frame -> IDLE
-    --        if sl_frame_rdy = '1' then
-    --            state_can_r <= "00";
-
-    --        -- start reception
-    --        elsif (rx_enable = '1' and state_can_r = "00" and sl_bit_valid='1' and sl_bit_out='0') then
-    --            state_can_r <= "01"; -- RECEIVING
-    --        end if;
-    --    end if;
-    --end process;
 
     -- Sync FF
     u_ff : entity work.FF
@@ -102,6 +86,7 @@ begin
             clock        => clock,
             reset        => reset,
             edge_det     => sl_edge_det,
+            cfg_mode     => cfg_mode,
             prop_seg     => prop_seg,
             phase_seg1   => phase_seg1,
             phase_seg2   => phase_seg2,

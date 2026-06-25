@@ -249,6 +249,7 @@ begin
         port map (
             clock            => clock,
             reset            => reset,
+            cfg_mode         => cfg_mode,
             frame_tx_fifo    => sl_fifo_tx_out,
             tx_request       => sl_tx_request_lat,
             ack_slot         => sl_ack_slot,

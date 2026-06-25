@@ -35,9 +35,10 @@ use IEEE.NUMERIC_STD.ALL;
 entity BTU is
     port (
         -- input
-        clock           : in  std_logic;
-        reset           : in  std_logic;
-        edge_det        : in  std_logic;
+        clock           : in std_logic;
+        reset           : in std_logic;
+        edge_det        : in std_logic;
+        cfg_mode        : in std_logic;
         
         -- configuration parameters BTU (baud rate)
         prop_seg     : in unsigned(7 downto 0);
@@ -83,25 +84,25 @@ begin
                 -- restart bit timing at toggle
                 s_tq_cnt     <= (others => '0');
             else
-
-                if s_tq_cnt = s_tq_total - 1 then
-                    -- end of bit
-                    s_tq_cnt     <= (others => '0');
-                    bit_tick     <= '1';
-                    sample_tick  <= '0';
-                else
-                    bit_tick     <= '0';
-                    s_tq_cnt <= s_tq_cnt + 1;   -- increment time quanta counter
-
-                    -- generate sample point
-                    if s_tq_cnt = s_sample_point - 1 then
-                        sample_tick <= '1';
+                if cfg_mode = '0' then
+                    if s_tq_cnt = s_tq_total - 1 then
+                        -- end of bit
+                        s_tq_cnt     <= (others => '0');
+                        bit_tick     <= '1';
+                        sample_tick  <= '0';
                     else
-                        sample_tick <= '0';
+                        bit_tick     <= '0';
+                        s_tq_cnt <= s_tq_cnt + 1;   -- increment time quanta counter
+
+                        -- generate sample point
+                        if s_tq_cnt = s_sample_point - 1 then
+                            sample_tick <= '1';
+                        else
+                            sample_tick <= '0';
+                        end if;
+
                     end if;
-
                 end if;
-
             end if;
 
         end if;

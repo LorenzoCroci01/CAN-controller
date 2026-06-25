@@ -27,6 +27,7 @@ entity can_readTX is
         clock       : in  std_logic;    -- main clock
         reset       : in  std_logic;    -- async reset
         rx_in       : in  std_logic;    -- rx async bit input
+        cfg_mode    : in  std_logic;
 
         prop_seg    : in  unsigned(7 downto 0);
         phase_seg1  : in  unsigned(7 downto 0);
@@ -75,6 +76,7 @@ begin
             clock        => clock,
             reset        => reset,
             edge_det     => sl_edge_det,
+            cfg_mode     => cfg_mode,
             prop_seg     => prop_seg,
             phase_seg1   => phase_seg1,
             phase_seg2   => phase_seg2,

@@ -43,27 +43,28 @@ architecture sim of tb_can_bus1 is
     signal reset_a : std_logic := '1';
     signal reset_b : std_logic := '1';
 
-
     -------------------------------------------------------
     -- CONFIG MODE
     -------------------------------------------------------
-    signal cfg_mode_a : std_logic := '1';
-    signal cfg_mode_b : std_logic := '1';
-
+    signal cfg_mode_a : std_logic := '0';
+    signal cfg_mode_b : std_logic := '0';
 
     -------------------------------------------------------
     -- SHARED CAN BUS
     -------------------------------------------------------
-    signal bus_line : std_logic := '0';
+    signal bus_line : std_logic := '1';
 
+    -------------------------------------------------------
+    -- ERROR INJECTION
+    -------------------------------------------------------
+    signal force_error : std_logic := '0';
 
     -------------------------------------------------------
     -- BIT TIMING
     -------------------------------------------------------
-    signal prop_seg   : unsigned(7 downto 0) := to_unsigned(2,8);
-    signal phase_seg1 : unsigned(7 downto 0) := to_unsigned(2,8);
-    signal phase_seg2 : unsigned(7 downto 0) := to_unsigned(2,8);
-
+    signal prop_seg   : unsigned(7 downto 0) := to_unsigned(0,8);
+    signal phase_seg1 : unsigned(7 downto 0) := to_unsigned(0,8);
+    signal phase_seg2 : unsigned(7 downto 0) := to_unsigned(0,8);
 
     -------------------------------------------------------
     -- RX FIFO
@@ -73,7 +74,6 @@ architecture sim of tb_can_bus1 is
 
     signal frame_rx_out_a : std_logic_vector(107 downto 0);
     signal frame_rx_out_b : std_logic_vector(107 downto 0);
-
 
     -------------------------------------------------------
     -- TX FIFO
@@ -91,12 +91,6 @@ architecture sim of tb_can_bus1 is
     signal full_fifo_tx_b : std_logic;
     
     -------------------------------------------------------
-    -- ERROR INJECTION
-    -------------------------------------------------------
-    signal force_error : std_logic := '0';
-
-
-    -------------------------------------------------------
     -- RAM FILTER
     -------------------------------------------------------
     signal we_memID_a   : std_logic := '0';
@@ -104,13 +98,10 @@ architecture sim of tb_can_bus1 is
     signal ram_dinID_a  : std_logic_vector(7 downto 0) := (others=>'0');
     signal ram_rdy_a    : std_logic;
 
-
     signal we_memID_b   : std_logic := '0';
     signal ram_addrID_b : unsigned(7 downto 0) := (others=>'0');
     signal ram_dinID_b  : std_logic_vector(7 downto 0) := (others=>'0');
     signal ram_rdy_b    : std_logic;
-
-
 
     -------------------------------------------------------
     -- FRAMES
@@ -143,13 +134,16 @@ architecture sim of tb_can_bus1 is
 
 begin
 
+-------------------------------------------------------
+-- ERROR INJECTION DRIVER
+-------------------------------------------------------
+bus_line <= '0' when force_error = '1' else 'Z';
 
 -------------------------------------------------------
 -- CLOCK
 -------------------------------------------------------
 clock_a <= not clock_a after 5 ns;
 clock_b <= not clock_a;
-
 
 -------------------------------------------------------
 -- NODE A
@@ -282,10 +276,21 @@ begin
     reset_b <= '0';
 
     wait until ram_rdy_a='1' and ram_rdy_b='1';
-
+    
+    -- inizio configurazione nodi
+    cfg_mode_a  <= '1';
+    cfg_mode_b  <= '1';
+    
+    wait for 20 ns;
+    
+    -- BAUD RATE CONFIG
+    
+    prop_seg    <= "00000010";
+    phase_seg1  <= "00000010";
+    phase_seg2  <= "00000010";
 
     -- FILTER CONFIG
-
+    
     -- nodo A riceve ID nodo B
     ram_write_a(x"32","00001000"); -- 0x193
     ram_write_a(x"76","00001000"); -- 0x3B3
@@ -301,17 +306,9 @@ begin
     tx_fifo_push_b(FRAME_2);
     --tx_fifo_push_b(FRAME_3);
     --tx_fifo_push_b(FRAME_4);
-
-    wait for 200 ns;
-
-
-    -- ENABLE CAN
-
-    cfg_mode_a <= '0';
-    cfg_mode_b <= '0';
-
-
-    wait for 150 us;
+    
+    cfg_mode_a  <= '0';
+    cfg_mode_b  <= '0';
 
     wait;
 
