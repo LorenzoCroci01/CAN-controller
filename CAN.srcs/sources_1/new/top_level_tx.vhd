@@ -39,6 +39,7 @@ entity top_level_tx is
         prop_seg        : in unsigned(7 downto 0);
         phase_seg1      : in unsigned(7 downto 0);
         phase_seg2      : in unsigned(7 downto 0);
+        brp             : in unsigned(7 downto 0);
         
         --frame_tx_rdy    : out std_logic;
         
@@ -160,6 +161,7 @@ begin
             prop_seg    => prop_seg,
             phase_seg1  => phase_seg1,
             phase_seg2  => phase_seg2,
+            brp         => brp,
             sample_tick => sl_sample_tick
         );
 
@@ -188,6 +190,7 @@ begin
             prop_seg     => prop_seg,
             phase_seg1   => phase_seg1,
             phase_seg2   => phase_seg2,
+            brp          => brp,
             sof_bit      => sl_sof_bit,
             id_bit_valid => sl_id_bit_valid,
             busy         => sl_bus_busy,

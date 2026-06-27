@@ -36,6 +36,7 @@ architecture sim of tb_can_bus1 is
     -------------------------------------------------------
     signal clock_a : std_logic := '0';
     signal clock_b : std_logic := '0';
+    signal clock : std_logic := '0';
 
     -------------------------------------------------------
     -- RESET
@@ -65,6 +66,7 @@ architecture sim of tb_can_bus1 is
     signal prop_seg   : unsigned(7 downto 0) := to_unsigned(0,8);
     signal phase_seg1 : unsigned(7 downto 0) := to_unsigned(0,8);
     signal phase_seg2 : unsigned(7 downto 0) := to_unsigned(0,8);
+    signal brp        : unsigned(7 downto 0) := to_unsigned(0,8);
 
     -------------------------------------------------------
     -- RX FIFO
@@ -142,7 +144,7 @@ bus_line <= '0' when force_error = '1' else 'Z';
 -------------------------------------------------------
 -- CLOCK
 -------------------------------------------------------
-clock_a <= not clock_a after 5 ns;
+clock_a <= not clock_a after 5 ns;      -- 100 MHz
 clock_b <= not clock_a;
 
 -------------------------------------------------------
@@ -161,6 +163,7 @@ port map (
     prop_seg => prop_seg,
     phase_seg1 => phase_seg1,
     phase_seg2 => phase_seg2,
+    brp        => brp,
 
     frame_rx_out => frame_rx_out_a,
     pop_fifo_rx => pop_fifo_rx_a,
@@ -194,6 +197,7 @@ port map (
     prop_seg => prop_seg,
     phase_seg1 => phase_seg1,
     phase_seg2 => phase_seg2,
+    brp        => brp,
 
     frame_rx_out => frame_rx_out_b,
     pop_fifo_rx => pop_fifo_rx_b,
@@ -285,9 +289,10 @@ begin
     
     -- BAUD RATE CONFIG
     
-    prop_seg    <= "00000010";
-    phase_seg1  <= "00000010";
-    phase_seg2  <= "00000010";
+    prop_seg    <= to_unsigned(2,8);
+    phase_seg1  <= to_unsigned(4,8);
+    phase_seg2  <= to_unsigned(3,8);
+    brp         <= to_unsigned(10,8);
 
     -- FILTER CONFIG
     

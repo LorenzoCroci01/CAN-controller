@@ -41,6 +41,7 @@ entity top_level_RX is
         prop_seg     : in unsigned(7 downto 0);
         phase_seg1   : in unsigned(7 downto 0);
         phase_seg2   : in unsigned(7 downto 0);
+        brp          : in unsigned(7 downto 0);
 
         -- RAM filter ID configuration
         we_memID     : in std_logic;
@@ -95,6 +96,7 @@ begin
             prop_seg    => prop_seg,
             phase_seg1  => phase_seg1,
             phase_seg2  => phase_seg2,
+            brp         => brp,
             frame       => sv_frame_in,
             ack_slot    => ack_slot,
             frame_rdy   => sl_frame_rdy,

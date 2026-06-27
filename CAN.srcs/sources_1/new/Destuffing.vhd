@@ -84,7 +84,7 @@ begin
                 -------------------------------------------------
                 -- EDGE DETECTION
                 -------------------------------------------------
-                if rx_in_sync /= last_bit then 
+                if rx_in_sync = '0' and last_bit = '1' then 
                     edge_det_o <= '1'; 
                 end if; 
                 

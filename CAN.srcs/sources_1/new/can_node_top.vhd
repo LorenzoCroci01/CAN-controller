@@ -40,6 +40,7 @@ entity can_node_top is
         prop_seg    : in unsigned(7 downto 0);
         phase_seg1  : in unsigned(7 downto 0);
         phase_seg2  : in unsigned(7 downto 0);
+        brp         : in unsigned(7 downto 0);
         
         -- FIFO RX interface
         frame_rx_out    : out std_logic_vector(107 downto 0);
@@ -260,6 +261,7 @@ begin
             prop_seg         => prop_seg,
             phase_seg1       => phase_seg1,
             phase_seg2       => phase_seg2,
+            brp              => brp,
             --frame_tx_rdy     => sl_frame_tx_rdy,
             err_stuff        => sl_err_stuff,
             err_ack          => sl_err_ack,
@@ -291,6 +293,7 @@ begin
             prop_seg         => prop_seg,
             phase_seg1       => phase_seg1,
             phase_seg2       => phase_seg2,
+            brp              => brp,
             we_memID         => we_memID,
             ram_addrID       => ram_addrID,
             ram_dinID        => ram_dinID,

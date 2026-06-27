@@ -35,6 +35,7 @@ entity can_node_loopback is
         prop_seg    : in unsigned(7 downto 0);
         phase_seg1  : in unsigned(7 downto 0);
         phase_seg2  : in unsigned(7 downto 0);
+        brp         : in unsigned(7 downto 0);
         
         we_memID    : in  std_logic;
         ram_addrID  : in  unsigned(7 downto 0);
@@ -83,6 +84,7 @@ begin
             prop_seg   => prop_seg,
             phase_seg1 => phase_seg1,
             phase_seg2 => phase_seg2,
+            brp        => brp,
 
             frame_rx_out  => sv_frame_rx_out,
             pop_fifo_rx   => sl_pop_fifo_rx,

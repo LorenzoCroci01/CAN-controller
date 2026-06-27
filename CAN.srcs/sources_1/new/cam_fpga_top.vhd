@@ -41,6 +41,7 @@ entity can_fpga_top is
         prop_seg    : in unsigned(7 downto 0);
         phase_seg1  : in unsigned(7 downto 0);
         phase_seg2  : in unsigned(7 downto 0);
+        brp         : in unsigned(7 downto 0);
 
         -- FIFO RX interface
         frame_rx_out  : out std_logic_vector(107 downto 0);
@@ -94,6 +95,7 @@ begin
             prop_seg   => prop_seg,
             phase_seg1 => phase_seg1,
             phase_seg2 => phase_seg2,
+            brp        => brp,
             frame_rx_out  => frame_rx_out,
             pop_fifo_rx   => pop_fifo_rx,
             empty_fifo_rx => empty_fifo_rx,

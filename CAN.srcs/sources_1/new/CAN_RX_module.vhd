@@ -37,6 +37,7 @@ entity CAN_RX_module is
         prop_seg      : in  unsigned(7 downto 0);
         phase_seg1    : in  unsigned(7 downto 0);
         phase_seg2    : in  unsigned(7 downto 0);
+        brp           : in  unsigned(7 downto 0);
         
         frame         : out std_logic_vector(107 downto 0);     -- deserialized frame output
         ack_slot      : out std_logic;      -- ack slot flag
@@ -63,12 +64,15 @@ architecture arch_CAN_RX_module of CAN_RX_module is
     signal sl_err_frame    : std_logic;
     signal sl_err_stuff    : std_logic;
     signal sl_frame_rdy    : std_logic;
+    
+    signal sl_start_rx     : std_logic;
 
 begin
     -- outputs
     -- state_can     <= state_can_r;
     frame_rdy   <= sl_frame_rdy;
-    err_frame   <= sl_err_frame;    
+    err_frame   <= sl_err_frame;  
+    start_rx    <= sl_start_rx;  
 
 
     -- Sync FF
@@ -85,11 +89,13 @@ begin
         port map (
             clock        => clock,
             reset        => reset,
+            --edge_det     => sl_start_rx,
             edge_det     => sl_edge_det,
             cfg_mode     => cfg_mode,
             prop_seg     => prop_seg,
             phase_seg1   => phase_seg1,
             phase_seg2   => phase_seg2,
+            brp          => brp,
             bit_tick     => sl_bit_tick,
             sample_tick  => sl_sample_tick
         );

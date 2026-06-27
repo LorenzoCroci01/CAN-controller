@@ -32,6 +32,7 @@ entity can_readTX is
         prop_seg    : in  unsigned(7 downto 0);
         phase_seg1  : in  unsigned(7 downto 0);
         phase_seg2  : in  unsigned(7 downto 0);
+        brp         : in  unsigned(7 downto 0);
         
         sof_bit     : out std_logic;
         id_bit_valid : out std_logic;
@@ -80,6 +81,7 @@ begin
             prop_seg     => prop_seg,
             phase_seg1   => phase_seg1,
             phase_seg2   => phase_seg2,
+            brp          => brp,
             bit_tick     => sl_bit_tick,
             sample_tick  => sl_sample_tick
         );

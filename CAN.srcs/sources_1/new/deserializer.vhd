@@ -126,7 +126,7 @@ begin
                             id_len_i    :=  id_len;
                             s_bit_count <= to_unsigned(id_len_i+1, 7);
                             sv_first_pt(id_len_i downto 0) <= '0' & id_rx_in(id_len_i-1 downto 0);
-                            start_rx  <= '1';
+                            --start_rx  <= '1';
                             state <= ID; 
            
                         else
@@ -136,6 +136,7 @@ begin
 
                     -- ID (11 bits)
                     when ID =>
+                        start_rx  <= '0';
                         if bit_valid = '1' then
                             sv_first_pt <= sv_first_pt(17 downto 0) & destuff_bit;
 
