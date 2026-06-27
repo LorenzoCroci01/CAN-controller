@@ -102,10 +102,10 @@ begin
             
             if cfg_mode = '0' and sl_tq_tick = '1' then
                 -- fronte recessivo-dominante
-                if edge_det = '1' then
-                    s_tq_cnt    <= (others => '0');
+                --if edge_det = '1' then
+                --    s_tq_cnt    <= (others => '0');
                 
-                else
+                --else
                     if s_tq_cnt = s_tq_total - 1 then
                         -- end of bit
                         bit_tick     <= '1';
@@ -124,10 +124,10 @@ begin
                         end if;
 
                     end if;
-                end if;
+
             end if;
         end if;
- 
+        --end if;
     end process;
 
 end architecture;

@@ -129,7 +129,7 @@ begin
             frame          => frame,
             ack_slot       => ack_slot,
             frame_rdy      => sl_frame_rdy,
-            start_rx       => start_rx
+            start_rx       => sl_start_rx
         );
 
 end architecture;

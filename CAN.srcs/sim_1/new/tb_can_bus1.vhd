@@ -36,7 +36,6 @@ architecture sim of tb_can_bus1 is
     -------------------------------------------------------
     signal clock_a : std_logic := '0';
     signal clock_b : std_logic := '0';
-    signal clock : std_logic := '0';
 
     -------------------------------------------------------
     -- RESET

@@ -113,6 +113,7 @@ begin
                         sv_dlc        <= (others => '0');
                         s_data_len    <= (others => '0');
                         s_bit_count   <= (others => '0');
+                        start_rx      <= '0';
                         
                         -- RX: wait valid SOF
                         if fall_destuff = '1' and state_can = "00" then
@@ -131,12 +132,12 @@ begin
            
                         else
                             state   <= IDLE;
-                            start_rx  <= '0';
+                            --start_rx  <= '0';
                         end if;
 
                     -- ID (11 bits)
                     when ID =>
-                        start_rx  <= '0';
+                        --start_rx  <= '0';
                         if bit_valid = '1' then
                             sv_first_pt <= sv_first_pt(17 downto 0) & destuff_bit;
 

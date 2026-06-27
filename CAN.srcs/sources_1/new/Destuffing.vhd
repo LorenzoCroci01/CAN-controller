@@ -60,7 +60,8 @@ begin
     edge_det    <= edge_det_o; 
     
     process(clock, reset)
-        variable next_dom   : unsigned(2 downto 0); 
+        variable next_dom       : unsigned(2 downto 0); 
+        variable edge_dom       : std_logic;
     begin 
         if reset = '1' then 
             last_bit    <= '1'; 
@@ -84,7 +85,7 @@ begin
                 -------------------------------------------------
                 -- EDGE DETECTION
                 -------------------------------------------------
-                if rx_in_sync = '0' and last_bit = '1' then 
+                if rx_in_sync = '1' and last_bit = '0' then 
                     edge_det_o <= '1'; 
                 end if; 
                 
