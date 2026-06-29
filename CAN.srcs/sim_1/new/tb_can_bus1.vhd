@@ -65,7 +65,8 @@ architecture sim of tb_can_bus1 is
     signal prop_seg   : unsigned(7 downto 0) := to_unsigned(0,8);
     signal phase_seg1 : unsigned(7 downto 0) := to_unsigned(0,8);
     signal phase_seg2 : unsigned(7 downto 0) := to_unsigned(0,8);
-    signal brp        : unsigned(7 downto 0) := to_unsigned(0,8);
+    signal brp_a      : unsigned(7 downto 0) := to_unsigned(0,8);
+    signal brp_b      : unsigned(7 downto 0) := to_unsigned(0,8);
 
     -------------------------------------------------------
     -- RX FIFO
@@ -136,15 +137,10 @@ architecture sim of tb_can_bus1 is
 begin
 
 -------------------------------------------------------
--- ERROR INJECTION DRIVER
--------------------------------------------------------
-bus_line <= '0' when force_error = '1' else 'Z';
-
--------------------------------------------------------
 -- CLOCK
 -------------------------------------------------------
 clock_a <= not clock_a after 5 ns;      -- 100 MHz
-clock_b <= not clock_a;
+clock_b <= not clock_a;                 -- 100 MHz sfasato di 180°
 
 -------------------------------------------------------
 -- NODE A
@@ -162,7 +158,7 @@ port map (
     prop_seg => prop_seg,
     phase_seg1 => phase_seg1,
     phase_seg2 => phase_seg2,
-    brp        => brp,
+    brp        => brp_a,
 
     frame_rx_out => frame_rx_out_a,
     pop_fifo_rx => pop_fifo_rx_a,
@@ -196,7 +192,7 @@ port map (
     prop_seg => prop_seg,
     phase_seg1 => phase_seg1,
     phase_seg2 => phase_seg2,
-    brp        => brp,
+    brp        => brp_b,
 
     frame_rx_out => frame_rx_out_b,
     pop_fifo_rx => pop_fifo_rx_b,
@@ -284,14 +280,15 @@ begin
     cfg_mode_a  <= '1';
     cfg_mode_b  <= '1';
     
-    wait for 20 ns;
+    wait for 100 ns;
     
     -- BAUD RATE CONFIG
     
     prop_seg    <= to_unsigned(2,8);
-    phase_seg1  <= to_unsigned(4,8);
-    phase_seg2  <= to_unsigned(3,8);
-    brp         <= to_unsigned(10,8);
+    phase_seg1  <= to_unsigned(5,8);
+    phase_seg2  <= to_unsigned(2,8);
+    brp_a       <= to_unsigned(10,8);
+    brp_b       <= to_unsigned(10,8);
 
     -- FILTER CONFIG
     
@@ -308,8 +305,8 @@ begin
 
     tx_fifo_push_a(FRAME_1);
     tx_fifo_push_b(FRAME_2);
-    --tx_fifo_push_b(FRAME_3);
-    --tx_fifo_push_b(FRAME_4);
+    tx_fifo_push_a(FRAME_3);
+    tx_fifo_push_b(FRAME_4);
     
     cfg_mode_a  <= '0';
     cfg_mode_b  <= '0';

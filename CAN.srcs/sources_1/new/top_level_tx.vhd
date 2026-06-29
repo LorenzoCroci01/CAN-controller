@@ -78,6 +78,8 @@ architecture arch_top_level_tx of top_level_tx is
     signal sl_bus_frame_rdy : std_logic;
     signal sl_bus_busy      : std_logic;
     signal sl_id_bit_valid  : std_logic;
+    
+    signal sl_bit_tick      : std_logic;
 
 begin
 
@@ -140,7 +142,7 @@ begin
         port map (
             clock          => clock,
             reset          => reset,
-            sample_tick    => sl_sample_tick,
+            sample_tick    => sl_bit_tick,
             frame_in       => sv_frm_arb_out,
             state_can      => state_can,
             lost_arb       => sl_lost_arb,
@@ -162,6 +164,7 @@ begin
             phase_seg1  => phase_seg1,
             phase_seg2  => phase_seg2,
             brp         => brp,
+            bit_tick    => sl_bit_tick,
             sample_tick => sl_sample_tick
         );
 
